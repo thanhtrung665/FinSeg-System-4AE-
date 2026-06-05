@@ -1,0 +1,334 @@
+comment_id,ticker,type,content_text,created_at,likes,shares,comments
+scb_post_001,SCB,post,"Ngày 08/10/2022, Cơ quan Cảnh sát Điều tra của Bộ Công An có thông tin quyết định khởi tố vụ án và khởi tố bị can đối với bà Trương Mỹ Lan...",2022-10-08,469,23,3
+scb_cmt_001,SCB,comment,"Võ Nguyễn Quốc Trường: Ngồi không cũng dính đàn :)))",2022-10-08,0,0,0
+scb_cmt_002,SCB,comment,"Trần Việt Cương: Ở thế cho e hòi hơi ngu tí...mấy ace đang ôm đống trái phiếu của cty an đông bày giờ đang ở đâu ạ 😂😂???",2022-10-08,2,0,0
+scb_cmt_003,SCB,comment,"Hữu Chiến: 1 phần lí do giảm cả tháng nay đây r. Tin ra là đáy chưa ae. Chứ tôi bắt dao nhiều cụt hết tay rồi 😂😂😂",2022-10-08,2,0,0
+scb_cmt_004,SCB,comment,"Thụykg Hsmgvsuan: Đã có câu trả lời cho thị trường rơi một cách ko phanh",2022-10-08,2,0,0
+scb_cmt_005,SCB,comment,"Tuấn Phạm: Sau vụ này scb khi ko tự dưng kiếm được 1 mố",2022-10-08,1,0,0
+scb_cmt_006,SCB,comment,"Khắc Quang: Hy vọng, sau hôm nay scb tăng lãi suất ngắn hạn cho ae dc nhờ!",2022-10-08,0,0,0
+scb_cmt_007,SCB,comment,"Xuyên Bảo: SCB sao mà sập đc",2022-10-08,0,0,0
+scb_cmt_008,SCB,comment,"Kh Oa: Mượn gió bề măng. Bề quá trời măng luôn",2022-10-08,1,0,0
+scb_cmt_009,SCB,comment,"Phượng Hoàng Lửa: Tự nhiên cp đỏ thêm miếng nựa :))",2022-10-08,0,0,0
+scb_cmt_010,SCB,comment,"Nguyễn Công Đạo: tin ra là đáy chưa nhỉ",2022-10-08,0,0,0
+scb_cmt_011,SCB,comment,"Ngoc Dang: Mai Anh kiếp nạn này do xui thui 😭",2022-10-08,0,0,0
+scb_cmt_012,SCB,comment,"Huỳnh Như: Dương Nguyễn nghe đồn hôm qua SCB gọi bạn",2022-10-08,0,0,0
+scb_cmt_013,SCB,comment,"Dương Nguyễn: Huỳnh Như dạ ko dám em chơi STB nha",2022-10-08,0,0,0
+scb_cmt_014,SCB,comment,"Huỳnh Như: Dương Nguyễn cười ồ",2022-10-08,0,0,0
+scb_post_002,SCB,post,"Theo Ngân hàng Nhà nước, vào ngày 7/10, trên mạng xã hội lan truyền thông tin tiêu cực về SCB, dẫn đến hiện tượng một số người dân rút tiền trước hạn. Ngân hàng Nhà nước khẳng định, sẽ theo dõi sát tình hình để ngân hàng hoạt động bình thường và có giải pháp, chính sách theo quy định của pháp luật để đảm bảo quyền và lợi ích của người gửi tiền, giữ vững ổn định của SCB nói riêng và hệ thống các tổ chức tín dụng nói chung. Ngân hàng Nhà nước khuyến cáo người gửi tiền không nên rút tiền trước hạn ở SCB, tránh ảnh hưởng đến quyền lợi của người gửi tiền.",2022-10-08,0,0,18
+scb_cmt_015,SCB,comment,"Việt: Tiền là của mình, còn khuyến cáo là của ngân hàng nhà nước.",2022-10-08,14,0,0
+scb_cmt_016,SCB,comment,"Nguyễn Thành Long: không rút =]] là Như tan hoàng minh luôn đợi thiên thu =]]",2022-10-08,1,0,0
+scb_cmt_017,SCB,comment,"Dang Dang: Gửi 1 tỷ rút ra được 1 tỷ. Còn không rút vài bữa chắc còn 75tr",2022-10-08,1,0,0
+scb_cmt_018,SCB,comment,"Doan Thanh Danh: rút lẹ, ck ngay và luôn 😊",2022-10-08,1,0,0
+scb_cmt_019,SCB,comment,"Hau Nguyen: Cố lên SCB",2022-10-08,2,0,0
+scb_cmt_020,SCB,comment,"Thuong Truong: phá sản thì a gửi nhiều được nhận về 160tr mà ...",2022-10-08,0,0,0
+scb_cmt_021,SCB,comment,"Tony Hiếu Trần: Tóm lại có tiền gửi đừng có đại mà dồn vô hết một ngân hàng nhất là một ngân hàng tuổi đời nó trẻ và chưa tạo đc sự uy tín",2022-10-08,0,0,0
+scb_cmt_022,SCB,comment,"Công Lý: Rút ra thì sập không rút thì lo bị sập thôi tiền trên tay mình mới là của mình nên POMO thôi",2022-10-08,0,0,0
+scb_cmt_023,SCB,comment,"Thành Vinh: rút nhiều quá sao ngân hàng chịu nỗi.... haha 😂😂",2022-10-08,0,0,0
+scb_cmt_024,SCB,comment,"Rita Võ: Rút lẹ đỉ, toang đấy 😂",2022-10-08,0,0,0
+scb_cmt_025,SCB,comment,"ALinh ALinh: Kéo nhau đi rút thì tiền đâu quy động kịp mà không khuyến cáo 😂",2022-10-08,0,0,0
+scb_cmt_026,SCB,comment,"Như Ý Hải: Thuan Hoang tiếc quá ko có tiền để rút",2022-10-08,0,0,0
+scb_cmt_027,SCB,comment,"Trương Huy: mà nên rút tiền trước hạn tại tất cả ngân hàng 😂",2022-10-08,0,0,0
+scb_post_003,SCB,post,"[NÓNG] NHNN kiểm soát đặc biệt ngân hàng SCB: Đưa cán bộ từ Vietcombank, BIDV, Agribank, VietinBank tham gia quản trị, điều hành!",2022-10-08,0,0,0
+scb_cmt_028,SCB,comment,"Ti Mon: Ngon lành 😂😂😂😂",2022-10-08,0,0,0
+scb_cmt_029,SCB,comment,"Thanh Nguyen: Hết phá sản, ngon",2022-10-08,0,0,0
+scb_cmt_030,SCB,comment,"Minh Phát Huỳnh: Sắp mua 0đ???",2022-10-08,0,0,0
+scb_cmt_031,SCB,comment,"Sơn Ber: kèo thơm lừng :)))",2022-10-08,0,0,0
+scb_cmt_032,SCB,comment,"Phan Anh: Hồ Hào bạn ni có đi k 😍😍",2022-10-08,0,0,0
+scb_cmt_033,SCB,comment,"Linh Vương: Mộc Sa 4 ngày nay t ko chuyển tiền xài tiền gì được rồi, bank l** 😍😍",2022-10-08,0,0,0
+scb_cmt_034,SCB,comment,"Nam Nguyentuan: Tin tốt",2022-10-08,0,0,0
+scb_cmt_035,SCB,comment,"Nguyễn Quốc Việt: Bt mà :)))",2022-10-08,0,0,0
+scb_cmt_036,SCB,comment,"Nguyễn Hữu Danh: Qua điều hành coi như Đông Á. Duyệt hồ sơ trình ký giám đốc chi nhánh chưa xong, trình ngược Vietinbank ngó ký cái nữa, làm cái hồ sơ trình ký đủ mệt",2022-10-08,0,0,0
+scb_cmt_037,SCB,comment,"Nguyễn Trần Phương Thảo: Lee Duck =))",2022-10-08,0,0,0
+scb_post_004,SCB,post,"Hội những người thua lỗ chứng khoán chào nhau cái nhì",2022-11-05,0,0,11
+scb_cmt_038,SCB,comment,"Nguyễn Khắc Tuấn: chào admin",2022-11-05,1,0,0
+scb_cmt_039,SCB,comment,"Thương Thương: Chào",2022-11-05,1,0,0
+scb_cmt_040,SCB,comment,"Bạ Cập: Chào nhé",2022-11-05,1,0,0
+scb_cmt_041,SCB,comment,"Trần Hiền: Buồn",2022-11-05,0,0,0
+scb_cmt_042,SCB,comment,"Thien An: Hello",2022-11-05,1,0,0
+scb_cmt_043,SCB,comment,"Ngọc Ngọc: Có vẻ ít ng thua lỗ",2022-11-05,1,0,0
+scb_cmt_044,SCB,comment,"Chiến Carô: chào to lun",2022-11-05,1,0,0
+scb_cmt_045,SCB,comment,"Nguyen Thu Huong: Cười cọt trên thắt bại của mình để làm gì?",2022-11-05,1,0,0
+scb_cmt_046,SCB,comment,"Phùng Quang Định: Làm j có ai lãi dk tầm này ad",2022-11-05,1,0,0
+scb_cmt_047,SCB,comment,"Ng Duy Trực: Lỗ 70% chào ae nhé",2022-11-05,1,0,0
+scb_cmt_048,SCB,comment,"Phạm Toán: Còn mỗi cái nịt ae ơi",2022-11-05,0,0,0
+scb_cmt_049,SCB,comment,"Nguyễn Văn Vững: Hai hai ae thua lỗ",2022-11-05,0,0,0
+scb_cmt_050,SCB,comment,"Trung Thành: Hello anh em",2022-11-05,0,0,0
+scb_cmt_051,SCB,comment,"Nguyễn Phúc: Hé lô... Chiều hết phiên đã bay nhẹ 20tr",2022-11-05,0,0,0
+scb_cmt_052,SCB,comment,"Huy Thuấn: 222",2022-11-05,1,0,0
+scb_cmt_053,SCB,comment,"Hong Nanhee: Hết lô",2022-11-05,0,0,0
+scb_cmt_054,SCB,comment,"Kro Nguyễn: Có bác nào uống trà cúc HP ko 35k/cổc. E bán trên Hà Nội. Freeship dựa trên số cổc 😍😍😍 Uống để thứ 2 đời thăng hoa 😍😍😍",2022-11-05,0,0,0
+scb_cmt_055,SCB,comment,"Nguyễn Đạt: Lê Huyền Trang :))",2022-10-15,2,0,0
+scb_cmt_056,SCB,comment,"Dang Nguyen: Biết ngay big 4 khó từ bỏ miếng thịt ngon như này 😂😂",2022-10-15,0,0,0
+scb_cmt_057,SCB,comment,"Thế Nghị Đặng: Động thái tốt 😂😂😂",2022-10-15,0,0,0
+scb_post_005,SCB,post,"Bà Trương Mỹ Lan cùng 12 bị cáo khác bị truy tố khung hình phạt tử hình. Trong 86 bị cáo chuẩn bị đưa ra xét xử trong vụ án Trương Mỹ Lan và đồng phạm gây thiệt hại cho SCB khoảng 498.000 tỉ đồng, có 13 bị cáo bị Viện KSND tối cao truy tố ở khung hình phạt cao nhất là tử hình.",2024-02-22,0,0,0
+scb_cmt_058,SCB,comment,"Khíêp: Hay quá",2024-02-22,0,0,0
+scb_cmt_059,SCB,comment,"Toàn Thái: Ẩn xài trên cả núi tiền, 68 tuổi thì tử hình cũng xứng đáng với cả cuộc đời sống vua chúa. 😢😢",2024-02-22,0,0,0
+scb_cmt_060,SCB,comment,"Lan Lily: tử hình",2024-02-22,0,0,0
+scb_cmt_061,SCB,comment,"Dương Duy: 1 thời 2019 CEO VTHV còn chúc Tết SCBer, giờ ra thế này",2024-02-22,0,0,0
+scb_cmt_062,SCB,comment,"Nha Bau Bi: Hic",2024-02-22,0,0,0
+scb_cmt_063,SCB,comment,"Nguyễn Thanh Phú: Có thật ko?",2024-02-22,0,0,0
+scb_cmt_064,SCB,comment,"Tuan Anh: It qua",2024-02-22,0,0,0
+scb_cmt_065,SCB,comment,"Hùng Vũ: Tử hình chính ra lại là bản án nhẹ nhàng nhất, hãy cứ là chung thân",2024-02-22,0,0,0
+scb_cmt_066,SCB,comment,"Minh Châu: Ngang hòa thân nhỉ",2024-02-22,0,0,0
+scb_post_006,SCB,post,"NÓNG: Bà Trương Mỹ Lan bị cáo buộc chiếm đoạt hơn 304.000 tỷ đồng của SCB",2023-11-18,772,53,3
+scb_cmt_067,SCB,comment,"Nguyễn Phan Hoàng Khang: Bà này chắc tiêm thuốc quá Tuyen Phan",2023-11-18,1,0,0
+scb_cmt_068,SCB,comment,"Hoang Anh Tran: Khâm thử 😂😂😂",2023-11-18,1,0,0
+scb_cmt_069,SCB,comment,"Lê Minh Huy: Có con số thế này luôn hả mn 😂",2023-11-18,4,0,0
+scb_cmt_070,SCB,comment,"Quốc Bảo: Duy Khánh gắt quá 😂",2023-11-18,0,0,0
+scb_cmt_071,SCB,comment,"Lương Minh Nhật: Khủng khiếp",2023-11-18,0,0,0
+scb_cmt_072,SCB,comment,"Minh Thúy: Cá nhân mà lừa được con số thật khủng khiếp",2023-11-18,1,0,0
+scb_cmt_073,SCB,comment,"Lê Lương: Tưởng đớp được 400000k tỷ",2023-11-18,0,0,0
+scb_cmt_074,SCB,comment,"Ngô Huy: Sống gió vài hôm rồi trời yên biển lặng lại thôi. Dân nghèo lại phơi lưng làm tiếp để có da thịt chút rồi tư bản lại bật mode xén lông cừu thôi mà",2023-11-18,1,0,0
+scb_cmt_075,SCB,comment,"Lê Thanh Hai: Thôi xong cái scb",2023-11-18,1,0,0
+scb_cmt_076,SCB,comment,"Ủôn Lâm Huyền: 304 ngàn đồng nghe",2023-11-18,0,0,0
+scb_cmt_077,SCB,comment,"Van Minh: roi, mai lại kéo nhau lên SCB biểu tình nữa :))))",2023-11-18,0,0,0
+scb_post_007,SCB,post,"RÚT TIỀN Ồ ẠT TẠI SCB GÂY HẬU QUẢ GÌ? Chính phủ Việt Nam đánh giá tình trạng rút tiền hàng loạt tại ngân hàng SCB là yếu tố làm gia tăng áp lực lên mặt bằng lãi suất và tỉ giá trong nước, tạo sức ép lên lạm phát. Theo báo Lao Động, Chính phủ vừa có Báo cáo số 186/BC-CP gửi Quốc hội về tình hình thực hiện Nghị quyết số 43/2022/QH15 về chính sách tài khóa, tiền tệ hỗ trợ chương trình phục hồi và phát triển kinh tế - xã hội. Báo cáo cho biết áp lực mất giá của đồng Việt Nam rất lớn trong năm 2022 khi các nước thắt chặt chính sách tiền tệ, tăng mạnh lãi suất và đồng USD tăng giá rất mạnh. Vào thời điểm tháng 9 và tháng 10.2022, đồng Việt Nam đã chịu áp lực mất giá lên đến 9-10%. Cùng lúc, tình trạng rút tiền hàng loạt tại SCB đã là các yếu tố tổng hợp làm gia tăng áp lực lên mặt bằng lãi suất và tỉ giá trong nước, tạo sức ép lên lạm phát. Đầu tháng 10/2022 là thời điểm bà Trương Mỹ Lan bị bắt.",2024-05-11,0,0,0
+scb_cmt_078,SCB,comment,"Trần Đình Hưng: Gửi tiền vào thì không ai biết, rút ra thì thế này-nọ! Do ai? Tại sao? Bao nhiêu câu hỏi? N",2024-05-11,0,0,0
+scb_cmt_079,SCB,comment,"Phạm Đức Tâm: Cmn nó bao che ăn cướp hàng chục năm của dân chả thế",2024-05-11,0,0,0
+scb_cmt_080,SCB,comment,"Bui Quoc Anh: Những người gửi tiết kiệm là ko biết, ko dám đầu tư vào đâu, thế nên rút từ SCB lại gửi sang NH khác thôi. Nói áp lực về tiền tung ra từ tiết kiệm SCB cũng ko hẳn",2024-05-11,0,0,0
+scb_cmt_081,SCB,comment,"Trần Chung: Tiền của dân thì họ rút",2024-05-11,0,0,0
+scb_cmt_082,SCB,comment,"Nguyễn Thái: Tất cả các nước muốn hóa ròng đều trải qua khủng hoảng tài chính. Nh, ĐL, HQ,TL, ID.. Việt nam thì nhiều lần tài chính rung lắc mạnh. Có chăng sau 2015 tài chính ổn định hơn do kt phát triển tốt, dự trữ ngoại tệ cũng tốt hơn nhiều. Năm 2022 khi tg đổ vỡ nợ lần mà VN vẫn đứng vững cũng là hiếm có. Tin chắc vụ Vạn Thịnh Phát cũng không làm trầm trọng quá!!",2024-05-11,0,0,0
+scb_post_008,SCB,post,"THÔNG CÁO BÁO CHÍ CỦA NGÂN HÀNG NHÀ NƯỚC VIỆT NAM 08/10/2022: Ngày 7/10/2022, trên mạng xã hội lan truyền thông tin tiêu cực về Ngân hàng Thương mại cổ phần Sài Gòn (SCB) dẫn đến hiện tượng một số người dân rút tiền trước hạn. Về việc này Ngân hàng Nhà nước (NHNN) khẳng định sẽ theo dõi sát tình hình để ngân hàng hoạt động bình thường và có giải pháp, chính sách theo quy định của pháp luật để đảm bảo quyền và lợi ích của người gửi tiền, giữ vững ổn định của SCB nói riêng và hệ thống các tổ chức tín dụng nói chung. NHNN khuyến cáo người gửi tiền không nên rút tiền trước hạn, tránh ảnh hưởng đến quyền lợi của người gửi tiền.",2022-10-08,0,0,0
+scb_cmt_083,SCB,comment,"Nguyễn Thắng: Hôm qua chứng khoán đỏ lửa do nhiều tin đồn thất thiệt đó mọi người, nhiều người rút quá có thể làm nghẽn hệ thống đẩy, NH nào cũng có lúc như thế.",2022-10-08,21,0,0
+scb_cmt_084,SCB,comment,"Thanh Long: y chang vụ ACB mấy năm trước, hù mấy câu lùa đám gà rút tiền chịu phạt hết, xong mấy bữa sau chẳng có gì xảy ra, chỉ có Tết năm đó nhân viên ACB bị thưởng Tết đến 20 30 tháng lương 😊😊",2022-10-08,17,0,0
+scb_cmt_085,SCB,comment,"Trần Thanh: Nên bình tĩnh tin tưởng vào Đảng và Chính phủ. Đây là Ngân hàng lớn, Chính phủ phải có điều tiết bình ổn, nếu ko sẽ gây loạn thị trường tài chính, cả nền kinh tế chứ ko phải đơn giản.",2022-10-08,16,0,0
+scb_cmt_086,SCB,comment,"Lương Bảo Bình: Ủa rồi hồi bầu Kiên bị bắt xong ngân hàng ACB có bị sao ko mọi người!? Có ai bị mất tiền ko xin tý ví dụ điển hình để làm căn cứ với nhỉ!? 😢😢😢 có mấy đồng bạc gửi online mà sáng giờ mng làm rồi thế!?",2022-10-08,15,0,0
+scb_cmt_087,SCB,comment,"Đèn Led Tbd Lighting: Lương Bảo Bình lo thấy bà luôn",2022-10-08,1,0,0
+scb_cmt_088,SCB,comment,"Yết Yết: Lương Bảo Bình chỉ khổ các cụ già đang đi rút rồi cuối tuần mất ăn mất ngủ. Ở Việt Nam NH ko thể sập dc",2022-10-08,1,0,0
+scb_cmt_089,SCB,comment,"Tú Phạm: Lương Bảo Bình ko sao bác ơi",2022-10-08,1,0,0
+scb_cmt_090,SCB,comment,"Quin Mai: 😊 mình ko rút tiết kiệm nhưng hãy cho mình chuyển khoản",2022-10-08,0,0,0
+scb_cmt_091,SCB,comment,"Trần Thanh Xuân: Quin Mai c quay lại app vào khung giờ khác nhé",2022-10-08,0,0,0
+scb_cmt_092,SCB,comment,"Lan Phương: Quin Mai chuyển được rồi bạn ơi",2022-10-08,0,0,0
+scb_cmt_093,SCB,comment,"Hien Pham: 😊😊😊 mải yêu SCB 😂😂😂",2022-10-08,0,0,0
+scb_cmt_094,SCB,comment,"Thơm Trần: Scb mãi là ngân hàng uy tín, chất lượng và hướng tới khách hàng. Vì vậy hãy tin tưởng scb a.",2022-10-08,0,0,0
+scb_cmt_095,SCB,comment,"Tào Tháo: Thơm Trần muốn cho tôi tin tưởng thì cái app của tôi phải dùng được kể cả trong thời điểm nhạy cảm. Nói suông ai tin được",2022-10-08,0,0,0
+scb_cmt_096,SCB,comment,"Thạch Phạm: Nguyễn Việt đúng r, cứ có phốt là app lỗi",2022-10-08,0,0,0
+scb_cmt_097,SCB,comment,"Tào Tháo: Trần Thanh Xuân ở kìa bạn, là người gửi tiền tôi đâu cần biết là lý do gì bị lỗi. Tôi chỉ thấy giữa lúc nhạy cảm này mà app không login được là tôi mất lòng tin bạn ah",2022-10-08,0,0,0
+scb_cmt_098,SCB,comment,"Thong H. Duong: Lịch sử ngành ngân hàng vn chưa bao giờ có phá sản nha nếu có thì VN bị khủng hoảng kttc hay chiến tranh. Còn hiện gdp tăng trưởng chóng mặt trước bất ổn tg.",2022-10-08,0,0,0
+scb_cmt_099,SCB,comment,"Lan Chi: Thong H. Duong lâu quá mới thấy idol ta ơi 😍",2022-10-08,0,0,0
+scb_cmt_100,SCB,comment,"Long Chiêu: Nó bảo trì 24/7 thôi mà, bây giờ cho ck lại rồi mà.",2022-10-08,0,0,0
+scb_cmt_101,SCB,comment,"Kim Lang: Nguyen Thang tin đồn j vậy bạn? mình có nghe j đâu 😂",2022-10-08,0,0,0
+scb_cmt_102,SCB,comment,"Diễm Diễm: Nguyen Thang tiền của ng gửi scb thì có thể k s nhưng những ng mua trái phiếu an đồng thì k có tài sản đảm bảo nên phải bán tr...",2022-10-08,0,0,0
+scb_cmt_103,SCB,comment,"Trần Thị Mỹ Duyên: Nguyen Thang tối m cũng nghe vậy m ck bthg mà",2022-10-08,0,0,0
+scb_cmt_104,SCB,comment,"Nguyễn Thắng: Trần Thị Mỹ Duyên uh, qua mình cũng ck bình thường, sáng nay chắc nhiều ng rút quá bị nghẽn thôi.",2022-10-08,0,0,0
+scb_cmt_105,SCB,comment,"The Ngon: Thanh Long khỏi phải trả lãi",2022-10-08,0,0,0
+scb_cmt_106,SCB,comment,"ThuChef Do: Tôi sẽ không rút tiết kiệm đầu nhưng cho mình chuyển tiền được không",2022-10-08,14,0,0
+scb_cmt_107,SCB,comment,"Thảo Phương: Bank sao nói sập là sập ngay đc 😂. Mn đừng quá hoang mang. Bao nhiêu vụ: ACB, SHB, BIDV, Ocean.... Đến giờ các bank ấy vẫn ho...",2022-10-08,13,0,0
+scb_cmt_108,SCB,comment,"Đỗ Văn Thuận: Sáng đọc tin cũng sốt ruột, nhưng mà thấy bài này là an tâm phần nào r",2022-10-08,12,0,0
+scb_cmt_109,SCB,comment,"Trịnh Tiên Xinh: Ok shop.",2022-10-08,6,0,0
+scb_post_009,SCB,post,"SCB bác tin đồn ông Lưu Quốc Thắng và ông Diệp Bảo Châu qua đời. Ngày 12/10, báo Thanh Niên, Tiền Phong, Pháp Luật TP HCM đồng loạt đưa tin SCB bác bỏ một số tin đồn thất thiệt rằng hai nhân sự cấp cao của SCB đã qua đời. Hai nhân vật được nhắc đến là ông Lưu Quốc Thắng – Trưởng Ban kiểm soát SCB và ông Diệp Bảo Châu – Phó Tổng Giám đốc SCB. Theo đó, ngân hàng này khẳng định, tính đến sáng hôm nay 12/10, cả hai ông Thắng và Châu vẫn đang điều hành công việc hằng ngày tại ngân hàng. Theo BBC tìm hiểu, trang tiểu sử về ông Lưu Quốc Thắng trên website của SCB không còn truy cập được nữa nhưng trang thông tin về ông Diệp Bảo Châu vẫn còn nguyên. Tính tới thời điểm hiện tại, SCB vẫn chưa lên tiếng về cái chết của bà Nguyễn Phương Hồng, thành viên Hội đồng Quản trị của SCB. Trang thông tin về tiểu sử của bà Hồng đã bị gỡ khỏi website SCB. Theo truyền thông Việt Nam, bà Nguyễn Phương Hồng là trợ lý của Tập đoàn Vạn Thịnh Phát, bị khởi tố, bắt tạm giam cùng đại gia Trương Mỹ Lan để làm rõ tội 'lừa đảo chiếm đoạt tài sản', theo điều 174 bộ luật Hình sự năm 2015, sửa đổi, bổ sung năm 2017.",2022-10-12,0,0,0
+scb_cmt_110,SCB,comment,"Nguyễn Hà Phương: Đang khỏe mạnh sung sức phát biểu mạnh mẽ thì đột nhiên bị ung thư máu và ra đi chưa kịp trăng trôi xưa nay không hiếm. Ngay cả anh ruột của chú Un chỉ bị em Hương ở Vn lấy khăn lau nhẹ đùa vui ngay sân bay Malaysia thì cũng ra đi không kịp ngáp. Bên an ninh và tình báo có những thứ mà dân thường chỉ biết trên Hollywood nhưng chúng có thật đấy.",2022-10-12,36,0,0
+scb_cmt_111,SCB,comment,"Hương Hoàng: Nguyễn Hà Phương anh họ",2022-10-12,0,0,0
+scb_cmt_112,SCB,comment,"Bach Cong Tu: Mình có ngân hàng việt á đã thế chấp nhà bây giờ tự nhiên ngân hàng vpbank nói kéo theo nợ vpbank trong khi không có vay nợ gì vpbank, ủa gì kỳ vậy 2 ngân hàng khác nhau, hợp đồng khác nhau, căn cứ hợp đồng nào mà vpbank nói nợ vpbank #vpbank #VietABank #httlvietnam #Hoithanhtinlanh",2022-10-12,0,0,0
+scb_post_010,SCB,post,"Theo thời phong kiến, Trương Mỹ Lan và đồng phạm tại Tân Việt, SCB và bè lũ hỗ trợ đắc lực trong vụ lừa đảo hơn 50 nghìn nạn nhân gửi tiết kiệm sang mua trái phiếu rác rưởi trong hệ sinh thái VTP, xứng đáng bị Chu di tam tộc, Voi giày Ngựa xéo. Chúng trắng trợn cướp đi hơn 100 nghìn tỷ tiền tiết kiệm của dân. Vậy mà vẫn nhờn nhờn phủi đít, bưng bít thông tin. Xã hội đúng là có hiện đại hơn văn minh hơn thật. Bọn tàn ác, quỷ hút máu người phải cảm tạ trời đất vì được sống trên lãnh thổ này. Chứ ngày xưa thế này là bị phanh thây lột xác rồi đó. Bao gia đình tan nát, người bệnh mất tiền cứu chữa, trẻ con khát sữa, thất học, người già mất tiền dưỡng già, người trẻ mất khoản tích lũy mất niềm tin vào cuộc sống, bao người bỗng dưng trắng tay khi bước chân vào cánh cửa SCB. Các anh chị Ngân hàng quần là áo lượt săn đón, dẻo mỏ tư vấn khách hàng, bảo vệ công ăn canh gác vòng trong vòng ngoài, thế mà mang tiền vào rồi lại không cánh mà bay. Ahihi cái xã hội này hay thật ý 😂",2022-12-07,190,45,13
+scb_cmt_113,SCB,comment,"Dương Hữu Thái: VTP & Tân Việt không trực tiếp dụ dỗ lừa đảo mọi người, NV hệ thống ngân hàng SCB mới trực tiếp dụ dỗ lừa gạt mọi người mua tiết kiệm trái phiếu doanh nghiệp đầy rủi ro và thiệt hại. Hãy tổ cáo SCB lên BCA để họ điều tra xem xét SCB.",2022-12-07,12,0,0
+scb_cmt_114,SCB,comment,"Trần Thúy: Dương Hữu Thái không có SCB thì làm sao dân biết đến An Đông mà mua trái phiếu!",2022-12-07,2,0,0
+scb_cmt_115,SCB,comment,"Sterling Nguyễn: Hiện nay đơn gởi đi rất nhiều nhưng khi gởi đơn đi ng bị hại nhận lại đơn thư trả lời của bộ công an chỉ nhận có 7 lá đơn kêu cứu của ng dân còn lại thì bên scb cấu kết cả bưu điện bưu cục chuyển phát bị tất cả đơn thư gởi đi đem đơn kiện của ng dân bỏ sọt rác cả nên đơn thư đều ko tới đc nên họ nghĩ đơn giản quá ấy họ ko giải quyết ấy chị ah",2022-12-07,1,0,0
+scb_cmt_116,SCB,comment,"Duy Toàn: Một sự căm phẫn của chính sách luật pháp vn, mồm các quan lúc nào cũng vì dân do dân, thế mà để nh lừa dân đàng nn vẫn bao biện cho họ, dân bị chèn ép ko thấy đảng đâu, đảng bị chèn ép thì kêu gọi dân",2022-12-07,5,0,0
+scb_cmt_117,SCB,comment,"Nguyễn Sinh: Mình gửi tiết kiệm 13 tháng còn 4,5 tháng cũng rút. Không cần lời mặc dù số tiền lời không phải là nhỏ. Thấy ngân hàng vậy mà tôm nên rút. Mình không có trái phiếu mà thương dân quá.",2022-12-07,4,0,0
+scb_cmt_118,SCB,comment,"Phuong Nguyen: Càng nghĩ càng căm phẫn. Tiền mồ hôi nước mắt xương máu của người ta mà giờ bưng bít ếm nhẹm kiểu đui mù câm điếc. Ác độc tận cùng.",2022-12-07,5,0,0
+scb_cmt_119,SCB,comment,"Tiệp Hữu: Xét tới cùng thì là một hệ thống liên kết lừa dối lừa đảo k.h mà SCB là trực tiếp gây ra SCB phải trả tiền cho dân từ tiết kiệm linh hoạt là trái phiếu đều",2022-12-07,3,0,0
+scb_cmt_120,SCB,comment,"Dung Lê: 1 củ khoai bé tí còn lên sóng đăng toàn quốc còn lừa đảo vụ án to 63 tỉnh thành phố thì bé hơn con kiến.",2022-12-07,2,0,0
+scb_cmt_121,SCB,comment,"Duy Toàn: Một lũ bán nước hại dân chứ làm gì cho dân đc đâu",2022-12-07,2,0,0
+scb_cmt_122,SCB,comment,"Lê Thị Hương: thất vọng đến tận cùng củ khoai 80k thì xử lý ngay còn cuộc sống của hơn 40 ngàn người dân và lũ ăn cướp 25 nghìn tỉ thì chẳng có giải pháp gì để người dân còn sống chứ",2022-12-07,1,0,0
+scb_cmt_123,SCB,comment,"Nguyễn Thị Tuyết: Xã hội bất công. Scb thì gian manh thủ đoạn. Mất niềm tin. Ai có tiền hãy tự giữ tiền bằng cách khác nay mới NH scb biết đâu mai kia đến mấy ngân hàng khác. Nhà nước thì k ngó dân vậy chết dân",2022-12-07,0,0,0
+scb_cmt_124,SCB,comment,"Nguyễn Thị Huệ: Khó đòi lắm vì là cả một hệ thống kếch xù rồi chỉ dân thiệt thòi",2022-12-07,0,0,0
+scb_cmt_125,SCB,comment,"Tiệp Hữu: Yêu cầu N.h SCB mua lại sản phẩm tiết kiệm linh hoạt do SCB độc quyền phân phối như lúc k.h vào gửi bị lừa sang trái phiếu rôm",2022-12-07,0,0,0
+scb_cmt_126,SCB,comment,"Bùi Trọng Nguyễn: BCA đang điều tra, không sót tên nào, vụ án khéo léo cờ nào cũng để lại dấu vết.",2022-12-07,0,0,0
+scb_cmt_127,SCB,comment,"Trần Thị Lài: Lừa đảo dân thì quá dễ, nhưng có lừa nổi ông trời không",2022-12-07,0,0,0
+scb_cmt_128,SCB,comment,"An Binh: Thất vọng với nn lắm rồi!",2022-12-07,0,0,0
+scb_cmt_129,SCB,comment,"Flower Flower: Giờ người dân bức xúc nói ra sự thật thì gọi là đang chống phá nhà nước",2022-12-07,0,0,0
+scb_cmt_130,SCB,comment,"Trần Thúy: Flower Flower mất tiền mà k nói ra thì bọn lừa đảo lại đi lừa tiếp à bạn?",2022-12-07,0,0,0
+scb_cmt_131,SCB,comment,"Bình Minh: Thất vọng, căm phẫn, thù đến tận muôn đời những ai liên đới gây ra nỗi thống khổ cho nhân dân!",2022-12-07,0,0,0
+scb_cmt_132,SCB,comment,"Nguyễn Hồng: Đắng lòng khi đưa tiền vào SCB mà trở nên trắng tay. Nhà nước để dân thân dân khóc không ai chịu trách nhiệm",2022-12-07,0,0,0
+scb_post_011,SCB,post,"Tạ ơn Chúa. Cảm ơn các Anh Chị Em tôi đã bình an ra khỏi CA Phường. Đây là stt cuối cùng tôi ở trong nhóm này, sau stt này tôi sẽ rút ra khỏi nhóm. Nhắn gửi đến mọi người: Mình là nạn nhân, mọi người có quyền đến SCB làm việc nhưng giữ trật tự không để bọn xấu trà trộn lợi dụng kích động vi phạm ANTT. Đơn Thư cứ gửi theo quy định pháp luật. Tổ chức có quyền quyết định cao nhất vụ việc SCB lừa mọi người là các Cục Điều Tra BCA chứ không phải lãnh đạo SCB hiện nay. SCB đã bị kiểm soát đặc biệt thì họ không làm được bất cứ gì giúp mình. Mọi việc đang được điều tra xử lý theo quy định của pháp luật. Nhà nước không bỏ dân nên mọi người hãy làm việc gì cũng phải tuân thủ pháp luật. Xin cảm ơn mọi người.",2022-12-07,0,0,0
+scb_cmt_133,SCB,comment,"Lan Huong: Scb Lừa đảo khách hàng! thì mình đi đòi tiền thôi.",2022-12-07,3,0,0
+scb_cmt_134,SCB,comment,"Nguyễn Thùy: Thm, scb ... Khi nào dân mới lấy lại tiền!? Chúc anh mọi điều tốt lành!",2022-12-07,0,0,0
+scb_cmt_135,SCB,comment,"Phan Phúc: Ai kích động vậy, bọn xấu nó dụ dỗ để có cơ bắt bớ dân vô tội thui. Có ai mà khùng đi ra đường la lối, mất thời gian vậy, hãy động não đi đừng quy chụp. Chỉ những người bị SCB nó lừa đảo dân mới trở thành điên điên khùng khùng. Còn SCB mà trả tiền cho tôi, tôi về nhà ko bao giờ ra đường biểu tình nữa.",2022-12-07,7,0,0
+scb_cmt_136,SCB,comment,"Duy Toàn: Ôi một đất nước vì dân do dân bây giờ thì nh lừa dân, dân chịu hết, các ban ngành nn sinh ra để dẹp dân dù có phải về luật nhưng cũng bị dẹp, ko có công lý cho ng dân sao ấy",2022-12-07,5,0,0
+scb_cmt_137,SCB,comment,"Tien Vuduc: Mọi người hết sức bình tĩnh..tuân thủ pháp luật...mình cứ đi trật tự không cản trở giao thông..không đập phá..không chửi ..như vậy không lực lượng bắt chúng ta cả..vậy nhé bà con chúng ta..những người nhẹ dạ cả tin..rất đáng thương..vì góp phần xây dựng đất nước..giờ bị nó lừa...",2022-12-07,4,0,0
+scb_cmt_138,SCB,comment,"Hoa Tran: Chúc bạn bình an và bạn tạm dừng việc đòi quyền lợi trong thời điểm này đc rồi, để các tỉnh thành mọi người đấu tranh, tiền của là công sức và cả máu trong suốt thời gian làm ăn lương thiện nên phải cố gắng đòi bất cứ lúc nào...",2022-12-07,0,0,0
+scb_cmt_139,SCB,comment,"Jolie Thuy Le: Xong rồi! Vậy là còn 39999 nạn nhân thôi",2022-12-07,0,0,0
+scb_cmt_140,SCB,comment,"Vu Mac Thai: Hỏng biết có thế lực chống phá nào lôi kéo được dân mua trái phiếu của nh SCB cả 3 miền đây, kinh thiệt. Hy vọng nhà nước giải quyết ổn thỏa cho bà con ăn được cái tết đang sắp tới được ngon lành.",2022-12-07,0,0,0
+scb_cmt_141,SCB,comment,"Vũ Kim Hà: Vô đó tụi nó tẩy não bác rồi à, mất tiền phải la lên cho mọi người biết chứ. Tụi nó phủ đầu bác nên bác sợ hả?",2022-12-07,0,0,0
+scb_cmt_142,SCB,comment,"Hoàng Hồng Nhung: Cám ơn bạn chắc bạn đã viết tường trình đúng sự thật cũng là đã giúp 40 ngàn nạn nhân rồi rất cám ơn chúc bạn may mắn",2022-12-07,0,0,0
+scb_cmt_143,SCB,comment,"new! Nguy: Anh ấy mới bị hành xong, cũng phải thông cảm cho anh ấy. Không đăng như vậy chắc gì được về. Chúc anh bình yên trong quãng đời còn lại. Mọi cánh cửa gần như đã đóng rồi các bác ạ.",2022-12-07,0,0,0
+scb_cmt_144,SCB,comment,"Cao Trang: Bạn là nạn nhân hay là người của scb nhằm hướng lái dư luận.",2022-12-07,0,0,0
+scb_cmt_145,SCB,comment,"Long Huỳnh: Cao Trang bạn thử có 6 tiếng làm việc liên tục với cơ quan an ninh điều tra, sau đó đc ra về sau khi đc mời uống ly trà Mạnh bà nha",2022-12-07,0,0,0
+scb_cmt_146,SCB,comment,"Tuấn Anh Nguyễn: K bỏ dân thể cho cái hẹn hoặc văn bản chính thức ngày nào giờ nào xử lý chứ cứ hứa mõm thì ai dám tin các ông 😂",2022-12-07,0,0,0
+scb_cmt_147,SCB,comment,"Hien Dong Ho: Nếu ko có tiền, sinh ra trộm cắp hoặc ăn xin. Ngày này năm ngoái, đường đường là 1 đại gia. Nhưng hôm nay lại thành 1 thằng ăn trộm, ăn cướp hoặc 1 thằng ăn mày. Số đông này cũng cùng cảnh ngộ thì quá thật đất nước này ai dám đến du lịch. Sợ bị cướp bóc lắm đây.",2022-12-07,0,0,0
+scb_cmt_148,SCB,comment,"Nguyễn Chung: SCB phải trả tiền cho người dân",2022-12-07,0,0,0
+scb_cmt_149,SCB,comment,"Trang Vu: Vay ngân hàng trễ thì đóng phạt, kg thì siết nhà. Còn mình gởi ngân hàng thì nói là lãi suất linh hoạt rút sau 31 ngày. Rồi bây giờ tiền của hơn 40k khách thì đóng băng kg biết bao giờ lấy lại được đây",2022-12-07,0,0,0
+scb_post_012,SCB,post,"Slogan SCB 'Quyền Lợi Khách Hàng là Tiên Quyết' vẫn còn nguyên trên hình đại diện của page này. Nhưng mình cảm thấy SCB đang tự đánh đi ngược lại hoàn toàn với chính sứ mệnh mình đặt ra. Với chuyện lô trái phiếu, mình sẽ không bàn đến tính đúng sai vì rõ ràng tất cả người mua trái phiếu, và chắc chắn rằng các nhân viên, lãnh đạo ngân hàng biết rõ sự thật là gì. Sự thật chỉ có một, nếu công lý không thể lên tiếng, thì lương tâm và nghiệp quả sẽ lên tiếng. Hôm nay, 3/11/2022, theo mình có lẽ đánh dấu ngày mà chút niềm tin còn lại với SCB hoàn toàn mất luôn. Rõ ràng SCB hiểu rõ, các khách hàng mong đợi thế nào ngày này, ngày mà SCB chịu đứng trước mặt khách hàng, giải thích, phân trần. Thế nhưng đáp lại sự vất vả của khách hàng khi đội nắng đội mưa, lặn lội đường xa, nghỉ làm, gửi con là sự trốn tránh của SCB, sự thiếu tế nhị, hỗn hào của nhân viên SCB. Đã trốn sao không nói thẳng để khách hàng ở nhà cho khỏe thân, có phải ít nhiều còn được coi là nghĩ đến khách hàng. Chuyện xảy ra không ai muốn, và mình tin rằng khách hàng sẽ có thể thông cảm, cùng sẵn sàng chia sẻ khó khăn, nếu SCB có một thái độ đúng mực, dũng cảm thừa nhận trách nhiệm, chứ không phải hèn nhát, trốn chạy, và đối xử với khách hàng của mình, những người mà trước đó mình luôn nịnh nọt, ngọt nhạt, một cách lạnh lùng như không quen biết. Làm kinh doanh, chẳng ai dám tự tin mình không phạm sai lầm. Nhưng thay vì chọn đối mặt, cùng tìm cách giải quyết sai lầm, SCB lại dường như chọn cách quay lưng, bỏ mặt khách hàng, chưa bao giờ nhận trách nhiệm về mình. Theo mình, đó là việc khó có thể tha thứ và chấp nhận. Viết cho một ngày mình phải nhìn thấy cảnh nhiều cô chú bị đau, bị chảy máu và mệt mỏi.",2022-11-03,0,0,0
+scb_cmt_150,SCB,comment,"Long Duong Duy: Vẫn phải chiến đấu bạn à. Mẹ mình gần như tất cả tiền tiết kiệm 5 tỉ mua vào trái phiếu hết mà giờ phải tay trắng như này thì SCB ko còn uy tín để làm ăn luôn.",2022-11-03,0,0,0
+scb_cmt_151,SCB,comment,"Trietly Duong: h mn ai mua TP qua scb thì hợp nhau lại mà biểu tình thôi",2022-11-03,0,0,0
+scb_cmt_152,SCB,comment,"Tho Tran: mình cũng như mẹ bạn buồn khổ, suy sụp và đi viện cấp cứu mới xuất viện còn yếu lắm.",2022-11-03,0,0,0
+scb_cmt_153,SCB,comment,"Minh Tran: Scb dc hưởng lợi nhiều lắm thì nó mới có tình lừa đảo kh. Nếu ko có lợi thì để kh gửi tk sao lại kêu kh mua trái phiếu. SCB đang tiếp tay VTP vi phạm và chiếm đoạt tiền của dân.",2022-11-03,0,0,0
+scb_cmt_154,SCB,comment,"Ngọc Lai Nguyễn: Không thể bỏ cuộc được. Đó là mồ hôi, công sức của gia đình mình",2022-11-03,0,0,0
+scb_cmt_155,SCB,comment,"Trần Mạnh Cường: Ở riết bọn lừa đảo đó thì ở mãi được tiền đâu",2022-11-03,0,0,0
+scb_cmt_156,SCB,comment,"Hải Yến: Nay lãnh đạo scb truyền thông cho nv đi làm không mặc đồng phục luôn nhé mọi người. Mn kiếm thì kiếm thẳng ông Nguyễn Cửu Tính hoặc Hoàng Minh Hoàn nhé. Mấy ông tổng với phó tổng là người bắt nv bán trái phiếu nên phải có trách nhiệm chứ trốn chắc yên ổn. Kính gửi Anh/Chị Lãnh đạo Đơn vị, Được sự cho phép từ TGĐ, K.QTNC xin thông tin đến CBNV tại Đơn vị như sau: Kể từ 04/11/2022-11/11/2022, CBNV làm việc tại ĐVKD và các tòa nhà Hội sở sẽ không mặc đồng phục. Thay vào đó là trang phục công sở tự do (yêu cầu: kín đáo, lịch sự, phù hợp môi trường công sở). Kính chuyển Anh/Chị truyền thông đến CBNV thực hiện. Em cảm ơn các Anh/Chị. Trân trọng.",2022-11-03,0,0,0
+scb_cmt_157,SCB,comment,"Na Na: Scb chán lắm!",2022-11-03,0,0,0
+scb_post_013,SCB,post,"SCB Ngân hàng TMCP Sài Gòn",2022-10-08,7100,2300,1000
+scb_cmt_158,SCB,comment,"Hồ Lê Bảo Ân: Nhờ vậy mà dân rút trước hạn, scb khỏi phải trả lãi 😂",2022-10-08,37,0,0
+scb_cmt_159,SCB,comment,"Linkin Le: Tôi đề nghị Ngân hàng SCB tăng lãi suất thêm 1% cho những ai không rút tiền vào thời điểm này.",2022-10-08,38,0,0
+scb_cmt_160,SCB,comment,"Kim Huong: Linkin Le tôi vừa rút xong",2022-10-08,3,0,0
+scb_cmt_161,SCB,comment,"Ha Ninh: Truyền thông của SCB xử lý hơi chậm khi để các thông tin tiêu cực lan rộng. Hiện Phó Thống đốc NHNN đã trả lời trên VTV1 là bảo đảm hoạt động của SCB và quyền lợi của KH đồng thời kiểm tra việc cạnh tranh ko lành mạnh của 1 số NH nhằm lôi kéo ng gửi rút tại SCB về gửi ngân hàng đó",2022-10-08,22,0,0
+scb_cmt_162,SCB,comment,"Ngọc Bích: Ha Ninh mình cũng thấy vậy, ban truyền thông chiến lược của ngân hàng khá là chậm trễ trong việc xử lý tình huống nhạy cảm như vậy!",2022-10-08,0,0,0
+scb_cmt_163,SCB,comment,"Tran Ng: Ngọc Bích sáng nay e cũng thấy ô ạt xếp hàng ngoài đường chi nhánh gần nhà em nè chị",2022-10-08,0,0,0
+scb_cmt_164,SCB,comment,"Nguyễn Phạm Gia Khánh: Làm nhớ tới ACB năm nào ... mọi chuyện sẽ ổn thôi",2022-10-08,0,0,0
+scb_cmt_165,SCB,comment,"Thùy Anh: Chính lòng dân là thứ giúp NH trụ vững và cũng chính lòng dân có thể làm sụp đổ 1 đế chế. Nên mọi ng hãy nói ba mẹ cô bác bình tĩnh. Sáng nay ở các NH đa phần là các bác lớn tuổi lo lắng làm um sùm",2022-10-08,17,0,0
+scb_cmt_166,SCB,comment,"Thanh La: Thùy Anh Sáng nay có lượn qua trụ sở và các chi nhánh. Thấy đa số toàn các cụ lom khom mong ngóng (có cụ cả khóc lóc van xin) chờ lượt rút tiền mà thấy thương và nản lòng dân trí.",2022-10-08,3,0,0
+scb_cmt_167,SCB,comment,"Thùy Anh: Thanh GiLe e cũng đang gửi ở SCB, sáng nay nghe tin đăng FB mà giật mình cứ kiểu như là NH bốc hơi luôn ý, lo quá chạy ra xem, nghe ngóng 1 hồi thì thấy NH làm như thế là đúng. May là nay thứ 7, chứ nay mà thứ 2 thì chắc SCB quá này vỡ trận",2022-10-08,3,0,0
+scb_cmt_168,SCB,comment,"Thai Nguyen: Đảm bảo không sao đâu, mất thì mất hết chứ không mất ít ít, 1 bank rụng thì mấy bank khác rụng theo như domino, ai muốn rút thì cứ cho họ rút thoải mái, bank đâu cần lo người ta mất quyền lợi, quyền lợi của người ta thì người ta tự biết, không tới lượt mấy chú phải lo. Nếu thực sự tốt không có gì hết thì cứ cho rút thoải mái, không có tật thì sợ gì mà phải giật mình 😂",2022-10-08,0,0,0
+scb_cmt_169,SCB,comment,"Hagiang Nguyen Ngoc: Mình vẫn ủng hộ SCB đấy... 😂😂😂",2022-10-08,0,0,0
+scb_cmt_170,SCB,comment,"Tran To Nhi: SCB mãi đỉnh, mọi người bình tĩnh.",2022-10-08,11,0,0
+scb_cmt_171,SCB,comment,"Lê Hà: Những người ko rút tiền mà vẫn tin tưởng, đồng hành cùng SCB thì có đc đãi ngộ gì không nhỉ?",2022-10-08,0,0,0
+scb_post_014,SCB,post,"Phải tố cáo SCB lừa đảo để BCA khởi tố và buộc SCB thu mua lại những sản phẩm lừa đảo mà họ đã bán cho dân. Hàng trăm ngàn người gửi đơn tố cáo SCB đến BCA thì nhất định BCA sẽ hành động.",2022-12-07,0,0,0
+scb_cmt_172,SCB,comment,"San San San: Những người dân bị lừa tiền đang đứng dưới ảnh vị Cha Già Dân Tộc kính yêu đây! Kêu gào khóc than mà chưa thấy một vị tứ trụ nhà nước nào lên tiếng! Tại sao, tại sao? ???? khẩu hiệu vì nước vì dân đâu rồi hối các vị tứ trụ kia..... chỉ thấy CS đi dẹp dân đang kêu oan, khóc oan mà không thấy người đến cứu dân là sao, là saooooooo??????",2022-12-07,8,0,0
+scb_cmt_173,SCB,comment,"Dương Hữu Thái: San San San kêu người sống còn chưa xong kêu ông chết rồi làm gì hả các bác 😢😢😢",2022-12-07,1,0,0
+scb_cmt_174,SCB,comment,"San San San: Dương Hữu Thái không phải khóc Bác! Yêu Bác để tỏ lòng. Mà là cho cả Thế giới biết. Nước VN đang làm theo gương Bác. Dân Tộc VN sống là phải lấy 'Dân Làm Gốc' Nhưng chưa thấy Gốc đâu. Chỉ thấy một hệ thống thông đồng lừa gạt dân, cướp tiền mồ hôi nước mắt của Dân. Mà chưa thấy NHÀ NƯỚC lên tiếng CỨU DÂN. Trong khi Bác Hồ nói: Dân phải ấm no, Dân phải hạnh phúc. NN phải bảo vệ Dân. Giờ phút này DÂN KHỔ, DÂN ĐÓI, DÂN KIỆT QUỸ vẫn chưa thấy NN đâuuuuuu???? Chỉ thấy có một tiếng nói ỉu xìu bảo vệ DÂN, che chở DÂN..... CHÍNH PHỦ NƯỚC VN",2022-12-07,0,0,0
+scb_cmt_175,SCB,comment,"Thanh Nguyen: ủng hộ",2022-12-07,2,0,0
+scb_cmt_176,SCB,comment,"Dương Hữu Thái: Thanh Nguyen Gửi tới thủ tướng thì vp chính phủ nó cũng gửi về BCA. Nên mình nói bà con gửi đơn tố cáo đến BCA là chính xác nhất rồi.",2022-12-07,3,0,0
+scb_cmt_177,SCB,comment,"Thanh Nguyen: Dương Hữu Thái Biết là như vậy, nhưng nó làm việc từ Cao xuống Thấp...rồi từ Thấp lên Cao duyệt 😂",2022-12-07,1,0,0
+scb_cmt_178,SCB,comment,"Trần Nguyên Hạnh: Làm đơn đi đâu thì cũng chỉ tố cáo SCB đã lừa dối còn không nên nhắc đến những cái khác cho đỡ dài dòng bị lừa như thế nào ghi rõ ra như thế. Một mặt cứ hàng tuần phải xuống đường mới mong có kết quả.",2022-12-07,0,0,0
+scb_cmt_179,SCB,comment,"Nga Lê: Không chỉ trái phiếu, mà SCB lừa cả chứng chỉ tiền gửi: bắt người mua giữ đến 2027, và đơn phương buộc họ phải nộp trả lãi của các năm trước dù họ không phải là người sở hữu từ đầu không thể đã nhận lãi các năm trước khi nhận sở hữu tiếp. Thử hỏi khi người gửi tiền vào lấy lãi sau 12 tháng với điều khoản cam kết SCB sẽ nhận mua lại chỉ cần báo trước 3 ngày làm việc. Giờ tiền lao động cả đời để dưỡng già lại bị cướp trắng trợn vậy, và lại nếu giữ thì liệu già rồi xuống lỗ rồi còn đạp mồ lên lấy vào 2027 à?",2022-12-07,0,0,0
+scb_cmt_180,SCB,comment,"Phan Đức: Định bỏ mặc người dân sao scb coi đồng tiền hơn những người dân chúng tôi phải ko thế lãnh đạo và nv scb ko có bố mẹ hả tại sao lại bán đứng khách hàng thân thiết của mình để lấy những đồng tiền giơ bẩn có thể nuôi sống gđ cán bộ nv scb mãi được ko sớm hay muộn cũng sẽ bị quả báo thôi nếu như biết sám hối trả tiền cho dân sớm thì tội sẽ nhẹ hơn có biết ko nv và lãnh đạo cũ của scb",2022-12-07,0,0,0
+scb_cmt_181,SCB,comment,"Phan Đức: Cả nước vn rất nhiều người dân bị scb lừa đảo lắm gần 2 tháng nay rồi lãnh đạo và nv scb định tính sao với người dân chúng tôi đây vì scb mà nhiều hoàn cảnh gia đình bị tan nát người già ko có nhà để ở ko có gì để ăn",2022-12-07,4,0,0
+scb_cmt_182,SCB,comment,"XaKu Tara: Gửi đơn tố cáo scb trước. Rồi BCA điều tra cái hậu phía sau. Vào scb mới mất tiền k tố cáo nó thì tố ai",2022-12-07,4,0,0
+scb_cmt_183,SCB,comment,"Hoàng Hồng Nhung: Căm phẫn tột cùng",2022-12-07,4,0,0
+scb_cmt_184,SCB,comment,"Tam Pham: CP vào cuộc cùng các bộ phương án sớm cho dân gần Tết rồi dân chết đói bế tắc gây ra hậu quả không kiểm soát",2022-12-07,2,0,0
+scb_cmt_185,SCB,comment,"Nguyễn Thị Hương: Mọi ng hãy gọi vào số đường dây nóng.",2022-12-07,2,0,0
+scb_cmt_186,SCB,comment,"Tranh Huu Tang: Đúng. Cảm ơn bạn. Mong 40 ngàn nạn nhân của SCB thu thập tài liệu, tang chứng, vật chứng...làm bằng chứng, công bố rộng rãi, vạch trần bản chất lừa đảo của chúng để nd cả nước biết, các bạn bè khắp nơi biết ủng hộ việc làm chính nghĩa này. Xin cảm ơn.",2022-12-07,2,0,0
+scb_cmt_187,SCB,comment,"Helen Doan: Vấn đề nn đang cố tình bảo vệ scb vì thế mà bộ trưởng quay xe và báo chí chả thấy đưa tin là bao trong khi vụ trái phiếu này bán ra chắc hơn trăm ngàn tỉ từ scb tiếp tay bán cho hệ sinh thái vtp. Toàn bán cty mà giờ ko liên lạc dc.",2022-12-07,4,0,0
+scb_cmt_188,SCB,comment,"Hạ Hạ: Helen Doan 9 xác có người bự quá chống lưng cho quân ăn cướp nên chúng nó mới láo đến vậy",2022-12-07,4,0,0
+scb_cmt_189,SCB,comment,"Phụng Chung: Mn chia sẻ lên fb cá nhân để lan tỏa rộng hơn đi ạ, vì trong nhóm chỉ những nạn nhân đọc đc thui ạ",2022-12-07,0,0,0
+scb_post_015,SCB,post,"Không có SCB sẽ không có hàng trăm ngàn người bị lừa mua trái phiếu lừa đảo.",2022-12-07,0,0,0
+scb_cmt_190,SCB,comment,"Lan Huong: Scb lừa đảo",2022-12-07,1,0,0
+scb_cmt_191,SCB,comment,"Tranh Huu Tang: Dung. Cam on ban.",2022-12-07,2,0,0
+scb_cmt_192,SCB,comment,"Long Tranduy: Họ tới đáo hạn hoặc gửi tiền thì để họ làm theo ý họ đi chào mời đủ thứ đánh lừa khái niệm làm mấy chục ngàn người khổ sở.",2022-12-07,5,0,0
+scb_cmt_193,SCB,comment,"Nguyễn Thị Tuyết Nhung: Đúng nếu SCB không đánh tráo khái niệm TP thành sp tk linh hoạt được rút sau 31 ngày thì sẽ không bao giờ huy động được lượng tiền lớn như vậy.",2022-12-07,0,0,0
+scb_cmt_194,SCB,comment,"Dương Hữu Thái: Nguyễn Thị Tuyết Nhung Không có SCB sẽ không có hàng trăm ngàn người bị lừa mua trái phiếu lừa đảo.",2022-12-07,0,0,0
+scb_cmt_195,SCB,comment,"Hung Vuviet: Sáng nay 25/11 dân SG lại dậy sóng xuống đường tập trung quây chặt hội sở SCB 19 Ng Huệ Q1",2022-11-25,4,0,0
+scb_cmt_196,SCB,comment,"TI SA Dang: Cặn bã của Xã Hội",2022-12-07,3,0,0
+scb_cmt_197,SCB,comment,"Trần Nữa: Chính xác giờ tiền xương máu của mình mà giống như đi xin, thà ở ngoài đời có chơi có chịu, ai dè vào ngân hàng rồi mà bà con cũng bị lừa",2022-12-07,2,0,0
+scb_cmt_198,SCB,comment,"Trâm Nguyễn: Nhắc đến SCB như nhắc đến cái u nhọt to tướng muốn loại bỏ ngay lập tức",2022-12-07,3,0,0
+scb_cmt_199,SCB,comment,"Khanh Ngo: Chỉ vì món lợi hôi hám, SCB đã: 1/ Đưa 40k người lâm cảnh khốn cùng. 2/ Huỷ hoại uy tín Ngân hàng. 3/ Gây bất ổn xã hội.",2022-12-07,3,0,0
+scb_cmt_200,SCB,comment,"Dung Lê: SCB lừa theo hệ thống từ nam ra bắc 63 tỉnh thành phố nơi nào có SCB là nơi đầy dân lành bị lừa.",2022-12-07,0,0,0
+scb_cmt_201,SCB,comment,"Uyen Ngoc: Nhiều NH vi phạm về TP và tư vấn như SCB chẳng qua chưa bể thôi",2022-12-07,0,0,0
+scb_cmt_202,SCB,comment,"TI SA Dang: Chính xác SCB Chính là tội đồ",2022-12-07,0,0,0
+scb_cmt_203,SCB,comment,"An Do: Cho hỏi giờ phải làm đơn kiện hay chờ đợi giải quyết, mình mua ở chi nhánh Tô Hiến Thành quận 10, có ai ở q10 k? thanks",2022-12-07,0,0,0
+scb_cmt_204,SCB,comment,"Diễm Hoang: An Do làm đơn và gửi đi bạn, 2 tháng rồi còn chờ gì nữa",2022-12-07,0,0,0
+scb_cmt_205,SCB,comment,"Diễm Hoang: An Do hôm nay 3h chiều sắp xếp lên 19 Nguyễn Huệ hội sở đòi tiền về.",2022-12-07,0,0,0
+scb_cmt_206,SCB,comment,"Dương Hữu Thái: An Do CA Quận 10, CA HCM, Cục cảnh sát điều tra BCA C03",2022-12-07,0,0,0
+scb_cmt_207,SCB,comment,"Hà Liên: Dân không kéo tới scb đòi quyền lợi trái phiếu mà là tố cáo scb lừa đảo vì khi khách hàng lâu năm đến gửi tiết kiệm bình thường, nv scb lôi kéo họ gửi tiết kiệm linh hoạt nghĩa là rút lúc nào cũng được tính lãi như có kỳ hạn sau 31 ngày nên không khách hàng nào nghi ngờ vì lãi suất bằng tiết kiệm. Nhưng thật ra, scb lừa khách ký hđ mua trái phiếu đã mất thanh khoản hoặc phát hành trái phép để cướp tiền của khách hàng nên khách hàng mới đến đòi scb trả lại tiền",2022-12-07,7,0,0
+scb_cmt_208,SCB,comment,"Mộng Thu: Hà Liên có tính toán trước để lừa chứ không phải do nv tư vấn sai. Rõ ràng là cấp trên. Nhân viên thì ham hoa hồng thì đua cũng do thẳng đầu đưa ra. Scb chúng bây lũ cướp",2022-12-07,2,0,0
+scb_cmt_209,SCB,comment,"Hà Liên: Mộng Thu đáng sợ hơn, bọn lãnh đạo scb mua sỉ những trái phiếu trái phép, mất thanh khoản giá rẻ mạt để bán lại cho khách hàng",2022-12-07,0,0,0
+scb_post_016,SCB,post,"Vào tận scb mà tố cáo nó. Scb dân tố cáo thẳng mặt vậy mà NHNN vô can?",2022-12-01,0,0,0
+scb_cmt_210,SCB,comment,"Bông Hồng: SCB trả tiền lại cho dân thì ổn định ngay",2022-12-01,2,0,0
+scb_cmt_211,SCB,comment,"Coin Go: Bà con nên nắm thẳng nào đầu sỏ có tóc, chứ nhân viên SCB hiện tại có liên quan gì đâu, ngta làm công ăn lương mà",2022-12-01,0,0,0
+scb_cmt_212,SCB,comment,"Andrew Andrew: Mn cả nước ai cũng làm mạnh như vậy thì nn sẽ ko thể ngồi yên. Thấy cảnh này tội thật 😂",2022-12-01,0,0,0
+scb_cmt_213,SCB,comment,"Nguyễn Thanh Tâm: Nhân viên NH SCB đứng lên làm hợp đồng, tư vấn chăm sóc người dân, xúi dục dân từ tiết kiệm chuyển sang trái phiếu mà ko liên quan và ko có trách nhiệm thì có nghe đc ko, pháp luật đâu rồi ko thấy ra can thiệp giải quyết trong lúc nước sôi lửa bỏng hiện nay",2022-12-01,0,0,0
+scb_post_017,SCB,post,"Nếu scb nói chỉ giới thiệu vậy hỏi xem scb giới thiệu thế nào ??? Công an lấy bất kỳ 10 nạn nhân của scb 10 tỉnh thành xem họ nói scb giới thiệu thế nào ? Có y một bài ko",2022-12-07,0,0,0
+scb_cmt_214,SCB,comment,"Long Tranduy: Lúc nào cũng mở miệng ra SCB chỉ giới thiệu, tất cả giao dịch đều diễn ra tại scb, giới thiệu mà ko gặp bên nào cả ngoài bọn scb, lừa đảo, gian dối, giờ còn lừa lọc.",2022-12-07,5,0,0
+scb_cmt_215,SCB,comment,"Bich Nguyen: Ko biết các NH khác bán TP có qui trình như thế nào nhỉ ? Giống SCB thì bỏ mạng sớm",2022-12-07,3,0,0
+scb_cmt_216,SCB,comment,"Wei Lin Su: Tân Việt đã có phản hồi không tư vấn không tiếp xúc trực tiếp khách hàng của SCB. Vậy SCB cũng không nhận tư vấn cho khách hàng về trái phiếu tức là khách hàng hoàn toàn không được tư vấn, đồng nghĩa hợp đồng vô hiệu. SCB phải trả lại Tiền gốc + Lãi, còn việc chờ thu hồi tiền hoặc thanh lý tài sản của tổ chức phát hành là nghĩa vụ của SCB và Tân Việt với cơ quan điều tra.",2022-12-07,3,0,0
+scb_cmt_217,SCB,comment,"Binh Pham: Wei Lin Su bạn nói rất đúng. Những nạn nhân scb tới scb đòi tiền",2022-12-07,1,0,0
+scb_cmt_218,SCB,comment,"Hoang Ngo: Wei Lin Su scb là người chịu trách nhiệm mình ko cần quan tâm tân việt. Cứ nhắm cái thẳng lừa giao dịch trực tiếp với mình thôi",2022-12-07,2,0,0
+scb_cmt_219,SCB,comment,"Xuân Dương: Từ bắc vào nam có 1 bài. Trích camera lại nghe hết chứ gì đâu",2022-12-07,0,0,0
+scb_cmt_220,SCB,comment,"Gau Truc: Xuân Dương camera ngân hàng có hình không có tiếng",2022-12-07,0,0,0
+scb_cmt_221,SCB,comment,"Xuân Dương: Gau Truc ngân hàng gì kỳ. Camera gia đình còn có tiếng ngân hàng cố tình hay gì. Mà công an điều tra là được ạ",2022-12-07,0,0,0
+scb_cmt_222,SCB,comment,"Gau Truc: Xuân Dương vậy mới nói. Lừa đảo mà. Tính hết rồi",2022-12-07,0,0,0
+scb_post_018,SCB,post,"Lũ ác nhân SCB tại sao vẫn còn sờ sờ ra đó, các anh hùng marvel đâu ra tiêu diệt lũ sâu bọ đi",2022-12-22,63,5,2
+scb_cmt_223,SCB,comment,"Phuong Le: Scb lừa đảo dân vì dân tin tưởng scb quá vì là NH nhà nước quản lý mà",2022-12-22,0,0,0
+scb_cmt_224,SCB,comment,"Nguyễn Chung: SCB phải trả tiền cho ng dân",2022-12-22,0,0,0
+scb_cmt_225,SCB,comment,"Le Chi Cuong: Anh hùng cũng dính tp luôn rồi nên chịu thua luôn",2022-12-22,0,0,0
+scb_cmt_226,SCB,comment,"Minh Trang Nguyen: Yên tâm đi. Không ai bị bỏ lại phía sau đâu",2022-12-22,0,0,0
+scb_cmt_227,SCB,comment,"Tran Thanh Long: VUA LỚP CÒN CHẾT",2022-12-22,0,0,0
+scb_post_019,SCB,post,"Đà Nẵng sáng nay lên SCB nhận lịch bà con ơiiii",2022-12-16,249,157,58
+scb_cmt_228,SCB,comment,"Nguyễn Thị Hồng Thái: SCB bank lừa đảo",2022-12-16,0,0,0
+scb_cmt_229,SCB,comment,"Nguyễn Thị Hồng Thái: Ngân Hàng SCB lừa Đảo",2022-12-16,0,0,0
+scb_cmt_230,SCB,comment,"Phuong Bui: Scb làm đúng đạo đức đi",2022-12-16,0,0,0
+scb_cmt_231,SCB,comment,"Trương Kim Oanh: Ăn xương máu của bà con",2022-12-16,0,0,0
+scb_cmt_232,SCB,comment,"Kim Phượng Nguyễn: SCB trả tiền cho dân",2022-12-16,0,0,0
+scb_cmt_233,SCB,comment,"Phuong Bui: Giới thiệu mà lúc bán ko thấy nói gì đến tv, an đông, Quang thuận",2022-12-16,0,0,0
+scb_cmt_234,SCB,comment,"Nguyễn Thị Hồng Thái: Dân quá khổ rồi",2022-12-16,0,0,0
+scb_cmt_235,SCB,comment,"Phuong Bui: Lừa đảo xuyên quốc gia từ Bắc - Trung - Nam",2022-12-16,0,0,0
+scb_cmt_236,SCB,comment,"Nguyễn Thị Hồng Thái: Chính Phủ mau mau vào cuộc giùm",2022-12-16,0,0,0
+scb_cmt_237,SCB,comment,"Trương Kim Oanh: Nó lừa từ trên lừa xuống!",2022-12-16,0,0,0
+scb_cmt_238,SCB,comment,"Phuong Bui: Tư vấn đầy đủ ko ai mua",2022-12-16,0,0,0
+scb_cmt_239,SCB,comment,"Gau Truc: Khi mua tp NV phải TV rủi ro. thông tin của DN phát hành",2022-12-16,0,0,0
+scb_cmt_240,SCB,comment,"Nguyễn Thị Thanh Hà: Đề nghị SCB trả trước 1/2 số tiền TP còn lại gửi tk một năm",2022-12-16,0,0,0
+scb_cmt_241,SCB,comment,"Phuong Bui: Nhận sai đi mà làm lại",2022-12-16,0,0,0
+scb_cmt_242,SCB,comment,"Phuong Bui: Scb trả tiền cho dân",2022-12-16,0,0,0
+scb_cmt_243,SCB,comment,"Gau Truc: Cứ như thế này. Nó lần lựa miết",2022-12-16,0,0,0
+scb_cmt_244,SCB,comment,"Bruce Lee: Tội bà con quá",2022-12-16,0,0,0
+scb_cmt_245,SCB,comment,"Bruce Lee: Chia sẻ mạnh lên để mn biết",2022-12-16,0,0,0
+scb_cmt_246,SCB,comment,"Tai Tran Phuoc: kêu công an lên làm cái gì vậy. đụ mẹ nực cười. ăn trộm ăn cướp đâm chém đầy đường đéo lo bắt.",2022-12-16,0,0,0
+scb_cmt_247,SCB,comment,"Nguyễn Dũng: Cả lũ lừa dân tộc là đây",2022-12-16,0,0,0
+scb_cmt_248,SCB,comment,"Tien Vuduc: Hãy tẩy chay SCB NGAY LẬP TỨC",2022-12-16,0,0,0
+scb_cmt_249,SCB,comment,"Cuc Tran: Lũ khốn nạn scb",2022-12-16,0,0,0
+scb_cmt_250,SCB,comment,"Mộng Thu: Làm chó gì scb lũ lừa đảo",2022-12-16,0,0,0
+scb_cmt_251,SCB,comment,"Nguyễn Dũng: Lấy máu của dân có kịch bản",2022-12-16,0,0,0
+scb_cmt_252,SCB,comment,"Gau Truc: Không ơi ra. dẹp mẹ m đi",2022-12-16,0,0,0
+scb_cmt_253,SCB,comment,"Xuan Truong: Tội bà con ghê",2022-12-16,0,0,0
+scb_cmt_254,SCB,comment,"Tâm Lê: ScB lua dao",2022-12-16,0,0,0
+scb_cmt_255,SCB,comment,"Trần Thị Lài: Nhìn thấy mấy bọn lừa ứa gan",2022-12-16,0,0,0
+scb_cmt_256,SCB,comment,"Quyen Vu: Trường kỳ bà con ơi ko bao giờ nản nhé",2022-12-16,0,0,0
+scb_cmt_257,SCB,comment,"Nguyễn Phú: Scb năm nay ko phát lịch luôn rồi, tàn luôn rồi 😢",2022-12-16,0,0,0
+scb_cmt_258,SCB,comment,"Yu Jin Qian: Cướp ban ngày",2022-12-16,0,0,0
+scb_cmt_259,SCB,comment,"Nhị Đặng: CÁC BÁC ĐÒI ĐI SẮP TẾT RỒI",2022-12-16,0,0,0
+scb_cmt_260,SCB,comment,"Gau Truc: Lũ NV SCB. ôi ra đi",2022-12-16,0,0,0
+scb_cmt_261,SCB,comment,"Khanhtran Dang: Mất hết lòng tin ????",2022-12-16,0,0,0
+scb_cmt_262,SCB,comment,"Oggy Oggy: Trốn rồi",2022-12-16,0,0,0
+scb_cmt_263,SCB,comment,"Hang Le: Lịch scb năm nay mang thương hiệu scb lừa đảo nó thất đi khắp nơi",2022-12-16,0,0,0
+scb_cmt_264,SCB,comment,"Hang Le: Bọn scb là bọn ăn cướp",2022-12-16,0,0,0
+scb_cmt_265,SCB,comment,"Hang Le: Mang thương hiệu ngân hàng SCB. Để lợi dụng lòng tin của dân đến gửi tk. Biến thành TP đúng là chỉ có ở SCB ăn cướp trắng trợn",2022-12-16,3,0,0
+scb_cmt_266,SCB,comment,"Vo Nguyen Bao Thy: Đại diện SCB nói chuyện như 1 thằng ngu",2022-12-16,1,0,0
+scb_cmt_267,SCB,comment,"Thu Hong Tran: Toàn bộ do scb tư vấn, nhận tiền, và gd chứ có ai khác đâu mà giới thiệu.",2022-12-16,0,0,0
+scb_cmt_268,SCB,comment,"Phuong Bui: Toàn các cô các chú tin scb giao dịch 10 năm coi tin tưởng nv như con cháu người nhà giờ đẩy dân vào cảnh lo lắng, scb phải có trách nhiệm với việc làm của mình mới yên lòng dân",2022-12-16,0,0,0
+scb_cmt_269,SCB,comment,"Long Nguyen Phi: SCB TRẢ LẠI TIỀN là xong. Không nói nhiều đâu",2022-12-16,0,0,0
+scb_cmt_270,SCB,comment,"Đặng Giang: Đúng rồi, toàn khách hàng tin tưởng lâu năm. Chứ ko ai tự nhiên lẫn đâu vào scb mà bảo t mua TP cả.",2022-12-16,0,0,0
+scb_cmt_271,SCB,comment,"Phuong Bui: Bán cho 1 người 2 người còn chối đc còn đây 40k người, scb làm sai nhận đi mà sửa sai",2022-12-16,0,0,0
+scb_cmt_272,SCB,comment,"Phuong Bui: Che dấu lừa dối thông tin, lợi dụng lòng tin của người tin mình để làm sai",2022-12-16,0,0,0
+scb_cmt_273,SCB,comment,"Phuong Bui: Đất nước của dân do dân vì dân ko thể chối thoái trách nhiệm đc đâu scb, đồng tiền xương máu của dân, trái phiếu 31 ngày linh hoạt giờ ko rút đc",2022-12-16,0,0,0
+scb_cmt_274,SCB,comment,"Đặng Giang: Ko trả tiền cho dân thì tui m xác định đi. Khách hàng ám ảnh thôi.",2022-12-16,0,0,0
+scb_cmt_275,SCB,comment,"Nguyễn Thị Hồng Thái: Phải trả lại tiền mồ hôi nước mắt của Dân",2022-12-16,0,0,0
+scb_cmt_276,SCB,comment,"Quang Minh Huynh: Người dân mua và ck ngay tại SCB, chứ ko phải ngoài chợ trời hay sòng bạc, và nộp tiền nơi bank thì lấy rút tiền ngay tại bank. Nếu ko trả ngay tại bank thì là bị SCB lừa đảo.",2022-12-16,0,0,0
+scb_cmt_277,SCB,comment,"Trương Kim Oanh: Nếu được tư vấn, được đọc HĐ trước thì 'CHÓ' nó mua!",2022-12-16,0,0,0
+scb_cmt_278,SCB,comment,"Kevin Ngo: Trốn chứ đi công tác gì",2022-12-16,0,0,0
+scb_cmt_279,SCB,comment,"Gau Truc: Lũ NV khát máu hút máu của khách hàng",2022-12-16,0,0,0
+scb_cmt_280,SCB,comment,"Nguyễn Chung: SCB phải trả tiền cho người dân. Có lên 😂😂😂 đòi lại tiền của mình.",2022-12-16,0,0,0
+scb_cmt_281,SCB,comment,"Đoàn Mạnh Hùng: Trả tiền để dân đen chúng tôi có tiền đón Xuân. Và trang trải cuộc sống",2022-12-16,0,0,0
+scb_cmt_282,SCB,comment,"Nhiều Ngọc Triều: Nó tránh mặt k dám trả lời đâu",2022-12-16,0,0,0
+scb_cmt_283,SCB,comment,"Bruce Lee: Lũ lưu manh, nhìn học thức vậy mà chứa đựng tâm hồn quỷ dữ",2022-12-16,0,0,0
+scb_cmt_284,SCB,comment,"Thu Thuy Mai: Điên lắm. Chỉ muốn đập CM chúng nó (SCB) rồi muốn ra sao thì ra",2022-12-16,0,0,0
+scb_post_020,SCB,post,"Các sai phạm trong vụ SCB hầu như ai cũng hiểu rõ ràng. Nạn nhân SCB hiện nay giống vật tế thần trong vụ án này. Để tìm đường sống và ko cam chịu làm vật tế thần chúng ta chỉ còn 1 con đường là kiên quyết đấu tranh đến cùng, ko ngừng, ko nghỉ, cáo buộc SCB tư vấn lừa dối khách hàng, chào bán, thu tiền trái phiếu ko được pháp luật công nhận, tp này là 1 sản phẩm phạm pháp do SCB độc quyền chào bán.... Với tình hình này thì ngày 21/11 này SCB vẫn sẽ bài cũ diễn lại mà thôi. Lại 'thấu hiểu, đồng cảm, ko chỉ đạo nv tư vấn sai cho khách hàng, tp SCB giới thiệu cho khách hàng đã được nhà nước cho phép, vì đây là vấn đề phức tạp nên TVSI, BCA, các cơ quan liên quan vẫn chưa đưa ra giải pháp cụ thể....'. Dù SCB có lảng tránh trách nhiệm như thế nào chúng ta cũng kiên quyết SCB phải chịu hoàn toàn trách nhiệm trong vụ lừa đảo trái phiếu này. SCB phải tự tìm ra giải pháp để người dân ổn định cuộc sống và yên tâm ko sợ bị mất số tiền đã nộp cho SCB. Ngày 21/11 này SCB ko trả lời thỏa đáng và ko đưa ra được giải pháp gì hợp lý thì chúng ta sẽ lại phải hò hảo phản đối SCB và tuyên bố với SCB rằng mỗi thứ 2 (hoặc ngày nào thích hợp với chúng ta) chúng ta sẽ tập trung tại hội sở SCB để đấu tranh đến khi SCB phải đưa ra giải pháp hợp tình, hợp lý cho chúng ta.",2022-11-18,0,0,0
+scb_cmt_285,SCB,comment,"Hien Nguyen: Hay mình đem nồi niêu xoong chảo mền gối đồ ăn thức uống tới đó ở luôn nếu được dẫn theo con cái đến đó ở luôn chứ giờ nhà đâu mà ở, tiền mình để mua nhà giờ nằm vô đó hết biết phải làm sao giờ?",2022-11-18,7,0,0
+scb_cmt_286,SCB,comment,"Lan Nguyen: Chả hiểu sao một thằng ăn trộm chó hoặc móc túi lấy tiền của dân nếu pháp luật công an bắt được sẽ phải trả lại tiền cho người mất đấy còn cả một hệ thống nh sbc cấu kết với dn tp nửa 40.000 người dân vn thì lại không bị sao lại còn phát biểu ngang nhiên dân tự mua tp không hiểu biết thì tự chịu (bó tay)",2022-11-18,5,0,0
+scb_cmt_287,SCB,comment,"Hai Hoang: Lan Nguyen một tổ chức lừa đảo tinh vi có sự tiếp tay của nhà nước lên trả lời vô trách nhiệm.",2022-11-18,0,0,0
+scb_cmt_288,SCB,comment,"Trần Nguyên Hạnh: Chuẩn. Không thể nghe nói mõm được nữa và không để nó ru ngủ chúng ta hòng chạy tội. Cứ cho là nó chỉ giới thiệu vậy nó giới thiệu 40 ngàn gia đình trong cả nước cho ai và ai là người trực tiếp ký với bên thứ ba cái này cần phải làm rõ. BTC mới tuần trước nói 1 kiểu sang tuần này lại nói kiểu lưỡi không xương. Nhiều gia đình lâm vào cảnh lầm than đói khổ. Nó cướp đi cuộc sống của người dân thì nó cũng không có đường thoát. Chia sẻ mạnh mẽ lên các bạn.",2022-11-18,0,0,0
+scb_cmt_289,SCB,comment,"Ánh Đoàn Kim: Tôi rất đồng ý với nội dung trên phải đấu tranh lấy lại tiền đã mất. Tất cả cũng tại nh scb lừa dối khách hàng từ bắc vô nam đều bị scb tư vấn sai sự thật nên kh mới bị như ngày hôm nay. Bây giờ scb phải bồi thường cho dân. Vốn của scb rất lớn nên lấy ra mua lại tp cho dân thì sau này scb mới có lòng tin mà làm ăn bình thường trở lại còn k trả thì sẽ bị hô khẩu hiệu lừa đảo suốt đời thì ai còn dám gởi tiền vào nh này nữa sẽ phá sản thôi",2022-11-18,0,0,0
+scb_cmt_290,SCB,comment,"Vũ Thị Thanh Huyền: Có người đến giờ không biết trái phiếu là gì, có ít tiền để phòng lúc ốm đau mang đến ngân hàng gửi tiết kiệm khi đến kỳ đáo hạn được nhân viên NH tư vấn có hai sản phẩm gửi sau một tháng và sản phẩm sau một năm là được lấy lại như gửi tiết kiệm",2022-11-18,0,0,0
+scb_cmt_291,SCB,comment,"Hoàng Hồng Nhung: Đồng ý đồng lòng không thể để lũ cướp mất miếng cơm manh áo của dân ta",2022-11-18,0,0,0
+scb_cmt_292,SCB,comment,"Bùi Trọng Nguyễn: Chúng ta cùng nhau làm đơn gửi lên Công An hoặc Tòa án để được giải quyết bồi thường thiệt hại cho người dân chúng ta, do ngân hàng SCB và Chứng khoán Tân Việt TVSI gian dối trong việc giới thiệu khách hàng mua trái phiếu An Đông, Vạn Thịnh Phát....",2022-11-18,0,0,0
+scb_cmt_293,SCB,comment,"Thanh Nguyen: không thể để mất đồng tiền xương máu của nhân dân. Phải đấu tranh đến cùng",2022-11-18,0,0,0
+scb_cmt_294,SCB,comment,"Nguyen Kim Ngan: Rõ ràng lừa đảo trắng trợn và có kịch bản hoàn hảo. Nạn nhân chỉ biết ấn hận đơn đau vì niềm tin bị lợi dụng. Hơn 40 ngàn người trên cả nước ko phải ai cũng ngu, tham như nhiều người nói!",2022-11-18,0,0,0
+scb_cmt_295,SCB,comment,"Thủy Hồ: Ko có câu trả lời thỏa đáng các nạn nhân đồng lòng mặc áo cờ đỏ sao vàng diễu hành tất đến tất cả các SCB trong địa bàn tỉnh thành với khẩu hiệu 'Trả tiền cho dân'",2022-11-18,0,0,0
+scb_cmt_296,SCB,comment,"Nguyễn Đức Tính: Ok ko thế để SCB trì hoãn kéo dài mãi như thế này được mọi người ạ. Kéo dài theo kiểu làm cho mn mệt mỏi hết đấy mà",2022-11-18,0,0,0
+scb_cmt_297,SCB,comment,"Hoàng Ngọc Hương Giang: Tích cóp tiền bạc năm, đưa cho SCB theo đúng quy trình rồi mình mất luôn. Quá căm phẫn tột cùng, tiền là xương máu của chúng tao làm ra. Sao SCB dụ linh hoạt rồi cướp trắng trợn theo đúng quy trình vậy? Hả SCB, nv scb đâu ?",2022-11-18,0,0,0
+scb_cmt_298,SCB,comment,"PT Pts: Nv scb tư vấn kể cả theo đúng các văn bản lệnh của scb thì vẫn phải chịu trách nhiệm pháp luật, vì bản thân nv khi thực hiện nghiệp vụ là phải biết rõ nghiệp vụ, biết rõ tp rởm thì xúi giục khách hàng mua tp đó là hành vi lừa đảo khách hàng.",2022-11-18,0,0,0
+scb_cmt_299,SCB,comment,"Tam Pham: Tất cả Đồng tình phải đòi tiền và đảm bảo trả tiền đầy đủ không thể tập trung câu kết cướp tiền của dân xong bảo giờ bị bắt rồi. 😡😡😡😡😡😡😡😡😡😡😡",2022-11-18,0,0,0
+scb_cmt_300,SCB,comment,"Nguyễn Thế Thi: Đừng để bọn lừa đảo kéo dài thời gian cho người dân mệt mỏi hãy cố gắng tranh đấu đòi lại tiền mình càng sớm càng tốt nhé mọi người",2022-11-18,0,0,0
+scb_cmt_301,SCB,comment,"Trung Quang: Chúng ta làm sao lan tỏa đc, cái bị lừa, chứ ko phải chúng ta đầu tư, đến các ban sở ngành có thẩm quyền, là điều cần thiết lúc này!",2022-11-18,0,0,0
+scb_cmt_302,SCB,comment,"Nguyễn Thế Thi: Chúng mày cấu kết với nhau lừa dân thì dễ, chứ lấy được đồng tiền xương máu của dân không dễ đâu nhen",2022-11-18,0,0,0
+scb_cmt_303,SCB,comment,"Đỗ Nhung: Đúng vậy. Vì scb ko vô can, mã số nv tư vấn là nv scb làm việc trong nh scb, nhận tiền xong hơn nữa tháng mới có hồ sơ, trong khi đó 3 ngày là hết hiệu lực từ chối, nếu thay đổi người mua phải chịu phạt theo mức ăn cướp, nên ko ai có can đảm hủy hợp đồng khi bị cướp trắng trong nh scb, dẫn đến cố đợi đến đáo hạn, đến khi dân đợi đc đáo hạn, tức là mua lại 12 tháng, thì bị cản hẳn",2022-11-18,0,0,0
+scb_cmt_304,SCB,comment,"Nhi Hậu: Đồng lòng với ACE chúng ta đòi lại tiền thôi. cả đời người tiền mồ hôi nước mắt cả máu đổ ra mới có. chúng lừa đảo có tổ chức ác độc quá.",2022-11-18,0,0,0
+scb_cmt_305,SCB,comment,"Mộng Thu: Scb nó nhảy lắm. Khốn nạn",2022-11-18,0,0,0
+scb_cmt_306,SCB,comment,"Tu Ton: Cứ ngày nào cũng bạc loa ko mệt hà mấy bạn. Kiếm xăng vũ khí lên cho scb sợ. Ko trả là chơi lớn luôn. Làm 1 lần cho xã hội trầm trồ luôn",2022-11-18,0,0,0
+scb_cmt_307,SCB,comment,"An Quốc Anh: Tu Ton Cái kiểu kích động này quê lắm rồi bạn ơi. Cái trò cài người vào kích động bạo loạn cho CA hốt luôn cả đám là cách đẹp biểu tình nhanh và hiệu quả nhất đấy :)",2022-11-18,0,0,0
+scb_cmt_308,SCB,comment,"Long Hoàng: K hiểu btc làm cái gì nhỉ 😂",2022-11-18,2,0,0
+scb_cmt_309,SCB,comment,"Hien Nguyen: Long Hoàng làm gì mình cũng ko biết mà thấy quần dài áo lớn tiền rùng rình thích nói gì nói thích phán gì phán dân chết kệ mẹ dân đó vậy đó mình thấy có vậy đó.",2022-11-18,4,0,0
+scb_cmt_310,SCB,comment,"Duy Nguyen: Theo tôi chúng ta đã đi quá nhanh, bây giờ phải lôi người tư vấn cho mình ra đối chấp, nếu người tư vấn cho mình thừa nhận, có tư vấn tiết kiệm linh hoạt được rút sau 31 ngày thì đồng nghĩa là ngân hàng chỉ đạo sai, còn nhân viên chối là ta đã thua ngay từ đầu rồi",2022-11-18,1,0,0
+scb_cmt_311,SCB,comment,"Thành Phan: Phải tìm cho được văn bản hay chứng cứ SCB có chủ trương từ",2022-11-18,0,0,0
+scb_cmt_312,SCB,comment,"Hoạ Mi: Họ nói hơn 40.000 ng dân (ham lãi cao) mua tp k chịu tìm hiểu rủi ro mà nghe theo tư vấn scb. Vậy SCB vì ham cái gì mà k chịu tìm hiểu Rủi ro - mà cố tình đưa ng dân chuyển từ sổ tk sang tp??? Các ông bà có chú đến dùng đt cảm ứng còn k biết nữa là tìm hiểu tp. Đến ng họ gửi tiền nghe họ dụ dỗ mời chào ngon ngọt.",2022-11-18,0,0,0
+scb_cmt_313,SCB,comment,"Luis Garcia: 21/11 thì vẫn bài cũ làm gì có gì mới :)) Lđ Và Nhân Viên SCB chỉ mong đến t7 CN để đc nghỉ ngơi đỡ áp lực chứ lấy đâu thời gian họ tìm giải pháp trả lời cho dân vào thứ 2 sau :))))",2022-11-18,0,0,0

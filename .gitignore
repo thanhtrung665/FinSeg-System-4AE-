@@ -1,0 +1,7 @@
+﻿.venv/
+__pycache__/
+.ipynb_checkpoints/
+.env
+*.log
+live_vmsi.json
+.DS_Store
