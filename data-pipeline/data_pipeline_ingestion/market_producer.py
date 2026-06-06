@@ -1,14 +1,14 @@
-import contextlib
-import io
+import os
 import time
 import warnings
 from datetime import datetime, timezone
 
-# Suppress vnstock stdout/stderr banner
+# Suppress vnstock banner TRUOC khi import
+os.environ.setdefault("VNSTOCK_DISABLE_NOTIFICATION", "1")
+os.environ.setdefault("VNSTOCK_SHOW_ADS", "0")
 warnings.filterwarnings("ignore")
-with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-    from vnstock.api.quote import Quote
 
+from vnstock.api.quote import Quote
 from base_producer import BaseKafkaProducer
 
 
@@ -18,14 +18,14 @@ class MarketDataProducer(BaseKafkaProducer):
         self.ticker_context = ticker_context
 
     def stream_historical_data(self, ticker: str, start_date: str, end_date: str):
+        """Keo du lieu gia lich su va day vao Kafka (dung vnstock.api moi)."""
         self.logger.info(
             f"Keo du lieu {ticker} (Context: {self.ticker_context}) "
             f"tu {start_date} den {end_date}"
         )
         try:
-            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-                q  = Quote(symbol=ticker, source="VCI")
-                df = q.history(start=start_date, end=end_date, interval="1D")
+            q  = Quote(symbol=ticker, source="VCI")
+            df = q.history(start=start_date, end=end_date, interval="1D")
 
             if df is None or df.empty:
                 self.logger.warning(f"Khong co du lieu cho ma {ticker}.")

@@ -30,22 +30,56 @@ import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import List, Optional
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-# ── Kiem tra moi truong ───────────────────────────────────────────────────────
+# ── Load .env truoc khi doc credentials ──────────────────────────────────────
+_PIPELINE_ROOT = Path(__file__).resolve().parent.parent.parent
+try:
+    from dotenv import load_dotenv
+    load_dotenv(dotenv_path=str(_PIPELINE_ROOT / ".env"))
+except Exception:
+    pass
+
+# ── Credentials (doc sau khi .env da load) ────────────────────────────────────
 _FB_EMAIL    = os.getenv("FB_EMAIL", "")
 _FB_PASSWORD = os.getenv("FB_PASSWORD", "")
-_FB_COOKIE   = os.getenv("FB_COOKIE_FILE", "")  # Path toi file cookie JSON
+_FB_COOKIE_RAW = os.getenv("FB_COOKIE_FILE", "")
+
+# Resolve cookie path — thu tuong doi va tuyet doi
+def _resolve_cookie_path(raw: str) -> str:
+    if not raw:
+        return ""
+    p = Path(raw)
+    if p.is_absolute() and p.exists():
+        return str(p)
+    # Thu relative tu data-pipeline/
+    p2 = _PIPELINE_ROOT / raw
+    if p2.exists():
+        return str(p2)
+    # Thu relative tu realtime_pipeline/crawlers/
+    p3 = Path(__file__).parent / raw
+    if p3.exists():
+        return str(p3)
+    # Thu cac ten file pho bien trong data-pipeline/
+    for fname in [raw, Path(raw).name]:
+        for root in [_PIPELINE_ROOT, _PIPELINE_ROOT / "realtime_pipeline"]:
+            candidate = root / fname
+            if candidate.exists():
+                return str(candidate)
+    return raw   # Tra ve nguyen neu khong tim thay (se bao loi ro rang sau)
+
+_FB_COOKIE = _resolve_cookie_path(_FB_COOKIE_RAW)
 
 def _playwright_available() -> bool:
     try:
-        import playwright
+        from playwright.sync_api import sync_playwright
         return True
     except ImportError:
         return False
 
-_CRAWL_READY = bool(_FB_EMAIL and _FB_PASSWORD) or bool(_FB_COOKIE)
+_CRAWL_READY = bool(_FB_EMAIL and _FB_PASSWORD) or bool(_FB_COOKIE and Path(_FB_COOKIE).exists())
 
 
 @dataclass
@@ -189,78 +223,207 @@ def _crawl_with_selenium(target: dict, max_posts: int = 50) -> List[RawSocialPos
 def _crawl_with_playwright(target: dict, max_posts: int = 50) -> List[RawSocialPost]:
     """
     Crawl Facebook voi Playwright (nhe hon Selenium, hop hon cho server).
-    
-    GPU server: playwright install chromium
+    Ho tro 2 che do:
+      - Cookie file (Netscape format hoac JSON) → khong can dang nhap lai
+      - Email + Password → dang nhap binh thuong
     """
-    from playwright.sync_api import sync_playwright
+    from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 
     posts: List[RawSocialPost] = []
 
     with sync_playwright() as pw:
-        browser = pw.chromium.launch(headless=True)
+        browser = pw.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-dev-shm-usage"],
+        )
         ctx = browser.new_context(
             user_agent=(
-                "Mozilla/5.0 (X11; Linux x86_64) "
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
                 "Chrome/124.0.0.0 Safari/537.36"
             ),
             locale="vi-VN",
+            viewport={"width": 1280, "height": 800},
         )
         page = ctx.new_page()
 
         try:
-            # Load cookie neu co
-            if _FB_COOKIE and os.path.exists(_FB_COOKIE):
-                import json
-                with open(_FB_COOKIE, "r") as f:
-                    cookies = json.load(f)
-                ctx.add_cookies(cookies)
-                page.goto(target["url"], timeout=20000)
-            else:
-                # Dang nhap
-                page.goto("https://www.facebook.com/login", timeout=15000)
-                page.fill("#email", _FB_EMAIL)
-                page.fill("#pass", _FB_PASSWORD)
-                page.click('[name="login"]')
-                page.wait_for_timeout(4000)
+            # ── Buoc 1: Xac thuc ──────────────────────────────────────────
+            authed = False
 
-                if "login" in page.url:
-                    logger.warning("Playwright: Dang nhap Facebook that bai")
+            # Uu tien cookie file (khong bi Facebook detect la automation)
+            if _FB_COOKIE and Path(_FB_COOKIE).exists():
+                logger.info(f"Dung cookie file: {_FB_COOKIE}")
+                raw_cookie = Path(_FB_COOKIE).read_text(encoding="utf-8")
+
+                # Parse Netscape cookie format (tu extension EditThisCookie, etc.)
+                cookies = []
+                for line in raw_cookie.splitlines():
+                    line = line.strip()
+                    if not line or line.startswith("#"):
+                        continue
+                    parts = line.split("\t")
+                    if len(parts) >= 7:
+                        try:
+                            cookies.append({
+                                "name":   parts[5],
+                                "value":  parts[6],
+                                "domain": parts[0].lstrip("."),
+                                "path":   parts[2],
+                                "secure": parts[3].lower() == "true",
+                            })
+                        except IndexError:
+                            continue
+
+                # Thu parse JSON (format khac)
+                if not cookies:
+                    try:
+                        import json
+                        json_cookies = json.loads(raw_cookie)
+                        for c in json_cookies:
+                            cookies.append({
+                                "name":   c.get("name", ""),
+                                "value":  c.get("value", ""),
+                                "domain": c.get("domain", ".facebook.com").lstrip("."),
+                                "path":   c.get("path", "/"),
+                                "secure": c.get("secure", True),
+                            })
+                    except Exception:
+                        pass
+
+                if cookies:
+                    ctx.add_cookies(cookies)
+                    logger.info(f"Da them {len(cookies)} cookies")
+                    page.goto("https://www.facebook.com", timeout=15000)
+                    page.wait_for_timeout(2000)
+                    authed = "login" not in page.url
+                    if authed:
+                        logger.info("Cookie auth thanh cong!")
+
+            # Fallback: dang nhap bang email/pass
+            if not authed and _FB_EMAIL and _FB_PASSWORD:
+                logger.info("Dang nhap bang email/password...")
+                page.goto("https://www.facebook.com/", timeout=15000)
+                page.wait_for_timeout(2000)
+
+                # Xu ly cookie consent popup (neu co)
+                for btn_sel in [
+                    'button[data-cookiebanner="accept_button"]',
+                    'button[title="Allow all cookies"]',
+                    'button[title="Cho phep tat ca cookie"]',
+                    '[data-testid="cookie-policy-manage-dialog-accept-button"]',
+                ]:
+                    try:
+                        if page.locator(btn_sel).is_visible(timeout=2000):
+                            page.click(btn_sel)
+                            page.wait_for_timeout(1000)
+                            break
+                    except Exception:
+                        pass
+
+                # Vao trang login
+                page.goto("https://www.facebook.com/login", timeout=15000)
+                page.wait_for_timeout(2000)
+
+                # Xu ly consent popup lan nua neu xuat hien
+                for btn_sel in [
+                    'button[data-cookiebanner="accept_button"]',
+                    '[aria-label="Dong"]',
+                    '[aria-label="Close"]',
+                ]:
+                    try:
+                        if page.locator(btn_sel).is_visible(timeout=1500):
+                            page.click(btn_sel)
+                            page.wait_for_timeout(500)
+                    except Exception:
+                        pass
+
+                # Nhap credentials
+                try:
+                    page.fill("#email", _FB_EMAIL, timeout=10000)
+                    page.fill("#pass",  _FB_PASSWORD, timeout=5000)
+                    page.click('[name="login"]')
+                    page.wait_for_timeout(6000)
+                    authed = "login" not in page.url.lower() and "checkpoint" not in page.url.lower()
+                    if authed:
+                        logger.info("Login thanh cong!")
+                    else:
+                        logger.error(f"Login that bai — URL: {page.url}")
+                        browser.close()
+                        return []
+                except Exception as e:
+                    logger.error(f"Loi khi nhap credentials: {e}")
+                    browser.close()
                     return []
 
-                page.goto(target["url"], timeout=20000)
+            if not authed:
+                logger.error("Khong the xac thuc Facebook")
+                browser.close()
+                return []
 
+            # ── Buoc 2: Vao trang target ──────────────────────────────────
+            logger.info(f"Dang vao: {target['url']}")
+            page.goto(target["url"], timeout=20000)
             page.wait_for_timeout(3000)
 
-            # Scroll de load noi dung
-            for _ in range(5):
+            # Scroll de load bai viet
+            for _ in range(4):
                 page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
                 page.wait_for_timeout(2000)
 
-            # Lay noi dung bai viet
-            post_texts = page.eval_on_selector_all(
-                'div[data-ad-preview="message"], '
+            # ── Buoc 3: Lay bai viet ──────────────────────────────────────
+            # CafeF chung khoan Facebook dung cac selector nay
+            post_selectors = [
+                'div[data-ad-preview="message"]',
                 'div[class*="userContent"]',
-                "elements => elements.map(el => el.innerText)"
-            )
+                'div[data-testid="post_message"]',
+                'div[class*="xdj266r"]',   # Facebook new UI 2024
+                'div[class*="x1iorvi4"]',
+            ]
 
-            for text in post_texts[:max_posts]:
-                text = text.strip()
-                if not text or len(text) < 20:
+            post_texts = []
+            for sel in post_selectors:
+                elems = page.locator(sel).all()
+                for el in elems:
+                    try:
+                        txt = el.inner_text()
+                        if txt and len(txt.strip()) > 20:
+                            post_texts.append(txt.strip())
+                    except Exception:
+                        continue
+                if post_texts:
+                    break
+
+            # Fallback: lay tat ca text block dai
+            if not post_texts:
+                all_divs = page.locator("div").all()
+                for div in all_divs[:200]:
+                    try:
+                        txt = div.inner_text()
+                        if 50 < len(txt.strip()) < 2000:
+                            post_texts.append(txt.strip())
+                    except Exception:
+                        continue
+
+            # De-duplicate va tao RawSocialPost
+            seen_hash = set()
+            for txt in post_texts[:max_posts]:
+                h = hashlib.md5(txt[:60].encode()).hexdigest()
+                if h in seen_hash:
                     continue
-
-                raw_id  = hashlib.md5(text[:50].encode()).hexdigest()
-                post_id = _make_post_id(target["name"], raw_id)
-
+                seen_hash.add(h)
                 posts.append(RawSocialPost(
-                    post_id      = post_id,
+                    post_id      = _make_post_id(target["name"], h),
                     source       = target["type"],
                     source_name  = target["name"],
-                    content_text = text,
+                    content_text = txt,
                     published_at = datetime.now(timezone.utc).isoformat(),
                     credibility  = target.get("credibility", 0.55),
+                    url          = target["url"],
                 ))
 
+        except PlaywrightTimeout as e:
+            logger.error(f"Timeout khi crawl {target['name']}: {e}")
         except Exception as e:
             logger.error(f"Loi Playwright crawl {target['name']}: {e}")
         finally:

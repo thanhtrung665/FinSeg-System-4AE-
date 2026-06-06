@@ -62,16 +62,20 @@ class RealtimeVMSIEngine:
     # ── Step 1: Thu thap Social ────────────────────────────────────────────────
 
     def _collect_social(self) -> int:
-        """Thu thap Facebook posts + News → day vao Kafka fb_mock_data."""
+        """
+        Thu thap Facebook posts + News:
+        - Facebook posts  → Kafka fb_mock_data (SocialAgent xu ly sentiment)
+        - News articles   → Kafka fb_mock_data + ChromaDB (MacroAgent RAG query)
+        """
         from realtime_pipeline.crawlers.facebook_crawler import crawl_facebook_for_ticker
         from realtime_pipeline.crawlers.news_crawler     import crawl_news_for_ticker
         from realtime_pipeline.normalizers.unified_normalizer import (
-            normalize_social_batch, normalize_news_batch
+            normalize_social_batch, normalize_news_batch, normalize_news_article
         )
 
         total_pushed = 0
 
-        # Facebook posts
+        # Facebook posts → Kafka (sentiment scoring)
         try:
             posts = crawl_facebook_for_ticker(self.ticker)
             if posts:
@@ -82,14 +86,40 @@ class RealtimeVMSIEngine:
         except Exception as e:
             self.logger.error(f"Loi crawl Facebook: {e}")
 
-        # News articles (cung day vao fb_mock_data de SocialAgent xu ly)
+        # News articles:
+        #   1. → Kafka (SocialAgent doc de tinh S_social)
+        #   2. → ChromaDB (MacroAgent RAG query tin tuc moi nhat)
         try:
             articles = crawl_news_for_ticker(self.ticker)
             if articles:
-                normalized = normalize_news_batch(articles, self.ticker)
-                pushed = self._get_producer().push_social(normalized)
+                # Push vao Kafka
+                normalized_kafka = normalize_news_batch(articles, self.ticker)
+                pushed = self._get_producer().push_social(normalized_kafka)
                 total_pushed += pushed
                 self.logger.info(f"[Social] {pushed} news articles → Kafka")
+
+                # DONG THOI: embed va ingest vao ChromaDB de MacroAgent RAG
+                # Chi ingest cac bai co content du chat luong (>= 100 ky tu)
+                chroma_docs = []
+                for art in articles:
+                    if len(art.content_text) >= 100:
+                        n = normalize_news_article(art, self.ticker)
+                        # Them truong metadata cho ChromaDB
+                        n["metadata"] = {
+                            "source_file":    n.get("article_id", ""),
+                            "ticker_context": self.ticker,
+                            "publish_date":   n.get("published_at", ""),
+                            "document_type":  "news_article",
+                            "source":         n.get("source", ""),
+                            "url":            n.get("url", ""),
+                        }
+                        chroma_docs.append(n)
+
+                if chroma_docs:
+                    ingested = self._get_producer().push_policies_to_chroma(chroma_docs)
+                    self.logger.info(
+                        f"[Social] {ingested}/{len(chroma_docs)} news articles → ChromaDB RAG"
+                    )
         except Exception as e:
             self.logger.error(f"Loi crawl news: {e}")
 

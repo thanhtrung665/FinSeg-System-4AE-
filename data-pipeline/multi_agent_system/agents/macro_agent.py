@@ -60,12 +60,24 @@ class MacroAgent:
         try:
             self.logger.info("Đang kết nối ChromaDB Cloud (MacroAgent)...")
             client = settings.get_chroma_client()
+            # Collection chinh: NHNN docs (macro_policies)
             collection = client.get_collection(name=settings.CHROMADB_COLLECTION)
+            # Collection realtime: tin tuc moi nhat tu CafeF, Vietstock, NHNN realtime
+            try:
+                from realtime_pipeline.config import CHROMA_REALTIME_COLLECTION
+                self.realtime_collection = client.get_or_create_collection(
+                    name=CHROMA_REALTIME_COLLECTION,
+                    metadata={"hnsw:space": "cosine"},
+                )
+                self.logger.info(f"Realtime collection '{CHROMA_REALTIME_COLLECTION}' san sang.")
+            except Exception:
+                self.realtime_collection = None
             self.circuit_open = False
             self.logger.info("Kết nối ChromaDB thành công!")
             return collection
         except Exception as e:
             self.circuit_open = True
+            self.realtime_collection = None
             self.logger.error(f"CRITICAL: Lỗi kết nối ChromaDB: {e}. Dùng Fallback.")
             return None
 

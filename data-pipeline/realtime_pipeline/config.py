@@ -45,29 +45,41 @@ HISTORY_END_DATE          = os.getenv("HISTORY_END_DATE", "2026-06-30")
 NEWS_SOURCES = {
     "cafef": {
         "rss_urls": [
-            "https://cafef.vn/rss/chung-khoan.rss",
-            "https://cafef.vn/rss/bat-dong-san.rss",
-            "https://cafef.vn/rss/ngan-hang.rss",
-            "https://cafef.vn/rss/vi-mo-dau-tu.rss",
-            "https://cafef.vn/rss/thi-truong-chung-khoan.rss",
+            # RSS van hoat dong (kiem tra 2025-06)
+            "https://cafef.vn/thi-truong-chung-khoan.rss",
+            "https://cafef.vn/bat-dong-san.rss",
+            "https://cafef.vn/vi-mo-dau-tu.rss",
+            "https://cafef.vn/doanh-nghiep.rss",
         ],
+        "scrape_urls": [
+            # Trang listing HTML .chn — lay bai moi nhat qua h3 a selector
+            "https://cafef.vn/tai-chinh-ngan-hang.chn",
+            "https://cafef.vn/thi-truong-chung-khoan.chn",
+            "https://cafef.vn/doanh-nghiep.chn",
+        ],
+        "listing_selector": "h3 a",
         "base_url": "https://cafef.vn",
         "credibility": 0.85,
     },
     "vietstock": {
-        "rss_urls": [
-            "https://vietstock.vn/rss/thi-truong.rss",
-            "https://vietstock.vn/rss/co-phieu.rss",
+        "rss_urls": [],
+        "scrape_urls": [
+            "https://vietstock.vn/chung-khoan.htm",
+            "https://vietstock.vn/tai-chinh.htm",
         ],
+        "listing_selector": "h3 a, h4 a, .title a",
         "base_url": "https://vietstock.vn",
         "credibility": 0.85,
     },
     "chinhphu": {
         "rss_urls": [
-            "https://xaydungchinhsach.chinhphu.vn/rss/chinh-sach-moi.rss",
+            # RSS chinh xac (kiem tra 2025-06)
+            "https://xaydungchinhsach.chinhphu.vn/rss",
         ],
+        "scrape_urls": [],
+        "listing_selector": "h3 a",
         "base_url": "https://xaydungchinhsach.chinhphu.vn",
-        "credibility": 1.0,   # Chinh thong cao nhat
+        "credibility": 1.0,
     },
 }
 

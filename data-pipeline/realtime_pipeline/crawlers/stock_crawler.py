@@ -1,10 +1,14 @@
-import contextlib
-import io
 import logging
+import os
 import warnings
 from dataclasses import dataclass
 from datetime import datetime, date, timezone, timedelta
 from typing import Any, Dict, List, Optional
+
+# Suppress vnstock banner TRUOC khi import bat ky thu gi tu vnstock
+os.environ.setdefault("VNSTOCK_DISABLE_NOTIFICATION", "1")
+os.environ.setdefault("VNSTOCK_SHOW_ADS", "0")
+warnings.filterwarnings("ignore")
 
 from realtime_pipeline.config import (
     HISTORY_START_DATE, HISTORY_END_DATE, TICKER_MAP
@@ -12,39 +16,13 @@ from realtime_pipeline.config import (
 
 logger = logging.getLogger(__name__)
 
-# Tat het warning / stdout cua vnstock ngay khi module duoc load
-warnings.filterwarnings("ignore")
-
-
-# ── Suppress helper ────────────────────────────────────────────────────────────
-class _Quiet(contextlib.AbstractContextManager):
-    """Redirect ca stdout va stderr de tat banner quang cao vnstock."""
-    def __enter__(self):
-        self._buf = io.StringIO()
-        self._so  = contextlib.redirect_stdout(self._buf).__enter__()
-        self._se  = contextlib.redirect_stderr(self._buf).__enter__()
-        return self
-
-    def __exit__(self, *args):
-        self._so.__exit__(*args)
-        self._se.__exit__(*args)
-        return False  # khong suppress exceptions
-
-
-# Import vnstock API moi mot lan, tat tat ca output
-with _Quiet():
-    try:
-        from vnstock.api.quote import Quote as _VnQuote
-        _VNSTOCK_AVAILABLE = True
-    except Exception:
-        _VnQuote = None
-        _VNSTOCK_AVAILABLE = False
-
-
-def _get_quote(symbol: str):
-    """Tao Quote instance, suppress moi output."""
-    with _Quiet():
-        return _VnQuote(symbol=symbol, source="VCI")
+# Import API moi (khong dung Vnstock().stock() da deprecated)
+try:
+    from vnstock.api.quote import Quote as _VnQuote
+    _VNSTOCK_OK = True
+except Exception:
+    _VnQuote = None
+    _VNSTOCK_OK = False
 
 
 # ── Data classes ───────────────────────────────────────────────────────────────
@@ -86,11 +64,11 @@ def fetch_stock_history(
     end_date:   Optional[str] = None,
 ) -> List[RawStockBar]:
     """
-    Lay lich su OHLCV tu start_date → end_date.
-    Mac dinh: HISTORY_START_DATE → HISTORY_END_DATE (thang 4-6 hien tai).
+    Lay lich su OHLCV tu start_date → end_date (mac dinh thang 4-6 hien tai).
+    Dung vnstock.api.quote.Quote — API moi, khong deprecation warning.
     """
-    if not _VNSTOCK_AVAILABLE:
-        logger.error("vnstock khong kha dung")
+    if not _VNSTOCK_OK:
+        logger.error("vnstock khong kha dung — kiem tra cai dat")
         return []
 
     start  = start_date or HISTORY_START_DATE
@@ -99,13 +77,12 @@ def fetch_stock_history(
     bars: List[RawStockBar] = []
 
     try:
-        logger.info(f"[Stock] Lay lich su {symbol} ({start} to {end})...")
-        q  = _get_quote(symbol)
-        with _Quiet():
-            df = q.history(start=start, end=end, interval="1D")
+        logger.info(f"[Stock] {symbol}: {start} → {end}")
+        q  = _VnQuote(symbol=symbol, source="VCI")
+        df = q.history(start=start, end=end, interval="1D")
 
         if df is None or df.empty:
-            logger.warning(f"Khong co du lieu lich su cho {symbol}")
+            logger.warning(f"[Stock] Khong co data cho {symbol}")
             return []
 
         prev_close: Optional[float] = None
@@ -138,27 +115,24 @@ def fetch_stock_history(
         return bars
 
     except Exception as e:
-        logger.error(f"Loi lay lich su {symbol}: {e}")
+        logger.error(f"[Stock] Loi lay lich su {symbol}: {e}")
         return []
 
 
 def fetch_stock_realtime(ticker: str) -> Optional[RawStockBar]:
     """Lay gia co phieu phien hien tai hoac phien cuoi cung."""
-    if not _VNSTOCK_AVAILABLE:
+    if not _VNSTOCK_OK:
         return None
 
     symbol = TICKER_MAP.get(ticker.upper(), ticker.upper())
     try:
-        q     = _get_quote(symbol)
+        q     = _VnQuote(symbol=symbol, source="VCI")
         today = date.today().strftime("%Y-%m-%d")
-
-        with _Quiet():
-            df = q.history(start=today, end=today, interval="1D")
+        df    = q.history(start=today, end=today, interval="1D")
 
         if df is None or df.empty:
             yesterday = (date.today() - timedelta(days=3)).strftime("%Y-%m-%d")
-            with _Quiet():
-                df = q.history(start=yesterday, end=today, interval="1D")
+            df = q.history(start=yesterday, end=today, interval="1D")
             if df is None or df.empty:
                 return None
 
@@ -177,21 +151,20 @@ def fetch_stock_realtime(ticker: str) -> Optional[RawStockBar]:
             ticker_context = ticker,
         )
     except Exception as e:
-        logger.error(f"Loi lay realtime {symbol}: {e}")
+        logger.error(f"[Stock] Loi lay realtime {symbol}: {e}")
         return None
 
 
 def fetch_stock_info(ticker: str) -> RawStockInfo:
-    """Lay thong tin co ban (fallback gracefully neu API khong ho tro)."""
+    """Lay thong tin co ban (graceful fallback neu API khong ho tro)."""
     symbol = TICKER_MAP.get(ticker.upper(), ticker.upper())
-    if not _VNSTOCK_AVAILABLE:
+    if not _VNSTOCK_OK:
         return RawStockInfo(ticker=symbol, timestamp=datetime.now(timezone.utc).isoformat())
 
     try:
-        q = _get_quote(symbol)
+        q = _VnQuote(symbol=symbol, source="VCI")
         if hasattr(q, "profile"):
-            with _Quiet():
-                profile = q.profile()
+            profile = q.profile()
             if profile is not None and not getattr(profile, "empty", True):
                 row = profile.iloc[0]
                 return RawStockInfo(
@@ -202,7 +175,7 @@ def fetch_stock_info(ticker: str) -> RawStockInfo:
                     timestamp    = datetime.now(timezone.utc).isoformat(),
                 )
     except Exception as e:
-        logger.debug(f"Khong lay duoc thong tin co ban {symbol}: {e}")
+        logger.debug(f"[Stock] Khong lay duoc info {symbol}: {e}")
 
     return RawStockInfo(ticker=symbol, timestamp=datetime.now(timezone.utc).isoformat())
 
@@ -212,26 +185,22 @@ def fetch_stock_info(ticker: str) -> RawStockInfo:
 def calculate_market_sentiment(bars: List[RawStockBar]) -> float:
     """
     Tinh diem cam xuc gia thi truong trong [-1.0, 1.0].
-    Logic: price_change >= +2% → +1.0  |  > 0 → +0.5
-           price_change <= -2% → -1.0  |  < 0 → -0.5
+    >= +2% → +1.0 | > 0% → +0.5 | = 0% → 0 | < 0% → -0.5 | <= -2% → -1.0
     """
     if not bars:
         return 0.0
-
     scores = []
-    for bar in bars:
-        chg = bar.price_change
-        if chg >= 2.0:
+    for b in bars:
+        if b.price_change >= 2.0:
             scores.append(1.0)
-        elif chg > 0:
+        elif b.price_change > 0:
             scores.append(0.5)
-        elif chg <= -2.0:
+        elif b.price_change <= -2.0:
             scores.append(-1.0)
-        elif chg < 0:
+        elif b.price_change < 0:
             scores.append(-0.5)
         else:
             scores.append(0.0)
-
     return round(sum(scores) / len(scores), 4)
 
 
@@ -239,11 +208,10 @@ def calculate_market_sentiment(bars: List[RawStockBar]) -> float:
 
 def crawl_stocks_for_ticker(ticker: str) -> Dict[str, Any]:
     """
-    Thu thap day du du lieu co phieu cho 1 ticker.
-    Tra ve dict: historical_bars, realtime_bar, info, market_sentiment.
+    Thu thap day du du lieu co phieu: lich su, realtime, info, sentiment.
     """
     symbol = TICKER_MAP.get(ticker.upper(), ticker.upper())
-    logger.info(f"[Stock] Crawl {symbol} (context={ticker})...")
+    logger.info(f"[Stock] Crawl {symbol} (ticker_context={ticker})")
 
     bars          = fetch_stock_history(ticker)
     rt            = fetch_stock_realtime(ticker)

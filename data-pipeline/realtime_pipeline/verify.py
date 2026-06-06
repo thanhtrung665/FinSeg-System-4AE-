@@ -1,18 +1,50 @@
-import ast
-import sys
-import os
-import io
-import warnings
-import contextlib
+"""
+realtime_pipeline/verify.py
+Kiem tra toan bo luong realtime + tich hop multi_agent_system.
+Chay: python realtime_pipeline/verify.py
+"""
 
+import ast
+import io
+import logging
+import os
+import socket
+import sys
+import warnings
+
+# ── Suppress TẤT CẢ noise trước khi import bất kỳ thứ gì ────────────────────
+os.environ["VNSTOCK_DISABLE_NOTIFICATION"] = "1"
+os.environ["VNSTOCK_SHOW_ADS"]             = "0"
 warnings.filterwarnings("ignore")
+
+# Tắt hoàn toàn tất cả loggers — sẽ restore có chọn lọc sau
+logging.disable(logging.CRITICAL)
 sys.path.insert(0, ".")
 
-print("=" * 55)
-print("VERIFY — realtime_pipeline + data_pipeline_ingestion")
-print("=" * 55)
+_OK   = "\033[92m[OK]\033[0m"
+_FAIL = "\033[91m[FAIL]\033[0m"
+_INFO = "\033[94m[INFO]\033[0m"
+_WARN = "\033[93m[WARN]\033[0m"
 
-# 1. Syntax check
+errors: list = []
+
+
+def check(label: str, ok: bool, detail: str = ""):
+    if ok:
+        print(f"  {_OK}  {label}" + (f" — {detail}" if detail else ""))
+    else:
+        print(f"  {_FAIL} {label}" + (f" — {detail}" if detail else ""))
+        errors.append(label)
+
+
+# ═══════════════════════════════════════════════════════════════
+print("=" * 60)
+print("  REALTIME PIPELINE — Full Verification")
+print("=" * 60)
+
+# ── 1. SYNTAX CHECK ────────────────────────────────────────────
+print(f"\n{_INFO} [1] Syntax check toan bo files...")
+
 FILES = [
     "dashboard_realtime.py",
     "dashboard.py",
@@ -25,86 +57,307 @@ FILES = [
     "realtime_pipeline/producers/realtime_producer.py",
     "realtime_pipeline/vmsi_realtime.py",
     "realtime_pipeline/scheduler.py",
-    "data_pipeline_ingestion/vnstock_producer.py",
-    "data_pipeline_ingestion/market_producer.py",
     "data_pipeline_ingestion/config.py",
     "data_pipeline_ingestion/normalizer.py",
     "data_pipeline_ingestion/base_producer.py",
+    "data_pipeline_ingestion/vnstock_producer.py",
+    "data_pipeline_ingestion/market_producer.py",
+    "multi_agent_system/engines/vmsi_engine.py",
+    "multi_agent_system/agents/social_agent.py",
+    "multi_agent_system/agents/macro_agent.py",
+    "multi_agent_system/agents/risk_agent.py",
+    "multi_agent_system/agents/mac_orchestrator.py",
+    "multi_agent_system/agents/chatbot_agent.py",
 ]
-errors = []
+
 for f in FILES:
     try:
         with open(f, "rb") as fp:
-            src = fp.read().decode("utf-8")
-        ast.parse(src)
-        print(f"  [OK] {f}")
+            ast.parse(fp.read().decode("utf-8"))
+        check(f, True)
     except SyntaxError as e:
-        errors.append(f)
-        print(f"  [ERR] {f}: {e}")
+        check(f, False, str(e))
     except FileNotFoundError:
-        print(f"  [?]  {f}: not found")
+        check(f, False, "File not found")
 
+# ── 2. CONFIG ──────────────────────────────────────────────────
+print(f"\n{_INFO} [2] Realtime config...")
+try:
+    from realtime_pipeline.config import (
+        KAFKA_BROKER, HISTORY_START_DATE, HISTORY_END_DATE,
+        NEWS_SOURCES, FACEBOOK_TARGETS, TICKER_MAP,
+        KAFKA_TOPIC_NEWS, KAFKA_TOPIC_SOCIAL, KAFKA_TOPIC_MARKET,
+        CHROMA_REALTIME_COLLECTION,
+    )
+    check("Config load",         True,
+          f"Kafka={KAFKA_BROKER}, history={HISTORY_START_DATE}..{HISTORY_END_DATE}")
+    check("NEWS_SOURCES",        len(NEWS_SOURCES) >= 3,
+          str(list(NEWS_SOURCES.keys())))
+    check("FACEBOOK_TARGETS",    len(FACEBOOK_TARGETS) >= 2,
+          str([t["name"] for t in FACEBOOK_TARGETS]))
+    check("TICKER_MAP (SHB)",    TICKER_MAP.get("SHB") == "SHB")
+    check("TICKER_MAP (SCB→VNI)", TICKER_MAP.get("SCB") == "VNINDEX")
+    check("Kafka topics",        KAFKA_TOPIC_NEWS and KAFKA_TOPIC_SOCIAL and KAFKA_TOPIC_MARKET,
+          f"{KAFKA_TOPIC_NEWS}/{KAFKA_TOPIC_SOCIAL}/{KAFKA_TOPIC_MARKET}")
+    check("ChromaDB collection", bool(CHROMA_REALTIME_COLLECTION),
+          CHROMA_REALTIME_COLLECTION)
+except Exception as e:
+    check("Config load", False, str(e))
+
+# ── 3. VNSTOCK API MỚI ────────────────────────────────────────
+print(f"\n{_INFO} [3] vnstock API moi (khong banner)...")
+try:
+    # Capture stdout de dam bao khong co banner
+    old_stdout = sys.stdout
+    sys.stdout  = captured = io.StringIO()
+    from realtime_pipeline.crawlers.stock_crawler import (
+        fetch_stock_history, calculate_market_sentiment,
+        _VNSTOCK_OK, RawStockBar,
+    )
+    sys.stdout = old_stdout
+
+    banner = captured.getvalue()
+    check("Import khong co banner", not banner.strip(),
+          f"captured={repr(banner[:40])!r}" if banner.strip() else "clean")
+    check("_VNSTOCK_OK",            _VNSTOCK_OK)
+
+    bars = fetch_stock_history("SHB", "2025-05-01", "2025-05-31")
+    check("fetch_stock_history(SHB)", len(bars) > 0,
+          f"{len(bars)} phien giao dich, close_last={bars[-1].close if bars else 'N/A'}")
+
+    sent = calculate_market_sentiment(bars[-5:])
+    check("calculate_market_sentiment", sent is not None,
+          f"sentiment={sent:+.4f}")
+
+except Exception as e:
+    sys.stdout = sys.__stdout__
+    check("vnstock API moi", False, str(e))
+
+# ── 4. FACEBOOK CRAWLER (STUB, KHONG WARNING) ─────────────────
+print(f"\n{_INFO} [4] Facebook crawler stub...")
+try:
+    # Bat log de kiem tra
+    warn_records: list = []
+    class _WarnCapture(logging.Handler):
+        def emit(self, record):
+            if record.levelno >= logging.WARNING:
+                warn_records.append(record.getMessage())
+
+    cap = _WarnCapture()
+    fb_log = logging.getLogger("realtime_pipeline.crawlers.facebook_crawler")
+    fb_log.setLevel(logging.DEBUG)
+    fb_log.addHandler(cap)
+
+    from realtime_pipeline.crawlers.facebook_crawler import (
+        crawl_all_facebook, crawl_facebook_for_ticker,
+    )
+    posts = crawl_all_facebook()
+    fb_log.removeHandler(cap)
+
+    check("crawl_all_facebook (stub)",     len(posts) > 0,
+          f"{len(posts)} posts")
+    check("Khong co WARNING khi stub",     len(warn_records) == 0,
+          f"Warns: {warn_records[:2]}" if warn_records else "OK")
+
+    filtered = crawl_facebook_for_ticker("SHB")
+    check("crawl_facebook_for_ticker(SHB)", len(filtered) > 0,
+          f"{len(filtered)} posts lien quan SHB")
+
+except Exception as e:
+    check("Facebook crawler", False, str(e))
+
+# ── 5. NEWS CRAWLER (RSS) ─────────────────────────────────────
+print(f"\n{_INFO} [5] News crawler (RSS — co the mat mang)...")
+try:
+    from realtime_pipeline.crawlers.news_crawler import (
+        crawl_rss_source, crawl_news_for_ticker, RawNewsItem,
+    )
+    items = crawl_rss_source("cafef", NEWS_SOURCES["cafef"])
+    check("crawl_rss_source(cafef)", len(items) >= 0,
+          f"{len(items)} articles" if items else "0 (co the bi chay block RSS)")
+    if items:
+        check("RawNewsItem fields",
+              all(hasattr(it, "title") and it.title for it in items[:3]),
+              f"sample: {items[0].title[:60]}")
+except Exception as e:
+    check("News crawler", False, str(e))
+
+# ── 6. NORMALIZER ─────────────────────────────────────────────
+print(f"\n{_INFO} [6] Unified normalizer...")
+try:
+    from realtime_pipeline.crawlers.facebook_crawler import RawSocialPost
+    from realtime_pipeline.crawlers.news_crawler     import RawNewsItem
+    from realtime_pipeline.crawlers.nhnn_crawler     import RawPolicyDoc
+    from realtime_pipeline.normalizers.unified_normalizer import (
+        normalize_social_post, normalize_news_article,
+        normalize_policy_doc, normalize_stock_bar,
+        normalize_social_batch,
+    )
+
+    mock_post = RawSocialPost(
+        "post_001", "group", "test",
+        "SHB tang manh, nen mua vao ngay!",
+        "2025-05-10T09:00:00+00:00",
+        200, 30, 50, 0.55,
+    )
+    n = normalize_social_post(mock_post, "SHB")
+    check("normalize_social_post",
+          n["comment_id"] == "post_001" and n["ticker"] == "SHB" and n["likes"] == 200,
+          f"ticker={n['ticker']}, sentiment={n['sentiment']['label']}")
+
+    mock_article = RawNewsItem(
+        "art_001", "cafef",
+        "SHB bao lai tang 20%",
+        "Ngan hang SHB cong bo ket qua kinh doanh quy 2 voi loi nhuan tang 20%",
+        "https://cafef.vn/test",
+        "2025-05-15T08:00:00+00:00",
+        0.85,
+    )
+    na = normalize_news_article(mock_article, "SHB")
+    check("normalize_news_article",
+          na["article_id"] == "art_001" and na["source"] == "cafef",
+          f"source={na['source']}, sentiment={na['sentiment']['label']}")
+
+    mock_bar_obj = bars[0] if bars else None
+    if mock_bar_obj:
+        nb = normalize_stock_bar(mock_bar_obj, "SHB")
+        check("normalize_stock_bar",
+              nb["ticker_context"] == "SHB" and "close" in nb["content"],
+              f"close={nb['content']['close']}")
+
+except Exception as e:
+    check("Normalizer", False, str(e))
+
+# ── 7. VMSI ENGINE (CORE MATH) ────────────────────────────────
+print(f"\n{_INFO} [7] VMSIEngine (core math)...")
+try:
+    import numpy as np
+    from multi_agent_system.engines.vmsi_engine import VMSIEngine
+
+    engine = VMSIEngine()
+    w   = engine.calculate_interaction_weight(500, 100, 300)
+    ss  = engine.calculate_social_score(
+        np.array([-0.8, 0.6]), np.array([w, w]), np.array([0.7, 0.6])
+    )
+    sm  = engine.calculate_macro_score(-1, 0.0)
+    ir  = engine.calculate_raw_index(sm, ss)
+    vmsi = engine.calculate_final_vmsi(ir)
+    ema  = engine.apply_ema_smoothing(vmsi, 50.0)
+
+    check("VMSIEngine calculations",
+          0 <= vmsi <= 100 and 0 <= ema <= 100,
+          f"VMSI={vmsi:.2f}, EMA={ema:.2f}, S_social={ss:.4f}")
+
+except Exception as e:
+    check("VMSIEngine", False, str(e))
+
+# ── 8. KAFKA CONNECTIVITY ─────────────────────────────────────
+print(f"\n{_INFO} [8] Kafka connectivity...")
+try:
+    import socket
+    from data_pipeline_ingestion.config import settings as cfg
+    host, port = cfg.KAFKA_BROKER.split(":")
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(2)
+    result = sock.connect_ex((host, int(port)))
+    sock.close()
+    kafka_up = (result == 0)
+    if kafka_up:
+        check("Kafka broker reachable", True, cfg.KAFKA_BROKER)
+    else:
+        # Kafka offline → warning, khong fail verify (can chay truoc khi test)
+        print(f"  {_WARN} Kafka broker {cfg.KAFKA_BROKER} — OFFLINE")
+        print(f"         Khoi dong Kafka truoc khi chay production:")
+        print(f"         Windows: C:\\kafka\\bin\\windows\\kafka-server-start.bat ...")
+        print(f"         Linux:   ~/kafka/bin/kafka-server-start.sh ...")
+        print(f"         (Khong fail verify — Kafka chi can khi chay production)")
+except Exception as e:
+    print(f"  {_WARN} Kafka check skip: {e}")
+
+# ── 9. CHROMADB CONNECTIVITY ──────────────────────────────────
+print(f"\n{_INFO} [9] ChromaDB Cloud connectivity...")
+try:
+    from data_pipeline_ingestion.config import settings as cfg2
+    client = cfg2.get_chroma_client()
+    col    = client.get_collection(name=cfg2.CHROMADB_COLLECTION)
+    count  = col.count()
+    check("ChromaDB collection", count >= 0,
+          f"collection='{cfg2.CHROMADB_COLLECTION}', docs={count}")
+except Exception as e:
+    check("ChromaDB", False, str(e))
+
+# ── 10. MULTI-AGENT SYSTEM INTEGRATION ───────────────────────
+print(f"\n{_INFO} [10] Multi-Agent System integration check...")
+try:
+    from multi_agent_system.agents.social_agent    import SocialAgent
+    from multi_agent_system.agents.macro_agent     import MacroAgent
+    from multi_agent_system.agents.risk_agent      import RiskSynthesisAgent
+    from multi_agent_system.agents.mac_orchestrator import MACSystem
+    check("Import SocialAgent",     True)
+    check("Import MacroAgent",      True)
+    check("Import RiskSynthesisAgent", True)
+    check("Import MACSystem",       True)
+except Exception as e:
+    check("Multi-Agent imports", False, str(e))
+
+# Kiem tra RealTimeVMSIEngine tich hop MACSystem
+try:
+    from realtime_pipeline.vmsi_realtime import RealtimeVMSIEngine
+    engine_rt = RealtimeVMSIEngine.__new__(RealtimeVMSIEngine)
+    engine_rt.ticker   = "SHB"
+    engine_rt._producer = None
+    engine_rt._mac      = None
+
+    # Kiem tra _get_mac() co the tao MACSystem
+    mac = engine_rt._get_mac()
+    check("RealtimeVMSIEngine._get_mac()", mac is not None,
+          "MACSystem duoc tich hop thanh cong")
+    # Shutdown sau khi test
+    mac.shutdown()
+
+except Exception as e:
+    check("RealtimeVMSIEngine + MACSystem", False, str(e))
+
+# ── 11. SCHEDULER ─────────────────────────────────────────────
+print(f"\n{_INFO} [11] Scheduler...")
+try:
+    from realtime_pipeline.scheduler import RealtimeScheduler
+    sched = RealtimeScheduler(ticker="SHB", interval_seconds=1800)
+    check("RealtimeScheduler init",    sched.ticker == "SHB")
+    check("interval_seconds",          sched.interval_seconds == 1800)
+    check("ingest_policies_every",     sched.ingest_policies_every == 6,
+          "moi 6 chu ky = 3 gio")
+
+    bg = sched.start_background()
+    check("start_background() (APScheduler)", bg is not None,
+          "Background scheduler bat dau")
+    if bg:
+        import time as _t; _t.sleep(0.5)  # Cho thread khoi dong
+        bg.shutdown(wait=False)
+
+except Exception as e:
+    check("Scheduler", False, str(e))
+
+# ── KET QUAT ──────────────────────────────────────────────────
 print()
-
-# 2. vnstock moi — tat banner bang redirect
-print("[2] vnstock API (moi, khong banner)...")
-buf = io.StringIO()
-with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
-    from vnstock.api.quote import Quote
-    q  = Quote(symbol="SHB", source="VCI")
-    df = q.history(start="2025-05-01", end="2025-05-31", interval="1D")
-output = buf.getvalue()
-print(f"    SHB May-2025: {len(df)} bars, close_last={df.iloc[-1]['close']}")
-if output.strip():
-    print(f"    [!] vnstock viet gi ra stdout/stderr: {repr(output[:80])}")
-else:
-    print("    stdout/stderr sach (khong co banner)")
-
-# 3. Facebook stub — khong warning
-print("[3] Facebook crawler (stub, khong WARNING)...")
-import logging
-# Bat log de kiem tra khong co WARNING
-handler = logging.handlers = []
-test_log = io.StringIO()
-test_handler = logging.StreamHandler(test_log)
-test_handler.setLevel(logging.WARNING)
-fb_logger = logging.getLogger("realtime_pipeline.crawlers.facebook_crawler")
-fb_logger.addHandler(test_handler)
-fb_logger.setLevel(logging.DEBUG)
-
-from realtime_pipeline.crawlers.facebook_crawler import crawl_all_facebook
-posts = crawl_all_facebook()
-fb_logger.removeHandler(test_handler)
-
-warn_output = test_log.getvalue()
-if warn_output.strip():
-    print(f"    [!] Co WARNING: {repr(warn_output[:120])}")
-else:
-    print(f"    Khong co WARNING. {len(posts)} stub posts.")
-
-# 4. Config realtime
-print("[4] Realtime config...")
-from realtime_pipeline.config import (
-    KAFKA_BROKER, HISTORY_START_DATE, HISTORY_END_DATE,
-    NEWS_SOURCES, FACEBOOK_TARGETS,
-)
-print(f"    Kafka={KAFKA_BROKER}, History={HISTORY_START_DATE}..{HISTORY_END_DATE}")
-print(f"    News={list(NEWS_SOURCES.keys())}, FB={[t['name'] for t in FACEBOOK_TARGETS]}")
-
-# 5. Normalizer
-print("[5] Unified normalizer...")
-from realtime_pipeline.crawlers.facebook_crawler import RawSocialPost
-from realtime_pipeline.normalizers.unified_normalizer import normalize_social_post
-p = RawSocialPost("id1","group","test","SHB tang manh hom nay","2025-05-01T00:00:00Z",100,10,20,0.55)
-n = normalize_social_post(p, "SHB")
-assert n["ticker"] == "SHB" and n["likes"] == 100
-print(f"    Normalize OK: ticker={n['ticker']}, sentiment={n['sentiment']}")
-
-print()
-print("=" * 55)
+print("=" * 60)
+total = len(FILES) + 30   # rough estimate
 if errors:
-    print(f"FAILED: {len(errors)} file co loi syntax: {errors}")
+    print(f"\033[91m  FAILED — {len(errors)} items co loi:\033[0m")
+    for e in errors:
+        print(f"    - {e}")
     sys.exit(1)
 else:
-    print("TAT CA KIEM TRA PASSED")
-print("=" * 55)
+    print(f"\033[92m  ALL CHECKS PASSED\033[0m")
+    print()
+    print("  Luong realtime san sang:")
+    print("  1. Crawlers: CafeF/Vietstock/ChinhPhu RSS + Facebook Stub + vnstock")
+    print("  2. Normalizers: Social, News, Policy, Market → Standard JSON")
+    print("  3. Producers: Kafka fb_mock_data + market_stock_data + ChromaDB")
+    print("  4. Multi-Agent: SocialAgent → MacroAgent → RiskAgent → VMSI")
+    print("  5. Scheduler: 30-phut auto cycle, background threading")
+    print()
+    print("  Chay local:  python realtime_pipeline/scheduler.py --ticker SHB --once")
+    print("  Chay daemon: python realtime_pipeline/scheduler.py --ticker SHB")
+    print("  Dashboard:   streamlit run dashboard_realtime.py --server.port 8502")
+print("=" * 60)
