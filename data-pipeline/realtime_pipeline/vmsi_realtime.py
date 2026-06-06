@@ -116,9 +116,10 @@ class RealtimeVMSIEngine:
                         chroma_docs.append(n)
 
                 if chroma_docs:
-                    ingested = self._get_producer().push_policies_to_chroma(chroma_docs)
+                    # Push vao Kafka policy_data → Vector Worker se xu ly embedding + ingest ChromaDB
+                    ingested = self._get_producer().push_policies(chroma_docs)
                     self.logger.info(
-                        f"[Social] {ingested}/{len(chroma_docs)} news articles → ChromaDB RAG"
+                        f"[Social] {ingested}/{len(chroma_docs)} news articles → Kafka policy_data (Vector Worker xu ly)"
                     )
         except Exception as e:
             self.logger.error(f"Loi crawl news: {e}")
@@ -139,8 +140,9 @@ class RealtimeVMSIEngine:
             docs = crawl_nhnn_all_types()
             if docs:
                 normalized = normalize_policy_batch(docs, self.ticker)
-                ingested = self._get_producer().push_policies_to_chroma(normalized)
-                self.logger.info(f"[Policy] {ingested} van ban NHNN → ChromaDB")
+                # Push vao Kafka policy_data → Vector Worker se xu ly embedding + ingest ChromaDB
+                ingested = self._get_producer().push_policies(normalized)
+                self.logger.info(f"[Policy] {ingested} van ban NHNN → Kafka policy_data (Vector Worker xu ly)")
                 return ingested
         except Exception as e:
             self.logger.error(f"Loi ingest NHNN: {e}")

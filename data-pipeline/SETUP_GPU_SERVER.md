@@ -172,30 +172,63 @@ Status = normal / risk_low
 74s
 ```
 
-### Chay daemon (30 phut / chu ky)
+### Option A: Chay tu dong bang script quan ly (KHUYEN NGHI)
 
 ```bash
-# Chay trong background (dung nohup de tiep tuc sau khi dong terminal)
-nohup python3 realtime_pipeline/scheduler.py --ticker SHB \
-  > logs/scheduler.log 2>&1 &
+# Khoi dong TAT CA processes (Scheduler + Vector Worker + 2 Dashboards)
+bash realtime_pipeline/manage_processes.sh start
 
-echo "Scheduler PID: $!"
+# Kiem tra trang thai
+bash realtime_pipeline/manage_processes.sh status
+
+# Xem logs
+bash realtime_pipeline/manage_processes.sh logs scheduler    # Scheduler logs
+bash realtime_pipeline/manage_processes.sh logs vector       # Vector Worker logs
+bash realtime_pipeline/manage_processes.sh logs rt           # Realtime Dashboard logs
+
+# Dung tat ca
+bash realtime_pipeline/manage_processes.sh stop
+
+# Khoi dong lai
+bash realtime_pipeline/manage_processes.sh restart
 ```
 
-### Chay Dashboard
+**Output mong doi:**
+```
+╔════════════════════════════════════════════════════════╗
+║       FinSent-Agent Realtime Process Manager          ║
+╚════════════════════════════════════════════════════════╝
+
+[1/4] Scheduler:       ✓ Running (PID: 12345)
+[2/4] Vector Worker:   ✓ Running (PID: 12346)
+[3/4] Dashboard Demo:  ✓ Running (PID: 12347)
+[4/4] Dashboard RT:    ✓ Running (PID: 12348)
+```
+
+### Option B: Chay thu cong tung process
 
 ```bash
 # Tao logs folder neu chua co
 mkdir -p logs
 
-# Demo Dashboard (port 8501)
+# 1. Scheduler (30 phut / chu ky)
+nohup python3 realtime_pipeline/scheduler.py --ticker SHB \
+  > logs/scheduler.log 2>&1 &
+echo "Scheduler PID: $!"
+
+# 2. Vector Worker (Chunking + Embedding + ChromaDB)
+nohup python3 realtime_pipeline/run_vector_worker.py \
+  > logs/vector_worker.log 2>&1 &
+echo "Vector Worker PID: $!"
+
+# 3. Demo Dashboard (port 8501)
 nohup streamlit run dashboard.py \
   --server.port 8501 \
   --server.address 0.0.0.0 \
   --server.headless true \
   > logs/dashboard_demo.log 2>&1 &
 
-# Realtime Dashboard (port 8502)
+# 4. Realtime Dashboard (port 8502)
 nohup streamlit run dashboard_realtime.py \
   --server.port 8502 \
   --server.address 0.0.0.0 \
@@ -210,17 +243,36 @@ echo "Dashboard Realtime: http://SERVER_IP:8502"
 
 ## Quan ly processes
 
+### Su dung script quan ly (KHUYEN NGHI)
+
+```bash
+# Xem trang thai tat ca processes
+bash realtime_pipeline/manage_processes.sh status
+
+# Dung tat ca processes
+bash realtime_pipeline/manage_processes.sh stop
+
+# Khoi dong lai
+bash realtime_pipeline/manage_processes.sh restart
+
+# Xem logs realtime
+bash realtime_pipeline/manage_processes.sh logs scheduler
+bash realtime_pipeline/manage_processes.sh logs vector
+```
+
+### Thu cong (neu can)
+
 ```bash
 # Xem tat ca process dang chay
-ps aux | grep -E "scheduler|streamlit"
+ps aux | grep -E "scheduler|vector_worker|streamlit"
 
 # Xem log realtime
 tail -f logs/scheduler.log
+tail -f logs/vector_worker.log
 
-# Dung scheduler
+# Dung processes
 pkill -f "scheduler.py"
-
-# Dung dashboards
+pkill -f "vector_worker.py"
 pkill -f "streamlit"
 
 # Tat Kafka
@@ -264,18 +316,21 @@ data-pipeline/
 │   └── replay_service.py            ← Stream data demo
 │
 ├── realtime_pipeline/                ← Realtime pipeline
-│   ├── scheduler.py                  ← ENTRY POINT chinh
+│   ├── scheduler.py                  ← ENTRY POINT chinh (Scheduler)
+│   ├── run_vector_worker.py          ← ENTRY POINT Vector Worker (moi)
+│   ├── manage_processes.sh           ← Script quan ly processes (moi)
 │   ├── vmsi_realtime.py              ← Engine tinh VMSI
 │   ├── config.py                     ← Config URLs, settings
 │   ├── crawlers/
 │   │   ├── news_crawler.py           ← CafeF, Vietstock, ChinhPhu
 │   │   ├── facebook_crawler.py       ← Facebook Playwright
 │   │   ├── nhnn_crawler.py           ← NHNN sbv.gov.vn
-│   │   └── stock_crawler.py          ← vnstock API v4
+│   │   ├── stock_crawler.py          ← vnstock API v4
+│   │   └── vector_worker.py          ← Kafka Consumer → Chunking + Embedding + ChromaDB (moi)
 │   ├── normalizers/
 │   │   └── unified_normalizer.py     ← Standard JSON
 │   └── producers/
-│       └── realtime_producer.py      ← Kafka + ChromaDB
+│       └── realtime_producer.py      ← Kafka producers (Social, Market, Policy)
 │
 └── multi_agent_system/               ← AI Agents
     ├── agents/
@@ -307,3 +362,13 @@ data-pipeline/
 
 5. **Facebook** — Neu khong co credentials, he thong tu dong chay stub mode
    voi 10 posts mau, pipeline van tinh duoc VMSI.
+
+6. **Vector Worker** — Chay SONG SONG voi Scheduler. Worker lang nghe Kafka,
+   tu dong xu ly embedding + chunking + ingest ChromaDB khi co du lieu moi.
+   Khong can restart, chi can dam bao Kafka dang chay.
+
+7. **Kiem tra Kafka** — Truoc khi chay he thong, dam bao Kafka da khoi dong:
+   ```bash
+   docker compose -f docker-compose.kafka.yml ps
+   nc -z localhost 9092 && echo "Kafka OK"
+   ```
