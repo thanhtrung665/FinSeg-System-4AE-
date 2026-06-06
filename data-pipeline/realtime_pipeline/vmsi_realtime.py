@@ -35,10 +35,11 @@ class RealtimeVMSIEngine:
       7. Ghi live_vmsi.json
     """
 
-    def __init__(self, ticker: str = "SHB"):
+    def __init__(self, ticker: str = "SHB", kafka_enabled: bool = True):
         self.ticker  = ticker.upper()
+        self.kafka_enabled = kafka_enabled  # Flag để tắt Kafka trong dashboard
         self.logger  = logging.getLogger(self.__class__.__name__)
-        self.logger.info(f"RealtimeVMSIEngine khoi tao cho ticker: {self.ticker}")
+        self.logger.info(f"RealtimeVMSIEngine khoi tao cho ticker: {self.ticker}, Kafka: {kafka_enabled}")
 
         # Import lazy de tranh loi khi module chua san sang
         self._producer   = None
@@ -48,9 +49,16 @@ class RealtimeVMSIEngine:
     # ── Lazy init ─────────────────────────────────────────────────────────────
 
     def _get_producer(self):
+        if not self.kafka_enabled:
+            self.logger.warning("Kafka disabled - Producer không khả dụng")
+            return None
         if self._producer is None:
-            from realtime_pipeline.producers.realtime_producer import RealtimeProducer
-            self._producer = RealtimeProducer()
+            try:
+                from realtime_pipeline.producers.realtime_producer import RealtimeProducer
+                self._producer = RealtimeProducer()
+            except Exception as e:
+                self.logger.error(f"Không thể khởi tạo Kafka Producer: {e}")
+                self._producer = None
         return self._producer
 
     def _get_mac(self):
@@ -80,9 +88,13 @@ class RealtimeVMSIEngine:
             posts = crawl_facebook_for_ticker(self.ticker)
             if posts:
                 normalized = normalize_social_batch(posts, self.ticker)
-                pushed = self._get_producer().push_social(normalized)
-                total_pushed += pushed
-                self.logger.info(f"[Social] {pushed} Facebook posts → Kafka")
+                producer = self._get_producer()
+                if producer:
+                    pushed = producer.push_social(normalized)
+                    total_pushed += pushed
+                    self.logger.info(f"[Social] {pushed} Facebook posts → Kafka")
+                else:
+                    self.logger.info(f"[Social] {len(normalized)} Facebook posts (Kafka disabled - skip push)")
         except Exception as e:
             self.logger.error(f"Loi crawl Facebook: {e}")
 
@@ -94,9 +106,13 @@ class RealtimeVMSIEngine:
             if articles:
                 # Push vao Kafka
                 normalized_kafka = normalize_news_batch(articles, self.ticker)
-                pushed = self._get_producer().push_social(normalized_kafka)
-                total_pushed += pushed
-                self.logger.info(f"[Social] {pushed} news articles → Kafka")
+                producer = self._get_producer()
+                if producer:
+                    pushed = producer.push_social(normalized_kafka)
+                    total_pushed += pushed
+                    self.logger.info(f"[Social] {pushed} news articles → Kafka")
+                else:
+                    self.logger.info(f"[Social] {len(normalized_kafka)} news articles (Kafka disabled - skip push)")
 
                 # DONG THOI: embed va ingest vao ChromaDB de MacroAgent RAG
                 # Chi ingest cac bai co content du chat luong (>= 100 ky tu)
@@ -115,12 +131,14 @@ class RealtimeVMSIEngine:
                         }
                         chroma_docs.append(n)
 
-                if chroma_docs:
+                if chroma_docs and producer:
                     # Push vao Kafka policy_data → Vector Worker se xu ly embedding + ingest ChromaDB
-                    ingested = self._get_producer().push_policies(chroma_docs)
+                    ingested = producer.push_policies(chroma_docs)
                     self.logger.info(
                         f"[Social] {ingested}/{len(chroma_docs)} news articles → Kafka policy_data (Vector Worker xu ly)"
                     )
+                elif chroma_docs:
+                    self.logger.info(f"[Social] {len(chroma_docs)} news articles (Kafka disabled - skip ChromaDB ingest)")
         except Exception as e:
             self.logger.error(f"Loi crawl news: {e}")
 
@@ -141,9 +159,14 @@ class RealtimeVMSIEngine:
             if docs:
                 normalized = normalize_policy_batch(docs, self.ticker)
                 # Push vao Kafka policy_data → Vector Worker se xu ly embedding + ingest ChromaDB
-                ingested = self._get_producer().push_policies(normalized)
-                self.logger.info(f"[Policy] {ingested} van ban NHNN → Kafka policy_data (Vector Worker xu ly)")
-                return ingested
+                producer = self._get_producer()
+                if producer:
+                    ingested = producer.push_policies(normalized)
+                    self.logger.info(f"[Policy] {ingested} van ban NHNN → Kafka policy_data (Vector Worker xu ly)")
+                    return ingested
+                else:
+                    self.logger.info(f"[Policy] {len(normalized)} van ban NHNN (Kafka disabled - skip push)")
+                    return len(normalized)
         except Exception as e:
             self.logger.error(f"Loi ingest NHNN: {e}")
         return 0
@@ -168,14 +191,20 @@ class RealtimeVMSIEngine:
 
             if bars:
                 normalized = normalize_stock_batch(bars, self.ticker)
-                pushed = self._get_producer().push_market(normalized)
-                self.logger.info(f"[Market] {pushed} bars → Kafka")
+                producer = self._get_producer()
+                if producer:
+                    pushed = producer.push_market(normalized)
+                    self.logger.info(f"[Market] {pushed} bars → Kafka")
+                else:
+                    self.logger.info(f"[Market] {len(normalized)} bars (Kafka disabled - skip push)")
 
             # Them realtime bar neu co
             rt_bar = result.get("realtime_bar")
             if rt_bar:
                 normalized_rt = normalize_stock_bar(rt_bar, self.ticker)
-                self._get_producer().push_market([normalized_rt])
+                producer = self._get_producer()
+                if producer:
+                    producer.push_market([normalized_rt])
 
             mkt_sentiment = result.get("market_sentiment", 0.0)
             self.logger.info(f"[Market] sentiment = {mkt_sentiment:+.4f}")

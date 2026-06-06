@@ -279,8 +279,21 @@ def _fmt_price(v)->str:
 
 @st.cache_resource(show_spinner=False)
 def get_engine(ticker:str):
-    from realtime_pipeline.vmsi_realtime import RealtimeVMSIEngine
-    return RealtimeVMSIEngine(ticker=ticker)
+    """Get VMSI Engine - với fallback khi Kafka không khả dụng."""
+    try:
+        from realtime_pipeline.vmsi_realtime import RealtimeVMSIEngine
+        return RealtimeVMSIEngine(ticker=ticker, kafka_enabled=False)
+    except Exception as e:
+        st.warning(f"⚠️ Không kết nối được Kafka: {e}. Dashboard sẽ hoạt động ở chế độ FILE-ONLY.")
+        # Return mock engine object
+        class MockEngine:
+            def __init__(self, ticker):
+                self.ticker = ticker
+            def _collect_social(self): return 0
+            def _collect_market(self): return {"sentiment": 0.5}
+            def _run_mac_cycle(self): return {"vmsi_value": 50, "status": "normal"}
+            def _enrich_with_market(self, mac_res, mkt): return mac_res
+        return MockEngine(ticker)
 
 @st.cache_resource(show_spinner=False)
 def get_chatbot():
@@ -371,7 +384,7 @@ with tc1:
     st.session_state["last_ticker"] = ticker_input
 
 with tc2:
-    run_now = st.button("▶ PHÂN TÍCH", type="primary", use_container_width=True)
+    run_now = st.button("▶ PHÂN TÍCH", type="primary", width='stretch')
 
 with tc3:
     auto_on = st.toggle("AUTO 30P", value=st.session_state.get("auto_on",False))
@@ -384,19 +397,19 @@ with tc4:
 tab_sel = st.session_state.get("active_tab","DASHBOARD")
 t1,t2,t3,t4,t5 = st.columns([1.5,1.5,1.5,1.5,5])
 with t1:
-    if st.button("◉ DASHBOARD", use_container_width=True,
+    if st.button("◉ DASHBOARD", width='stretch',
                  type="primary" if tab_sel=="DASHBOARD" else "secondary"):
         st.session_state["active_tab"]="DASHBOARD"; st.rerun()
 with t2:
-    if st.button("◎ PHÂN TÍCH", use_container_width=True,
+    if st.button("◎ PHÂN TÍCH", width='stretch',
                  type="primary" if tab_sel=="ANALYSIS" else "secondary"):
         st.session_state["active_tab"]="ANALYSIS"; st.rerun()
 with t3:
-    if st.button("◎ THỊ TRƯỜNG", use_container_width=True,
+    if st.button("◎ THỊ TRƯỜNG", width='stretch',
                  type="primary" if tab_sel=="MARKET" else "secondary"):
         st.session_state["active_tab"]="MARKET"; st.rerun()
 with t4:
-    if st.button("◎ TIN TỨC", use_container_width=True,
+    if st.button("◎ TIN TỨC", width='stretch',
                  type="primary" if tab_sel=="NEWS" else "secondary"):
         st.session_state["active_tab"]="NEWS"; st.rerun()
 
@@ -554,7 +567,7 @@ if st.session_state.get("active_tab","DASHBOARD") == "DASHBOARD":
         showlegend=False,
         font=dict(family="Share Tech Mono"),
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     # ── Bottom two-col: Strategy + News  |  Chatbot ───────────────────────────
     col_l, col_r = st.columns([5, 5], gap="medium")
@@ -663,7 +676,7 @@ if st.session_state.get("active_tab","DASHBOARD") == "DASHBOARD":
             st.rerun()
 
         if len(st.session_state.rt_msgs) > 2:
-            if st.button("↺ Xóa lịch sử", use_container_width=True):
+            if st.button("↺ Xóa lịch sử", width='stretch'):
                 st.session_state.rt_msgs=[{"role":"assistant","content":_init_msg}]
                 st.rerun()
 
@@ -797,7 +810,7 @@ elif st.session_state.get("active_tab") == "ANALYSIS":
                 font=dict(family="Share Tech Mono"),
                 xaxis_rangebreaks=[dict(bounds=["sat","mon"])],
             )
-            st.plotly_chart(fig_c, use_container_width=True)
+            st.plotly_chart(fig_c, width='stretch')
 
             # Volume bars
             fig_v = go.Figure(go.Bar(
@@ -962,18 +975,18 @@ elif st.session_state.get("active_tab") == "ANALYSIS":
         # Quick action buttons theo design
         qa1, qa2 = st.columns(2)
         with qa1:
-            if st.button("📊 Đề xuất phòng vệ", use_container_width=True, key="qa_defend"):
+            if st.button("📊 Đề xuất phòng vệ", width='stretch', key="qa_defend"):
                 st.session_state["_qa2"] = f"Đề xuất chiến lược phòng vệ danh mục {tshown} trong bối cảnh VMSI={vmsi_v:.0f}?"
         with qa2:
-            if st.button(f"🔍 Phân tích {tshown}", use_container_width=True, key="qa_analyze"):
+            if st.button(f"🔍 Phân tích {tshown}", width='stretch', key="qa_analyze"):
                 st.session_state["_qa2"] = f"Phân tích kỹ thuật và cơ bản cho cổ phiếu {tshown}. Giá hiện tại {_fmt_price(close_p)}, biến động {chg_sgn}{chg_pct:.2f}%."
 
         qa3, qa4 = st.columns(2)
         with qa3:
-            if st.button("✂ Cắt lỗ tự động", use_container_width=True, key="qa_stoploss"):
+            if st.button("✂ Cắt lỗ tự động", width='stretch', key="qa_stoploss"):
                 st.session_state["_qa2"] = f"Khuyến nghị mức cắt lỗ hợp lý cho {tshown} khi VMSI={vmsi_v:.0f}?"
         with qa4:
-            if st.button("📰 Tin tức ảnh hưởng", use_container_width=True, key="qa_news"):
+            if st.button("📰 Tin tức ảnh hưởng", width='stretch', key="qa_news"):
                 st.session_state["_qa2"] = f"Tin tức nào đang ảnh hưởng đến {tshown} hiện tại?"
 
         # Chat session rieng cho tab ANALYSIS
@@ -1020,7 +1033,7 @@ elif st.session_state.get("active_tab") == "ANALYSIS":
             st.rerun()
 
         if len(st.session_state.rt_msgs2) > 2:
-            if st.button("↺ Xóa chat", use_container_width=True, key="clr2"):
+            if st.button("↺ Xóa chat", width='stretch', key="clr2"):
                 st.session_state.rt_msgs2=[{"role":"assistant","content":_init2}]; st.rerun()
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1114,7 +1127,7 @@ elif st.session_state.get("active_tab") == "MARKET":
         st.html(stream_html)
 
         # Refresh button
-        if st.button("↻ CẬP NHẬT STREAM", use_container_width=True, key="refresh_stream"):
+        if st.button("↻ CẬP NHẬT STREAM", width='stretch', key="refresh_stream"):
             # Crawl Facebook + news thực tế
             with st.spinner("Đang crawl social stream..."):
                 try:
@@ -1355,16 +1368,16 @@ elif st.session_state.get("active_tab") == "MARKET":
     # Quick action buttons theo design
     qb1,qb2,qb3,qb4 = st.columns(4)
     with qb1:
-        if st.button(f"❓ Vì sao {tshown} bán mạnh?", use_container_width=True, key="qm1"):
+        if st.button(f"❓ Vì sao {tshown} bán mạnh?", width='stretch', key="qm1"):
             st.session_state["_qm"] = f"Vì sao {tshown} đang bị bán mạnh hôm nay? VMSI={vmsi_v:.0f}, FUD={fud_level}."
     with qb2:
-        if st.button("🔍 Đối chiếu NHNN", use_container_width=True, key="qm2"):
+        if st.button("🔍 Đối chiếu NHNN", width='stretch', key="qm2"):
             st.session_state["_qm"] = f"Đối chiếu tin đồn trên mạng xã hội với dữ liệu chính thức của NHNN về {tshown}."
     with qb3:
-        if st.button("📊 Phân tích FUD/FOMO", use_container_width=True, key="qm3"):
+        if st.button("📊 Phân tích FUD/FOMO", width='stretch', key="qm3"):
             st.session_state["_qm"] = f"Phân tích các tin FUD và FOMO đang ảnh hưởng đến {tshown} trên các kênh mạng xã hội."
     with qb4:
-        if st.button("✅ Xác minh tin tức", use_container_width=True, key="qm4"):
+        if st.button("✅ Xác minh tin tức", width='stretch', key="qm4"):
             st.session_state["_qm"] = f"Xác minh tin tức: '{rumor_title}'. Đây là FUD hay tin thật? So sánh với dữ liệu ChromaDB."
 
     chat_box3 = st.container(height=280)
@@ -1408,7 +1421,7 @@ elif st.session_state.get("active_tab") == "MARKET":
         st.rerun()
 
     if len(st.session_state.rt_msgs3) > 2:
-        if st.button("↺ Xóa chat", use_container_width=True, key="clr3"):
+        if st.button("↺ Xóa chat", width='stretch', key="clr3"):
             st.session_state.rt_msgs3=[{"role":"assistant","content":_init3}]; st.rerun()
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1665,7 +1678,7 @@ elif st.session_state.get("active_tab") == "NEWS":
             key="tg_chat",
         )
 
-        send_tg = st.button("📤 GỬI QUA TELEGRAM", type="primary", use_container_width=True)
+        send_tg = st.button("📤 GỬI QUA TELEGRAM", type="primary", width='stretch')
         if send_tg:
             if not tg_token or not tg_chat_id:
                 st.error("Vui lòng nhập Bot Token và Chat ID")
