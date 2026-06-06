@@ -44,6 +44,26 @@ def _now_iso() -> str:
 # ── Normalizers (Nhận Input là Dict) ─────────────────────────────────────────
 
 def normalize_social_post(post_dict: Dict[str, Any], ticker_context: str = "") -> Dict[str, Any]:
+    """
+    Chuẩn hóa social post thành schema thống nhất.
+    Input: dict hoặc dataclass RawSocialPost
+    """
+    # Nếu là dataclass, convert sang dict
+    if hasattr(post_dict, '__dataclass_fields__'):
+        post_dict = {
+            'post_id': post_dict.post_id,
+            'source': post_dict.source,
+            'source_name': post_dict.source_name,
+            'content_text': post_dict.content_text,
+            'published_at': post_dict.published_at,
+            'likes': post_dict.likes,
+            'shares': post_dict.shares,
+            'comments': post_dict.comments,
+            'credibility': post_dict.credibility,
+            'ticker_context': getattr(post_dict, 'ticker_context', ''),
+            'url': getattr(post_dict, 'url', ''),
+        }
+    
     ctx = ticker_context or post_dict.get("ticker_context", "UNKNOWN")
     content = post_dict.get("content_text", "")
     sentiment_score = _keyword_sentiment(content)
@@ -71,6 +91,23 @@ def normalize_social_post(post_dict: Dict[str, Any], ticker_context: str = "") -
     }
 
 def normalize_news_article(article_dict: Dict[str, Any], ticker_context: str = "") -> Dict[str, Any]:
+    """
+    Chuẩn hóa news article thành schema thống nhất.
+    Input: dict hoặc dataclass RawNewsItem
+    """
+    # Nếu là dataclass, convert sang dict
+    if hasattr(article_dict, '__dataclass_fields__'):
+        article_dict = {
+            'article_id': article_dict.article_id,
+            'source': article_dict.source,
+            'title': article_dict.title,
+            'content_text': article_dict.content_text,
+            'url': article_dict.url,
+            'published_at': article_dict.published_at,
+            'credibility': article_dict.credibility,
+            'ticker_context': getattr(article_dict, 'ticker_context', ''),
+        }
+    
     ctx = ticker_context or article_dict.get("ticker_context", "UNKNOWN")
     content = article_dict.get("content_text", "")
     sentiment_score = _keyword_sentiment(content)
@@ -136,4 +173,58 @@ def normalize_news_batch(articles: List[Dict[str, Any]], ticker_context: str = "
 def normalize_policy_batch(docs: List[Dict[str, Any]], ticker_context: str = "") -> List[Dict[str, Any]]:
     return [normalize_policy_doc(d, ticker_context) for d in docs]
 
-# Lưu ý: Vnstock hiện tại trong file stock_crawler đã trả về dữ liệu đúng chuẩn luôn nên có thể bỏ qua bước normalize này.
+# Lưu ý: Vnstock dữ liệu cần normalize để phù hợp với Kafka schema
+
+def normalize_stock_bar(bar: Any, ticker_context: str = "") -> Dict[str, Any]:
+    """
+    Chuẩn hóa 1 RawStockBar thành schema Kafka.
+    bar có thể là dataclass RawStockBar hoặc dict.
+    """
+    # Nếu bar là dataclass, convert sang dict
+    if hasattr(bar, '__dataclass_fields__'):
+        bar_dict = {
+            'bar_id': bar.bar_id,
+            'ticker': bar.ticker,
+            'trading_date': bar.trading_date,
+            'open': bar.open,
+            'high': bar.high,
+            'low': bar.low,
+            'close': bar.close,
+            'volume': bar.volume,
+            'timestamp': bar.timestamp,
+            'ticker_context': bar.ticker_context,
+            'source': getattr(bar, 'source', 'vnstock'),
+            'source_type': getattr(bar, 'source_type', 'market'),
+            'price_change': getattr(bar, 'price_change', 0.0),
+            'is_up': getattr(bar, 'is_up', False),
+        }
+    else:
+        bar_dict = bar
+    
+    ctx = ticker_context or bar_dict.get('ticker_context', bar_dict.get('ticker', 'UNKNOWN'))
+    
+    return {
+        "bar_id":            bar_dict.get('bar_id'),
+        "ticker_context":    ctx,
+        "ticker":            bar_dict.get('ticker'),
+        "trading_date":      bar_dict.get('trading_date'),
+        "timestamp":         bar_dict.get('timestamp'),
+        "timestamp_ingested": _now_iso(),
+        "source":            bar_dict.get('source', 'vnstock'),
+        "source_type":       bar_dict.get('source_type', 'market'),
+        "content": {
+            "open":          float(bar_dict.get('open', 0)),
+            "high":          float(bar_dict.get('high', 0)),
+            "low":           float(bar_dict.get('low', 0)),
+            "close":         float(bar_dict.get('close', 0)),
+            "volume":        int(bar_dict.get('volume', 0)),
+            "price_change":  float(bar_dict.get('price_change', 0.0)),
+            "is_up":         bool(bar_dict.get('is_up', False)),
+        },
+        "normalized": True,
+    }
+
+
+def normalize_stock_batch(bars: List[Any], ticker_context: str = "") -> List[Dict[str, Any]]:
+    """Chuẩn hóa batch các RawStockBar."""
+    return [normalize_stock_bar(b, ticker_context) for b in bars]

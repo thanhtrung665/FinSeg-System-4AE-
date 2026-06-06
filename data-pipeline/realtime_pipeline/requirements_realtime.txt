@@ -20,12 +20,20 @@ selenium==4.27.1
 # HTTP async (optional, cho performance cao hon)
 httpx==0.27.2
 
+# Embedding & NLP (cho Vector Worker)
+sentence-transformers==3.0.1
+torch>=2.0.0
+transformers>=4.30.0
+
+# GPU acceleration (tuy chon, chi can khi co GPU)
+# bitsandbytes>=0.43.0
+# accelerate>=0.20.0
+
 # Dependency da co trong requirements.txt goc (khong can cai lai):
 # kafka-python-ng==2.2.3
 # chromadb==1.5.9
 # pandas==2.2.3
 # pydantic==2.11.4
-# sentence-transformers==3.0.1
 # vnstock==4.0.4
 # python-dotenv==1.2.2
 # tqdm==4.67.1

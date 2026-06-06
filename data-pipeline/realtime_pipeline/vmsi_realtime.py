@@ -158,7 +158,9 @@ class RealtimeVMSIEngine:
         from realtime_pipeline.crawlers.stock_crawler import (
             crawl_stocks_for_ticker
         )
-        from realtime_pipeline.normalizers.unified_normalizer import normalize_stock_batch
+        from realtime_pipeline.normalizers.unified_normalizer import (
+            normalize_stock_batch, normalize_stock_bar
+        )
 
         try:
             result = crawl_stocks_for_ticker(self.ticker)
@@ -172,8 +174,8 @@ class RealtimeVMSIEngine:
             # Them realtime bar neu co
             rt_bar = result.get("realtime_bar")
             if rt_bar:
-                from realtime_pipeline.normalizers.unified_normalizer import normalize_stock_bar
-                self._get_producer().push_market([normalize_stock_bar(rt_bar, self.ticker)])
+                normalized_rt = normalize_stock_bar(rt_bar, self.ticker)
+                self._get_producer().push_market([normalized_rt])
 
             mkt_sentiment = result.get("market_sentiment", 0.0)
             self.logger.info(f"[Market] sentiment = {mkt_sentiment:+.4f}")
