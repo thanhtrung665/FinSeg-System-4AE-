@@ -121,7 +121,11 @@ class RealtimeVectorIngestor:
                 bootstrap_servers=[os.getenv('KAFKA_BROKER', 'localhost:9092')],
                 value_deserializer=lambda x: json.loads(x.decode('utf-8')),
                 auto_offset_reset='latest', # Chỉ lấy tin mới nhất lúc realtime
-                group_id='vector_ingestion_group'
+                group_id='vector_ingestion_group',
+                max_poll_interval_ms=600000,  # 10 phut - tang tu 300s len de xu ly embedding cham
+                session_timeout_ms=60000,     # 60 giay - timeout cho session
+                heartbeat_interval_ms=10000,  # 10 giay - gui heartbeat
+                max_poll_records=10           # Chi xu ly 10 messages / poll de tranh qua tai
             )
             logger.info("🎧 Vector Worker đang lắng nghe Kafka...")
             

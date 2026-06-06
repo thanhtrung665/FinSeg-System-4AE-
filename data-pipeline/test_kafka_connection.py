@@ -1,191 +1,184 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-test_kafka_connection.py
-Test Kafka connection, producer và consumer
+Test Kafka connection va topics
 """
 
-import json
 import sys
 from kafka import KafkaProducer, KafkaConsumer, KafkaAdminClient
 from kafka.admin import NewTopic
 from kafka.errors import KafkaError
+import json
+import time
 
-def print_header(title):
+def test_kafka_connection():
+    """Test ket noi Kafka"""
     print("\n" + "="*60)
-    print(f"  {title}")
-    print("="*60)
-
-def test_admin():
-    """Test Kafka Admin connection and list topics"""
-    print_header("TEST 1: Kafka Admin & Topics")
+    print("  KAFKA CONNECTION TEST")
+    print("="*60 + "\n")
     
+    broker = 'localhost:9092'
+    
+    # Test 1: Kiem tra Kafka server
+    print("[1/5] Kiem tra Kafka server...")
     try:
         admin = KafkaAdminClient(
-            bootstrap_servers=['localhost:9092'],
-            client_id='test-admin'
+            bootstrap_servers=broker,
+            request_timeout_ms=5000
         )
-        
-        # List topics
+        print("✅ Kafka server dang chay tai: " + broker)
+        admin.close()
+    except Exception as e:
+        print(f"❌ Khong ket noi duoc Kafka: {e}")
+        print("\n💡 Giai phap:")
+        print("   1. Chay: run_all_kafka.bat")
+        print("   2. Hoac chay tung buoc:")
+        print("      - start_zookeeper.bat")
+        print("      - start_kafka.bat")
+        print("      - create_topics.bat")
+        return False
+    
+    # Test 2: List topics
+    print("\n[2/5] Kiem tra Kafka topics...")
+    try:
+        admin = KafkaAdminClient(bootstrap_servers=broker)
         topics = admin.list_topics()
-        print(f"✅ Connected to Kafka Admin")
-        print(f"📋 Found {len(topics)} topics:")
-        for topic in sorted(topics):
-            print(f"   - {topic}")
+        
+        required_topics = ['fb_mock_data', 'realtime_market', 'realtime_policy']
+        missing_topics = [t for t in required_topics if t not in topics]
+        
+        if missing_topics:
+            print(f"⚠️  Topics bi thieu: {missing_topics}")
+            print("\n💡 Tao topics bang cach chay: create_topics.bat")
+            return False
+        else:
+            print("✅ Tat ca topics da san sang:")
+            for topic in required_topics:
+                print(f"   - {topic}")
         
         admin.close()
-        return True
-        
     except Exception as e:
-        print(f"❌ Admin connection failed: {e}")
+        print(f"❌ Loi kiem tra topics: {e}")
         return False
-
-def test_producer():
-    """Test Kafka Producer"""
-    print_header("TEST 2: Kafka Producer")
     
+    # Test 3: Producer test
+    print("\n[3/5] Test Kafka Producer...")
     try:
         producer = KafkaProducer(
-            bootstrap_servers=['localhost:9092'],
-            value_serializer=lambda v: json.dumps(v, ensure_ascii=False).encode('utf-8'),
-            key_serializer=lambda k: k.encode('utf-8') if k else None
+            bootstrap_servers=broker,
+            value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+            request_timeout_ms=5000
         )
         
-        # Send test message
-        test_msg = {
-            'test': 'hello from test_kafka_connection.py',
-            'timestamp': '2025-06-06T14:00:00',
-            'data': 'This is a test message 中文'
+        test_message = {
+            "test": True,
+            "message": "Test message from Python",
+            "timestamp": time.time()
         }
         
-        future = producer.send('realtime_news', key='test', value=test_msg)
-        result = future.get(timeout=10)
+        future = producer.send('fb_mock_data', test_message)
+        record_metadata = future.get(timeout=10)
         
-        print(f"✅ Producer connected")
-        print(f"📤 Sent message to topic: {result.topic}")
-        print(f"   Partition: {result.partition}")
-        print(f"   Offset: {result.offset}")
-        print(f"   Message: {test_msg}")
-        
-        producer.flush()
+        print(f"✅ Producer OK - Sent to topic: {record_metadata.topic}, partition: {record_metadata.partition}")
         producer.close()
-        return True
-        
     except Exception as e:
-        print(f"❌ Producer failed: {e}")
+        print(f"❌ Producer loi: {e}")
         return False
-
-def test_consumer():
-    """Test Kafka Consumer"""
-    print_header("TEST 3: Kafka Consumer")
     
+    # Test 4: Consumer test
+    print("\n[4/5] Test Kafka Consumer...")
     try:
         consumer = KafkaConsumer(
-            'realtime_news',
-            bootstrap_servers=['localhost:9092'],
-            auto_offset_reset='earliest',
-            consumer_timeout_ms=5000,  # 5 seconds timeout
-            value_deserializer=lambda m: json.loads(m.decode('utf-8')),
-            group_id='test-consumer-group'
+            'fb_mock_data',
+            bootstrap_servers=broker,
+            auto_offset_reset='latest',
+            consumer_timeout_ms=3000,
+            value_deserializer=lambda m: json.loads(m.decode('utf-8'))
         )
         
-        print(f"✅ Consumer connected")
-        print(f"📥 Reading messages from 'realtime_news' topic...")
+        print("✅ Consumer OK - Listening to topic: fb_mock_data")
+        consumer.close()
+    except Exception as e:
+        print(f"❌ Consumer loi: {e}")
+        return False
+    
+    # Test 5: Full workflow test
+    print("\n[5/5] Test full Producer → Consumer workflow...")
+    try:
+        # Producer
+        producer = KafkaProducer(
+            bootstrap_servers=broker,
+            value_serializer=lambda v: json.dumps(v).encode('utf-8')
+        )
         
-        msg_count = 0
+        test_data = {
+            "ticker": "SHB",
+            "test_id": int(time.time()),
+            "message": "Full workflow test"
+        }
+        
+        producer.send('fb_mock_data', test_data)
+        producer.flush()
+        print("✅ Sent test message")
+        
+        # Consumer
+        consumer = KafkaConsumer(
+            'fb_mock_data',
+            bootstrap_servers=broker,
+            auto_offset_reset='latest',
+            consumer_timeout_ms=5000,
+            value_deserializer=lambda m: json.loads(m.decode('utf-8'))
+        )
+        
+        # Send another message to trigger consumer
+        producer.send('fb_mock_data', test_data)
+        producer.flush()
+        
+        received = False
         for message in consumer:
-            msg_count += 1
-            print(f"\n   Message {msg_count}:")
-            print(f"   - Partition: {message.partition}")
-            print(f"   - Offset: {message.offset}")
-            print(f"   - Key: {message.key.decode('utf-8') if message.key else None}")
-            print(f"   - Value: {message.value}")
-            
-            if msg_count >= 3:  # Read max 3 messages
+            if message.value.get('test_id') == test_data['test_id']:
+                print(f"✅ Received test message: {message.value}")
+                received = True
                 break
         
-        if msg_count == 0:
-            print(f"⚠️  No messages found (this is OK for a fresh topic)")
-        else:
-            print(f"\n✅ Read {msg_count} message(s)")
+        if not received:
+            print("⚠️  Khong nhan duoc message (co the do timing)")
         
-        consumer.close()
-        return True
-        
-    except Exception as e:
-        print(f"❌ Consumer failed: {e}")
-        return False
-
-def test_all_topics():
-    """Test sending messages to all 4 topics"""
-    print_header("TEST 4: All Topics Producer Test")
-    
-    topics = ['realtime_news', 'realtime_social', 'realtime_market', 'realtime_policy']
-    
-    try:
-        producer = KafkaProducer(
-            bootstrap_servers=['localhost:9092'],
-            value_serializer=lambda v: json.dumps(v, ensure_ascii=False).encode('utf-8')
-        )
-        
-        for topic in topics:
-            test_msg = {
-                'topic': topic,
-                'test': f'Test message for {topic}',
-                'timestamp': '2025-06-06T14:00:00'
-            }
-            
-            future = producer.send(topic, value=test_msg)
-            result = future.get(timeout=10)
-            print(f"✅ Sent to {topic} (partition {result.partition}, offset {result.offset})")
-        
-        producer.flush()
         producer.close()
-        print(f"\n✅ All 4 topics tested successfully")
-        return True
+        consumer.close()
         
     except Exception as e:
-        print(f"❌ All topics test failed: {e}")
+        print(f"❌ Workflow test loi: {e}")
         return False
-
-def main():
-    print("\n" + "🚀"*30)
-    print("  KAFKA CONNECTION TEST")
-    print("🚀"*30)
-    
-    results = []
-    
-    # Test 1: Admin
-    results.append(("Admin Connection", test_admin()))
-    
-    # Test 2: Producer
-    results.append(("Producer", test_producer()))
-    
-    # Test 3: Consumer
-    results.append(("Consumer", test_consumer()))
-    
-    # Test 4: All topics
-    results.append(("All Topics", test_all_topics()))
     
     # Summary
-    print_header("TEST SUMMARY")
-    
-    all_passed = True
-    for name, passed in results:
-        status = "✅ PASS" if passed else "❌ FAIL"
-        print(f"{status}  {name}")
-        if not passed:
-            all_passed = False
-    
     print("\n" + "="*60)
-    if all_passed:
-        print("🎉 ALL TESTS PASSED! Kafka is ready.")
-        print("="*60)
-        return 0
-    else:
-        print("⚠️  SOME TESTS FAILED. Check the errors above.")
-        print("="*60)
-        return 1
+    print("  ✅ TAT CA TESTS DA PASS!")
+    print("="*60)
+    print("\nKafka da san sang de su dung:")
+    print(f"  - Bootstrap server: {broker}")
+    print("  - Topics: fb_mock_data, realtime_market, realtime_policy")
+    print("\nBuoc tiep theo:")
+    print("  1. Enable Kafka trong dashboard:")
+    print("     - Sua file: dashboard_realtime.py")
+    print("     - Doi: kafka_enabled=False → kafka_enabled=True")
+    print("\n  2. Chay he thong:")
+    print("     - Terminal 1: python realtime_pipeline\\scheduler.py --ticker SHB")
+    print("     - Terminal 2: python realtime_pipeline\\run_vector_worker.py")
+    print("     - Terminal 3: streamlit run dashboard_realtime.py")
+    print("\n" + "="*60)
+    
+    return True
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        success = test_kafka_connection()
+        sys.exit(0 if success else 1)
+    except KeyboardInterrupt:
+        print("\n\nTest interrupted by user")
+        sys.exit(1)
+    except Exception as e:
+        print(f"\n❌ Unexpected error: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)

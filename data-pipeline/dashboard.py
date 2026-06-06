@@ -180,7 +180,7 @@ with st.sidebar:
     run_cycle = st.button(
         "▶ Chạy phân tích ngay",
         type="primary",
-        use_container_width=True,
+        width='stretch',
     )
 
     st.divider()
@@ -365,7 +365,7 @@ with chart_col:
         showlegend=False,
         font=dict(family="Be Vietnam Pro, Segoe UI, Arial, sans-serif"),
     )
-    st.plotly_chart(fig_line, use_container_width=True)
+    st.plotly_chart(fig_line, width='stretch')
 
 with radar_col:
     st.markdown("##### 🕸️ Component Scores")
@@ -400,7 +400,7 @@ with radar_col:
         showlegend=False,
         font=dict(family="Be Vietnam Pro, Segoe UI, Arial, sans-serif"),
     )
-    st.plotly_chart(fig_radar, use_container_width=True)
+    st.plotly_chart(fig_radar, width='stretch')
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -467,7 +467,7 @@ with left_col:
         ],
         "Dải": ["[-1, 1]", "[-1, 1]", "{-1, 0, 1}", "[-1, 1]", "[0, 100]"],
     })
-    st.dataframe(df_scores, hide_index=True, use_container_width=True)
+    st.dataframe(df_scores, hide_index=True, width='stretch')
 
 
 # ── RIGHT: Chatbot AI ─────────────────────────────────────────────────────────
@@ -477,16 +477,16 @@ with right_col:
     # Quick actions
     q1, q2, q3, q4 = st.columns(4)
     with q1:
-        if st.button("📊 VMSI?", use_container_width=True):
+        if st.button("📊 VMSI?", width='stretch'):
             st.session_state["_quick"] = "VMSI la gi va hien tai dang o muc nao?"
     with q2:
-        if st.button("🎯 Khuyen nghi", use_container_width=True):
+        if st.button("🎯 Khuyen nghi", width='stretch'):
             st.session_state["_quick"] = "Cho toi khuyen nghi dau tu cu the dua tren VMSI hien tai."
     with q3:
-        if st.button("⚠️ Rui ro", use_container_width=True):
+        if st.button("⚠️ Rui ro", width='stretch'):
             st.session_state["_quick"] = "Phan tich rui ro thi truong hien tai giup toi."
     with q4:
-        if st.button("🏦 NHNN", use_container_width=True):
+        if st.button("🏦 NHNN", width='stretch'):
             st.session_state["_quick"] = "Chinh sach NHNN anh huong the nao den thi truong?"
 
     # Khoi tao lich su chat
@@ -540,7 +540,7 @@ with right_col:
 
     # Nut xoa lich su
     if len(st.session_state.messages) > 1:
-        if st.button("🗑️ Xóa lịch sử chat", use_container_width=True):
+        if st.button("🗑️ Xóa lịch sử chat", width='stretch'):
             st.session_state.messages = [{
                 "role": "assistant",
                 "content": f"🔄 Đã xóa. VMSI: **{vmsi_val:.1f}** — {status_label(status)}.",

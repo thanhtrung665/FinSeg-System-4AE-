@@ -24,9 +24,10 @@ _HEADERS = {
     "Accept-Language": "vi-VN,vi;q=0.9,en;q=0.8",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 }
-_TIMEOUT     = 12
+_TIMEOUT     = 30   # Tang tu 12 -> 30 giay de xu ly CafeF cham
 _MAX_LEN     = 5000
 _MIN_CONTENT = 80   # bo qua bai co noi dung qua ngan
+_MAX_RETRIES = 2    # So lan retry khi timeout
 
 
 @dataclass
@@ -104,49 +105,60 @@ def _scrape_article(url: str) -> str:
 # ── RSS crawler ────────────────────────────────────────────────────────────────
 
 def crawl_rss_source(source_name: str, source_cfg: dict) -> List[RawNewsItem]:
-    """Crawl tat ca RSS URLs cua 1 nguon."""
+    """Crawl tat ca RSS URLs cua 1 nguon voi retry logic."""
     items: List[RawNewsItem] = []
     credibility = source_cfg.get("credibility", 0.8)
 
     for rss_url in source_cfg.get("rss_urls", []):
-        try:
-            r    = requests.get(rss_url, headers=_HEADERS, timeout=_TIMEOUT)
-            feed = feedparser.parse(r.text)
-            logger.info(f"[{source_name}] RSS {rss_url} → {len(feed.entries)} entries")
+        retry_count = 0
+        while retry_count <= _MAX_RETRIES:
+            try:
+                r    = requests.get(rss_url, headers=_HEADERS, timeout=_TIMEOUT)
+                feed = feedparser.parse(r.text)
+                logger.info(f"[{source_name}] RSS {rss_url} → {len(feed.entries)} entries")
 
-            for entry in feed.entries:
-                published_at = _parse_feed_date(entry)
-                if not _is_recent(published_at):
-                    continue
+                for entry in feed.entries:
+                    published_at = _parse_feed_date(entry)
+                    if not _is_recent(published_at):
+                        continue
 
-                title = getattr(entry, "title", "").strip()
-                url   = getattr(entry, "link",  "").strip()
-                if not title or not url:
-                    continue
+                    title = getattr(entry, "title", "").strip()
+                    url   = getattr(entry, "link",  "").strip()
+                    if not title or not url:
+                        continue
 
-                # Thu dung summary truoc, neu ngan thi scrape
-                body = _clean_html(getattr(entry, "summary", ""))
-                if len(body) < _MIN_CONTENT:
-                    time.sleep(0.3)
-                    body = _scrape_article(url) or body
+                    # Thu dung summary truoc, neu ngan thi scrape
+                    body = _clean_html(getattr(entry, "summary", ""))
+                    if len(body) < _MIN_CONTENT:
+                        time.sleep(0.3)
+                        body = _scrape_article(url) or body
 
-                if len(body) < 30:
-                    continue
+                    if len(body) < 30:
+                        continue
 
-                items.append(RawNewsItem(
-                    article_id   = _make_id(source_name, url),
-                    source       = source_name,
-                    title        = title,
-                    content_text = f"{title}. {body}",
-                    url          = url,
-                    published_at = published_at,
-                    credibility  = credibility,
-                ))
+                    items.append(RawNewsItem(
+                        article_id   = _make_id(source_name, url),
+                        source       = source_name,
+                        title        = title,
+                        content_text = f"{title}. {body}",
+                        url          = url,
+                        published_at = published_at,
+                        credibility  = credibility,
+                    ))
 
-            time.sleep(0.5)
+                time.sleep(0.5)
+                break  # Success - thoat khoi retry loop
 
-        except Exception as e:
-            logger.error(f"[{source_name}] RSS {rss_url}: {e}")
+            except (requests.exceptions.Timeout, requests.exceptions.ReadTimeout) as e:
+                retry_count += 1
+                if retry_count > _MAX_RETRIES:
+                    logger.error(f"[{source_name}] RSS {rss_url}: Timeout sau {_MAX_RETRIES} lan retry")
+                else:
+                    logger.warning(f"[{source_name}] RSS {rss_url}: Timeout, retry {retry_count}/{_MAX_RETRIES}")
+                    time.sleep(2 * retry_count)  # Exponential backoff
+            except Exception as e:
+                logger.error(f"[{source_name}] RSS {rss_url}: {e}")
+                break  # Khong retry cho cac loi khac
 
     return items
 
