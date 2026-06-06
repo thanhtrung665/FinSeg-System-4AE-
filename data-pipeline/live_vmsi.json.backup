@@ -1,9 +1,9 @@
 {
     "vmsi_value": 54.2,
-    "timestamp": "2026-06-06T06:10:01.084054+00:00",
+    "timestamp": "2026-06-06T13:13:52.550055+00:00",
     "status": "normal",
     "risk_warning": "Thị trường cân bằng. Phản ứng trung lập với tin tức vĩ mô. Khuyến nghị: Duy trì cơ cấu tài sản hiện tại.",
-    "macro_summary": "Đã phân tích 5 tài liệu từ Ngân hàng Nhà nước.\n- Độ tin cậy trung bình: 51.9%\n- Đánh giá chính sách: Nới lỏng / Hỗ trợ tích cực (Bơm thanh khoản, giảm lãi suất)\n- Hệ thống đã đối chiếu để khử nhiễu tin đồn mạng xã hội.",
+    "macro_summary": "Đã phân tích 5 tài liệu từ Ngân hàng Nhà nước.\n- Độ tin cậy trung bình: 51.4%\n- Đánh giá chính sách: Nới lỏng / Hỗ trợ tích cực (Bơm thanh khoản, giảm lãi suất)\n- Hệ thống đã đối chiếu để khử nhiễu tin đồn mạng xã hội.",
     "component_scores": {
         "s_social": 0.0,
         "s_macro": 0.7,

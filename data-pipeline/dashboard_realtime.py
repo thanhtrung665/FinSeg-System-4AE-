@@ -1126,25 +1126,55 @@ elif st.session_state.get("active_tab") == "MARKET":
                     posts_new = []
                     fb_posts  = crawl_facebook_for_ticker(tshown)
                     for p in fb_posts[:5]:
-                        n = normalize_social_post(p, tshown)
+                        # Convert dataclass to dict if needed
+                        if hasattr(p, '__dataclass_fields__'):
+                            p_dict = {
+                                'post_id': p.post_id,
+                                'source': p.source,
+                                'source_name': p.source_name,
+                                'content_text': p.content_text,
+                                'published_at': p.published_at,
+                                'likes': p.likes,
+                                'shares': p.shares,
+                                'comments': p.comments,
+                                'credibility': p.credibility,
+                            }
+                        else:
+                            p_dict = p
+                        
+                        n = normalize_social_post(p_dict, tshown)
                         sent_lbl = n.get("sentiment",{}).get("label","neutral").upper()
                         conf_val = int(n.get("sentiment",{}).get("confidence",0)*100)
                         posts_new.append({
-                            "source": f"Facebook: {p.source_name}",
+                            "source": f"Facebook: {p_dict.get('source_name', 'unknown')}",
                             "time":   datetime.now().strftime("%H:%M:%S"),
-                            "text":   p.content_text[:180],
+                            "text":   p_dict.get('content_text', '')[:180],
                             "sentiment": "FUD" if sent_lbl=="NEGATIVE" else ("FOMO" if conf_val>70 and sent_lbl=="POSITIVE" else sent_lbl),
                             "confidence": conf_val,
                             "entity": tshown,
                         })
                     news = crawl_news_for_ticker(tshown)
                     for a in news[:5]:
-                        n2 = normalize_news_article(a, tshown)
+                        # Convert dataclass to dict if needed
+                        if hasattr(a, '__dataclass_fields__'):
+                            a_dict = {
+                                'article_id': a.article_id,
+                                'source': a.source,
+                                'title': a.title,
+                                'content_text': a.content_text,
+                                'url': a.url,
+                                'published_at': a.published_at,
+                                'credibility': a.credibility,
+                            }
+                        else:
+                            a_dict = a
+                        
+                        n2 = normalize_news_article(a_dict, tshown)
                         sent_lbl2 = n2.get("sentiment",{}).get("label","neutral").upper()
                         posts_new.append({
-                            "source": f"CafeF: {a.title[:40]}",
+                            "source": f"CafeF: {a_dict.get('title', '')[:40]}",
                             "time":   datetime.now().strftime("%H:%M:%S"),
-                            "text":   a.content_text[:180],
+                            "text":   a_dict.get('content_text', '')[:180],
                             "sentiment": "POSITIVE" if sent_lbl2=="POSITIVE" else ("FUD" if sent_lbl2=="NEGATIVE" else "NEUTRAL"),
                             "confidence": int(n2.get("sentiment",{}).get("confidence",0)*100),
                             "entity": tshown,
@@ -1152,8 +1182,17 @@ elif st.session_state.get("active_tab") == "MARKET":
                     st.session_state["social_posts"] = posts_new
                     st.toast(f"Cập nhật {len(posts_new)} posts thành công!", icon="✅")
                     st.rerun()
+                except ImportError as ie:
+                    st.error(f"⚠️ Lỗi import module: {ie}")
+                    st.info("💡 **Giải pháp:**\n\n"
+                           "1. Cài package thiếu: `pip install feedparser beautifulsoup4 lxml requests`\n"
+                           "2. Restart Streamlit server\n"
+                           "3. Kiểm tra Python environment đúng chưa")
                 except Exception as e:
-                    st.error(f"Lỗi crawl: {e}")
+                    st.error(f"❌ Lỗi crawl: {e}")
+                    import traceback
+                    with st.expander("Chi tiết lỗi"):
+                        st.code(traceback.format_exc())
 
     # ── RIGHT: NHNN Cross-Validation ──────────────────────────────────────────
     with col_validation:
