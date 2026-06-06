@@ -59,10 +59,20 @@ class RealtimeVMSIEngine:
             self._mac = MACSystem()
         return self._mac
 
+    def _get_rolling_date_range(self, days: int = 3):
+        """Tính khoảng dữ liệu 3 ngày gần nhất cho Real-time."""
+        now = datetime.now(timezone.utc)
+        start = now - timedelta(days=days)
+        return start.strftime("%Y-%m-%d"), now.strftime("%Y-%m-%d")
+
     # ── Step 1: Thu thap Social ────────────────────────────────────────────────
 
     def _collect_social(self) -> int:
         """Thu thap Facebook posts + News → day vao Kafka fb_mock_data."""
+        return self._collect_social_rolling(self._get_rolling_date_range()[0])
+
+    def _collect_social_rolling(self, start_date: str) -> int:
+        """Thu thap Social va News cho range rolling tu start_date."""
         from realtime_pipeline.crawlers.facebook_crawler import crawl_facebook_for_ticker
         from realtime_pipeline.crawlers.news_crawler     import crawl_news_for_ticker
         from realtime_pipeline.normalizers.unified_normalizer import (
@@ -73,7 +83,7 @@ class RealtimeVMSIEngine:
 
         # Facebook posts
         try:
-            posts = crawl_facebook_for_ticker(self.ticker)
+            posts = crawl_facebook_for_ticker(self.ticker, start_date=start_date)
             if posts:
                 normalized = normalize_social_batch(posts, self.ticker)
                 pushed = self._get_producer().push_social(normalized)
@@ -84,7 +94,7 @@ class RealtimeVMSIEngine:
 
         # News articles (cung day vao fb_mock_data de SocialAgent xu ly)
         try:
-            articles = crawl_news_for_ticker(self.ticker)
+            articles = crawl_news_for_ticker(self.ticker, start_date=start_date)
             if articles:
                 normalized = normalize_news_batch(articles, self.ticker)
                 pushed = self._get_producer().push_social(normalized)
@@ -102,11 +112,18 @@ class RealtimeVMSIEngine:
         Crawl NHNN → ingest vao ChromaDB realtime collection.
         Chi chay full ingest lan dau hoac moi 6 chu ky (3 gio).
         """
-        from realtime_pipeline.crawlers.nhnn_crawler     import crawl_nhnn_all_types
+        return self._collect_and_ingest_policies_rolling(self._get_rolling_date_range()[0])
+
+    def _collect_and_ingest_policies_rolling(
+        self,
+        start_date: str,
+        end_date: str = None,
+    ) -> int:
+        from realtime_pipeline.crawlers.nhnn_crawler import crawl_nhnn_all_types
         from realtime_pipeline.normalizers.unified_normalizer import normalize_policy_batch
 
         try:
-            docs = crawl_nhnn_all_types()
+            docs = crawl_nhnn_all_types(start_date=start_date, end_date=end_date)
             if docs:
                 normalized = normalize_policy_batch(docs, self.ticker)
                 ingested = self._get_producer().push_policies_to_chroma(normalized)
@@ -123,13 +140,16 @@ class RealtimeVMSIEngine:
         Lay gia co phieu → day vao Kafka market_stock_data.
         Tra ve market_sentiment [-1, 1] de dung trong tinh VMSI.
         """
+        return self._collect_market_rolling(self._get_rolling_date_range()[0])
+
+    def _collect_market_rolling(self, start_date: str) -> float:
         from realtime_pipeline.crawlers.stock_crawler import (
             crawl_stocks_for_ticker
         )
         from realtime_pipeline.normalizers.unified_normalizer import normalize_stock_batch
 
         try:
-            result = crawl_stocks_for_ticker(self.ticker)
+            result = crawl_stocks_for_ticker(self.ticker, start_date=start_date)
             bars   = result.get("historical_bars", [])
 
             if bars:
@@ -222,24 +242,22 @@ class RealtimeVMSIEngine:
         Ket qua duoc ghi tu dong vao live_vmsi.json boi RiskSynthesisAgent.
         """
         t0 = time.time()
+        start_date, end_date = self._get_rolling_date_range(days=3)
         self.logger.info(f"=== BAT DAU CHU KY REALTIME [{self.ticker}] ===")
+        self.logger.info(f"Cua so du lieu: {start_date} den {end_date}")
 
-        # Step 1: Social
-        social_count = self._collect_social()
+        social_count = self._collect_social_rolling(start_date)
         self.logger.info(f"[1/4] Social: {social_count} messages → Kafka")
 
-        # Step 2: NHNN policies (lan dau hoac theo policy_refresh_flag)
         if ingest_policies:
-            self._collect_and_ingest_policies()
+            self._collect_and_ingest_policies_rolling(start_date, end_date)
             self.logger.info("[2/4] NHNN policies → ChromaDB")
         else:
             self.logger.info("[2/4] Bo qua ingest NHNN (da co data)")
 
-        # Step 3: Market
-        market_sentiment = self._collect_market()
+        market_sentiment = self._collect_market_rolling(start_date)
         self.logger.info(f"[3/4] Market sentiment: {market_sentiment:+.4f}")
 
-        # Step 4: MAC cycle
         self.logger.info("[4/4] Chay MAC System...")
         vmsi_result = self._run_mac_cycle()
 

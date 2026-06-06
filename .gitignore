@@ -23,4 +23,6 @@ live_vmsi.json.bak
 
 # --- OS Generated ---
 .DS_Store
-Thumbs.db
+Thumbs.dbvenv/
+__pycache__/
+.env

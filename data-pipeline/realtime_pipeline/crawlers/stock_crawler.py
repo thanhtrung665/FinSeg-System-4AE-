@@ -1,5 +1,6 @@
 import contextlib
 import io
+import dataclasses # THÊM IMPORT NÀY Ở ĐẦU FILE
 import logging
 import warnings
 from dataclasses import dataclass
@@ -237,27 +238,33 @@ def calculate_market_sentiment(bars: List[RawStockBar]) -> float:
 
 # ── Public API ─────────────────────────────────────────────────────────────────
 
-def crawl_stocks_for_ticker(ticker: str) -> Dict[str, Any]:
+def crawl_stocks_for_ticker(
+    ticker: str,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> Dict[str, Any]:
     """
     Thu thap day du du lieu co phieu cho 1 ticker.
-    Tra ve dict: historical_bars, realtime_bar, info, market_sentiment.
+    Tra ve dict chuan JSON: historical_bars, realtime_bar, info, market_sentiment.
     """
     symbol = TICKER_MAP.get(ticker.upper(), ticker.upper())
     logger.info(f"[Stock] Crawl {symbol} (context={ticker})...")
 
-    bars          = fetch_stock_history(ticker)
+    bars          = fetch_stock_history(ticker, start_date=start_date, end_date=end_date)
     rt            = fetch_stock_realtime(ticker)
     info          = fetch_stock_info(ticker)
     mkt_sentiment = calculate_market_sentiment(
         bars[-10:] if len(bars) > 10 else bars
     )
 
+    # DÙNG dataclasses.asdict() ĐỂ CHUYỂN ĐỔI SANG JSON FORMAT
     return {
         "ticker":           symbol,
         "ticker_context":   ticker,
-        "historical_bars":  bars,
-        "realtime_bar":     rt,
-        "info":             info,
+        "historical_bars":  [dataclasses.asdict(b) for b in bars], # Chuyển list object thành list dict
+        "realtime_bar":     dataclasses.asdict(rt) if rt else None,
+        "info":             dataclasses.asdict(info) if info else None,
         "market_sentiment": mkt_sentiment,
         "total_bars":       len(bars),
+        "source_type":      "market"
     }

@@ -78,6 +78,15 @@ def _is_after_history_start(date_str: str) -> bool:
         return True  # Neu khong parse duoc, lay het
 
 
+def _is_after_start_date(date_str: str, start_date: str) -> bool:
+    try:
+        dt = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+        start = datetime.fromisoformat(start_date + "T00:00:00+00:00")
+        return dt >= start
+    except Exception:
+        return True
+
+
 def _clean_html(raw: str) -> str:
     """Loai bo HTML tags, giu lai text thuan."""
     if not raw:
@@ -184,7 +193,10 @@ def crawl_all_news() -> List[RawNewsItem]:
     return all_items
 
 
-def crawl_news_for_ticker(ticker: str) -> List[RawNewsItem]:
+def crawl_news_for_ticker(
+    ticker: str,
+    start_date: Optional[str] = None,
+) -> List[RawNewsItem]:
     """
     Crawl tin tuc lien quan den 1 ma co phieu.
     Loc theo keyword trong title/content.
@@ -203,6 +215,12 @@ def crawl_news_for_ticker(ticker: str) -> List[RawNewsItem]:
 
     keywords = ticker_keywords.get(ticker.upper(), [ticker.lower()])
     all_items = crawl_all_news()
+
+    if start_date:
+        all_items = [
+            item for item in all_items
+            if _is_after_start_date(item.published_at, start_date)
+        ]
 
     filtered = []
     for item in all_items:
