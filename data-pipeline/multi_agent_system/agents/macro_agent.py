@@ -1,185 +1,234 @@
 import time
 import logging
 from typing import List, Dict, Tuple, Any
-from datetime import datetime
 
-# Tận dụng cấu hình tập trung
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from data_pipeline_ingestion.config import settings
+
+# Model embedding PHẢI khớp với model dùng khi ingest trong nhnn_ingestor.py
+# keepitreal/vietnamese-sbert → 768 dimensions
+_EMBEDDING_MODEL_NAME = "keepitreal/vietnamese-sbert"
+
 
 class MacroAgent:
     """
-    Agent phân tích chính sách vĩ mô (Ngân hàng Nhà nước).
-    Tích hợp Caching, Semantic Search và tự động tóm tắt bằng tiếng Việt.
+    Agent phân tích chính sách vĩ mô từ kho tài liệu NHNN trên ChromaDB Cloud.
+    Dùng cùng embedding model với nhnn_ingestor để đảm bảo vector dimension khớp (768-dim).
+    Tích hợp: In-memory Cache (TTL 300s), Circuit Breaker, Graceful Fallback.
     """
+
     def __init__(self):
         self.logger = logging.getLogger(self.__class__.__name__)
-        
-        # Cấu hình Cache để tối ưu hiệu năng (TTL: 300 giây)
+
+        # Cache (TTL: 5 phút)
         self.cache: Dict[str, Dict[str, Any]] = {}
-        self.cache_ttl = 300 
-        
-        # Trạng thái kết nối (Circuit Breaker)
+        self.cache_ttl = 300
+
+        # Circuit Breaker
         self.circuit_open = False
-        
-        # Khởi tạo kết nối ChromaDB
+
+        # Load embedding model — PHẢI khớp với nhnn_ingestor.py
+        self.embedder = self._load_embedder()
+
+        # Kết nối ChromaDB
         self.collection = self._setup_chroma_connection()
 
-    def _setup_chroma_connection(self):
-        """Thiết lập kết nối với ChromaDB Cloud [Req 3.1]"""
+    def _load_embedder(self):
+        """
+        Tải SentenceTransformer với model khớp lúc ingest.
+        Trả về None nếu không tải được — hệ thống fallback gracefully.
+        """
         try:
-            self.logger.info("Đang kết nối tới ChromaDB Cloud (Macro_Agent)...")
+            from sentence_transformers import SentenceTransformer
+            self.logger.info(f"Đang tải embedding model: {_EMBEDDING_MODEL_NAME}...")
+            embedder = SentenceTransformer(_EMBEDDING_MODEL_NAME)
+            self.logger.info("Tải embedding model thành công.")
+            return embedder
+        except ImportError:
+            self.logger.error(
+                "Thiếu sentence-transformers. Cài: pip install sentence-transformers"
+            )
+            return None
+        except Exception as e:
+            self.logger.error(f"Lỗi tải embedding model: {e}")
+            return None
+
+    def _setup_chroma_connection(self):
+        """Kết nối ChromaDB Cloud. Circuit Breaker mở nếu fail."""
+        try:
+            self.logger.info("Đang kết nối ChromaDB Cloud (MacroAgent)...")
             client = settings.get_chroma_client()
             collection = client.get_collection(name=settings.CHROMADB_COLLECTION)
             self.circuit_open = False
-            self.logger.info("Kết nối Vector Database thành công!")
+            self.logger.info("Kết nối ChromaDB thành công!")
             return collection
         except Exception as e:
             self.circuit_open = True
-            self.logger.error(f"CRITICAL: Lỗi kết nối ChromaDB: {e}. Hệ thống sẽ dùng Fallback.")
+            self.logger.error(f"CRITICAL: Lỗi kết nối ChromaDB: {e}. Dùng Fallback.")
             return None
 
+    # ------------------------------------------------------------------ Cache
     def _get_from_cache(self, query: str) -> Any:
-        """Lấy dữ liệu từ bộ nhớ đệm nếu chưa hết hạn [Req 3.2]"""
         if query in self.cache:
             entry = self.cache[query]
             if time.time() - entry['timestamp'] < self.cache_ttl:
-                self.logger.debug(f"Cache HIT cho truy vấn: '{query}'")
+                self.logger.debug(f"Cache HIT: '{query[:60]}...'")
                 return entry['data']
-            else:
-                del self.cache[query] # Xóa cache cũ
+            del self.cache[query]
         return None
 
     def _save_to_cache(self, query: str, data: Any):
-        """Lưu kết quả vào bộ nhớ đệm"""
-        self.cache[query] = {
-            'timestamp': time.time(),
-            'data': data
-        }
+        self.cache[query] = {'timestamp': time.time(), 'data': data}
 
-    def perform_semantic_search(self, query_text: str, k: int = 5, threshold: float = 0.7) -> List[Dict]:
+    # ------------------------------------------------------------------ Search
+    def perform_semantic_search(
+        self, query_text: str, k: int = 5, threshold: float = 0.35
+    ) -> List[Dict]:
         """
         Tìm kiếm ngữ nghĩa trong kho tài liệu NHNN.
-        Chỉ trả về các tài liệu có độ tương đồng (distance) vượt ngưỡng threshold. [Req 3.3, 3.4]
-        """
-        # 1. Kiểm tra Cache trước
-        cached_result = self._get_from_cache(query_text)
-        if cached_result is not None:
-            return cached_result
 
-        # 2. Xử lý khi rớt mạng (Fallback) [Req 3.8]
+        Dùng query_embeddings (không phải query_texts) vì collection được ingest thủ công
+        với embeddings 768-dim — ChromaDB không có embedding_function nội bộ cho collection này.
+
+        threshold=0.35: phù hợp với cosine similarity của vietnamese-sbert
+        trên văn bản tài chính tiếng Việt (~0.40–0.50 là bình thường).
+        """
+        # 1. Cache
+        cached = self._get_from_cache(query_text)
+        if cached is not None:
+            return cached
+
+        # 2. Fallback guards
         if self.circuit_open or self.collection is None:
-            self.logger.warning("Sử dụng Fallback rỗng do ChromaDB không khả dụng.")
+            self.logger.warning("ChromaDB không khả dụng — trả về [].")
+            return []
+        if self.embedder is None:
+            self.logger.warning("Embedding model không khả dụng — trả về [].")
             return []
 
         try:
-            start_time = time.time()
-            # Thực hiện truy vấn Vector. (ChromaDB tự động dùng default embedding hoặc cần truyền query_embeddings nếu setup phức tạp)
-            # Ở đây ta dùng text thuần để Chroma xử lý nếu collection đã set embedding function lúc tạo.
-            results = self.collection.query(
-                query_texts=[query_text],
-                n_results=k
-            )
-            
-            valid_docs = []
-            if results and 'documents' in results and results['documents']:
-                for i in range(len(results['documents'][0])):
-                    # ChromaDB dùng distance (càng nhỏ càng giống). Giả lập chuyển đổi sang similarity (0-1)
-                    distance = results['distances'][0][i] if 'distances' in results else 0
-                    similarity = max(0.0, 1.0 - distance) 
-                    
-                    if similarity >= threshold:
-                        doc = {
-                            "content": results['documents'][0][i],
-                            "similarity": similarity,
-                            "metadata": results['metadatas'][0][i] if 'metadatas' in results else {}
-                        }
-                        valid_docs.append(doc)
+            t0 = time.time()
+            # Embed query với cùng model và normalize (cosine similarity)
+            query_vector = self.embedder.encode(
+                [query_text], normalize_embeddings=True
+            ).tolist()
 
-            query_time = time.time() - start_time
-            self.logger.debug(f"Semantic Search hoàn thành trong {query_time:.2f}s. Tìm thấy {len(valid_docs)} tài liệu hợp lệ.")
-            
-            # Lưu vào cache
+            results = self.collection.query(
+                query_embeddings=query_vector,
+                n_results=k,
+                include=["documents", "metadatas", "distances"],
+            )
+
+            valid_docs = []
+            if results and results.get('documents') and results['documents'][0]:
+                for i in range(len(results['documents'][0])):
+                    distance = results['distances'][0][i]
+                    # ChromaDB cosine distance = 1 - cosine_similarity
+                    similarity = max(0.0, 1.0 - distance)
+                    if similarity >= threshold:
+                        valid_docs.append({
+                            "content": results['documents'][0][i],
+                            "similarity": round(similarity, 4),
+                            "metadata": results['metadatas'][0][i] if results.get('metadatas') else {},
+                        })
+
+            elapsed = time.time() - t0
+            self.logger.info(
+                f"Semantic search '{query_text[:50]}...' "
+                f"→ {len(valid_docs)}/{k} docs (threshold={threshold}) "
+                f"trong {elapsed:.2f}s"
+            )
+
             self._save_to_cache(query_text, valid_docs)
             return valid_docs
 
         except Exception as e:
-            self.logger.error(f"Lỗi truy vấn Vector DB: {e}")
+            self.logger.error(f"Lỗi query ChromaDB: {e}")
             return []
 
+    # ------------------------------------------------------------------ Analysis
     def analyze_policy_sentiment(self, documents: List[Dict]) -> int:
         """
-        Phân tích nội dung tài liệu và gán điểm chính sách: -1, 0, hoặc 1. [Req 3.5, 3.6]
-        (Phiên bản MVP dùng Rule-based kết hợp Keyword. Phiên bản đầy đủ gọi API LLM).
+        Rule-based keyword scoring → {-1, 0, 1}.
+        -1: thắt chặt / rủi ro
+         0: trung lập
+         1: nới lỏng / hỗ trợ
         """
         if not documents:
-            self.logger.info("Không có tài liệu vĩ mô liên quan. Mặc định S_nhnn = 0 (Trung lập).")
+            self.logger.info("Không có tài liệu → S_nhnn = 0 (Trung lập).")
             return 0
 
-        restrictive_keywords = ["thắt chặt", "tăng lãi suất", "hút tiền", "kiểm soát", "hạn chế", "khởi tố", "vi phạm", "xử lý nghiêm"]
-        accommodative_keywords = ["nới lỏng", "giảm lãi suất", "bơm tiền", "hỗ trợ", "khuyến khích", "tháo gỡ"]
+        restrictive = [
+            "thắt chặt", "tăng lãi suất", "hút tiền", "kiểm soát",
+            "hạn chế", "khởi tố", "vi phạm", "xử lý nghiêm", "phong tỏa",
+        ]
+        accommodative = [
+            "nới lỏng", "giảm lãi suất", "bơm tiền", "hỗ trợ",
+            "khuyến khích", "tháo gỡ", "ổn định",
+        ]
 
-        score_sum = 0
+        score_sum: float = 0.0
         for doc in documents:
-            content = doc.get("content", "").lower()
-            
-            # Đếm từ khóa
-            restrictive_count = sum(1 for kw in restrictive_keywords if kw in content)
-            accommodative_count = sum(1 for kw in accommodative_keywords if kw in content)
-            
-            if restrictive_count > accommodative_count:
-                score_sum -= doc.get("similarity", 1.0) # Tính trọng số theo độ tương đồng
-            elif accommodative_count > restrictive_count:
-                score_sum += doc.get("similarity", 1.0)
+            content = doc["content"].lower()
+            r_count = sum(1 for kw in restrictive if kw in content)
+            a_count = sum(1 for kw in accommodative if kw in content)
 
-        # Trả về các giá trị rời rạc đúng yêu cầu {-1, 0, 1}
+            if r_count > a_count:
+                score_sum -= doc["similarity"]
+            elif a_count > r_count:
+                score_sum += doc["similarity"]
+
         if score_sum < -0.5:
-            return -1 # Thắt chặt / Tiêu cực
+            return -1
         elif score_sum > 0.5:
-            return 1  # Nới lỏng / Tích cực
-        else:
-            return 0  # Trung lập
+            return 1
+        return 0
 
     def generate_vietnamese_summary(self, documents: List[Dict], s_nhnn: int) -> str:
-        """Tự động sinh báo cáo vắn tắt bằng tiếng Việt. [Req 3.7]"""
+        """Sinh báo cáo vắn tắt tiếng Việt dựa trên kết quả phân tích."""
         if not documents:
-            return "Thị trường hiện tại không ghi nhận chỉ thị vĩ mô hay tin tức pháp lý nào nổi bật."
+            return "Không ghi nhận chỉ thị vĩ mô hay tin tức pháp lý nào nổi bật."
 
-        policy_type = "Trung lập (Duy trì ổn định)"
-        if s_nhnn == -1:
-            policy_type = "Thắt chặt / Cảnh báo rủi ro (Rút thanh khoản, thanh tra)"
-        elif s_nhnn == 1:
-            policy_type = "Nới lỏng / Hỗ trợ tích cực (Bơm thanh khoản, giảm lãi suất)"
+        policy_map = {
+            -1: "Thắt chặt / Cảnh báo rủi ro (Rút thanh khoản, thanh tra)",
+             0: "Trung lập (Duy trì ổn định)",
+             1: "Nới lỏng / Hỗ trợ tích cực (Bơm thanh khoản, giảm lãi suất)",
+        }
+        avg_sim = sum(d["similarity"] for d in documents) / len(documents)
 
-        avg_similarity = sum(d["similarity"] for d in documents) / len(documents)
-        
-        summary = (
-            f"Đã phân tích {len(documents)} tài liệu/thông cáo liên quan từ Ngân hàng Nhà nước.\n"
-            f"- Mức độ tin cậy của thông tin: {avg_similarity * 100:.1f}%\n"
-            f"- Đánh giá chính sách hiện tại: {policy_type}\n"
-            f"- Ghi chú: Hệ thống đã đối chiếu để khử nhiễu các tin đồn mạng xã hội."
+        return (
+            f"Đã phân tích {len(documents)} tài liệu từ Ngân hàng Nhà nước.\n"
+            f"- Độ tin cậy trung bình: {avg_sim * 100:.1f}%\n"
+            f"- Đánh giá chính sách: {policy_map.get(s_nhnn, 'Không xác định')}\n"
+            f"- Hệ thống đã đối chiếu để khử nhiễu tin đồn mạng xã hội."
         )
-        return summary
 
     def process_macro_context(self, ticker_context: str) -> Tuple[int, str]:
-        """Hàm chính: Thực thi toàn bộ luồng phân tích vĩ mô."""
-        # Truy vấn các thông tin liên quan đến bối cảnh hiện tại (Ví dụ: SCB hoặc Vạn Thịnh Phát)
-        query_text = f"Thông cáo báo chí Ngân hàng Nhà nước về {ticker_context} thanh khoản và rủi ro"
-        
-        documents = self.perform_semantic_search(query_text)
-        s_nhnn = self.analyze_policy_sentiment(documents)
-        summary = self.generate_vietnamese_summary(documents, s_nhnn)
-        
+        """Entry point chính: Semantic search → Sentiment scoring → Summary."""
+        query = (
+            f"Thông cáo báo chí Ngân hàng Nhà nước về {ticker_context} "
+            f"thanh khoản rủi ro tín dụng"
+        )
+        docs = self.perform_semantic_search(query)
+        s_nhnn = self.analyze_policy_sentiment(docs)
+        summary = self.generate_vietnamese_summary(docs, s_nhnn)
         return s_nhnn, summary
 
+
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
     agent = MacroAgent()
-    
-    # Test thử giả lập kịch bản SCB (Khủng hoảng)
-    logging.info("--- TEST KỊCH BẢN SCB ---")
+    print("\n--- TEST: SCB Vạn Thịnh Phát ---")
     score, report = agent.process_macro_context("SCB Vạn Thịnh Phát")
-    logging.info(f"Điểm chính sách: {score}")
-    logging.info(f"Báo cáo:\n{report}")
+    print(f"S_nhnn = {score}")
+    print(report)
+
+    print("\n--- TEST: SHB ---")
+    score2, report2 = agent.process_macro_context("SHB")
+    print(f"S_nhnn = {score2}")
+    print(report2)

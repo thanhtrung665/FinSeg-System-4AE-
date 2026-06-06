@@ -1,0 +1,34 @@
+# ============================================================
+# realtime_pipeline — Additional Requirements
+# Cai them vao requirements.txt goc cua data-pipeline
+# ============================================================
+
+# Scheduling
+apscheduler==3.10.4
+
+# Web scraping
+beautifulsoup4==4.12.3
+lxml==5.3.0
+feedparser==6.0.12
+requests==2.32.5
+
+# Browser automation (cho Facebook crawler)
+# Tren GPU server Linux: playwright install chromium
+playwright>=1.50.0
+selenium==4.27.1
+
+# HTTP async (optional, cho performance cao hon)
+httpx==0.27.2
+
+# Dependency da co trong requirements.txt goc (khong can cai lai):
+# kafka-python-ng==2.2.3
+# chromadb==1.5.9
+# pandas==2.2.3
+# pydantic==2.11.4
+# sentence-transformers==3.0.1
+# vnstock==4.0.4
+# python-dotenv==1.2.2
+# tqdm==4.67.1
+# numpy
+# streamlit
+# plotly

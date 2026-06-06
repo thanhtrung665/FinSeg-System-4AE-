@@ -1,0 +1,35 @@
+# Kafka
+kafka-python==2.0.2
+
+# ChromaDB Cloud
+chromadb==0.6.3
+
+# Data processing
+pandas==2.2.2
+pydantic==2.7.1
+
+# PDF parsing (cho NHNN docs)
+pypdf2==3.0.1
+pdfplumber==0.11.0
+
+# Embeddings (dùng sentence-transformers thay vì gọi API tốn tiền)
+sentence-transformers==3.0.1
+
+# Stock data
+vnstock==3.2.1
+
+# Environment
+python-dotenv==1.0.1
+
+# Testing
+pytest==8.2.0
+pytest-hypothesis
+hypothesis==6.100.0
+
+# Utilities
+tqdm==4.66.4
+plotly
+streamlit
+transformers
+bitsandbytes
+accelerate

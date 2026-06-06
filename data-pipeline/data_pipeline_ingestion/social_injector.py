@@ -1,3 +1,4 @@
+import os
 import csv
 import time
 from base_producer import BaseKafkaProducer
@@ -12,7 +13,7 @@ class FacebookMockInjector(BaseKafkaProducer):
         self.rate_limit = float(settings.REPLAY_RATE_LIMIT)
 
     def stream_csv_data(self, file_path: str):
-        dataset_name = file_path.split('/')[-1]
+        dataset_name = os.path.basename(file_path)
         self.logger.info(f"Bắt đầu bơm dữ liệu mạng xã hội từ {dataset_name} (Context: {self.ticker_context})")
         
         try:

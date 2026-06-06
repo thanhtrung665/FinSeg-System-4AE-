@@ -1,0 +1,26 @@
+﻿# --- Virtual Environments ---
+.venv/
+env/
+__pycache__/
+.ipynb_checkpoints/
+
+# --- Security & Secrets ---
+.env
+# (Lưu ý: Không chặn .env.example)
+
+# --- Large Data Files & Models (Tránh lỗi giới hạn 50MB của GitHub) ---
+*.csv
+*.xlsx
+*.pt
+*.bin
+producers/data_dumps/
+rag_ingestion/data/
+
+# --- Logs & Outputs ---
+*.log
+live_vmsi.json
+live_vmsi.json.bak
+
+# --- OS Generated ---
+.DS_Store
+Thumbs.db

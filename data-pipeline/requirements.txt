@@ -1,35 +1,38 @@
-# Kafka
-kafka-python==2.0.2
+# Kafka (kafka-python-ng là fork tương thích Python 3.12+)
+kafka-python-ng==2.2.3
 
 # ChromaDB Cloud
-chromadb==0.6.3
+chromadb==1.5.9
 
 # Data processing
-pandas==2.2.2
-pydantic==2.7.1
+pandas==2.2.3
+pydantic==2.11.4
 
-# PDF parsing (cho NHNN docs)
-pypdf2==3.0.1
-pdfplumber==0.11.0
+# PDF parsing
+pdfplumber==0.11.9
 
-# Embeddings (dùng sentence-transformers thay vì gọi API tốn tiền)
+# Embeddings — Vietnamese SBERT
 sentence-transformers==3.0.1
+transformers==4.57.6
 
-# Stock data
-vnstock==3.2.1
+# Stock data (vnstock v4 API)
+vnstock==4.0.4
 
 # Environment
-python-dotenv==1.0.1
+python-dotenv==1.2.2
 
 # Testing
 pytest==8.2.0
-pytest-hypothesis
 hypothesis==6.100.0
 
 # Utilities
-tqdm==4.66.4
+tqdm==4.67.1
+numpy
+
+# Dashboard
 plotly
 streamlit
-transformers
-bitsandbytes
-accelerate
+
+# LLM chatbot (optional — chỉ cài nếu dùng chatbot_agent.py)
+# accelerate
+# bitsandbytes

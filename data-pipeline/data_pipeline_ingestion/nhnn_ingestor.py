@@ -83,6 +83,11 @@ class NHNNIngestor:
                 }
                 
                 doc_id = f"{ticker_context}_{file_name}_{chunk_id}"
+                # Giới hạn doc_id ≤ 128 bytes (ChromaDB Cloud quota)
+                if len(doc_id.encode('utf-8')) > 128:
+                    import hashlib
+                    name_hash = hashlib.md5(file_name.encode('utf-8')).hexdigest()[:16]
+                    doc_id = f"{ticker_context}_{name_hash}_{chunk_id}"
 
                 # 4. Đẩy lên ChromaDB Cloud
                 try:
@@ -98,20 +103,24 @@ class NHNNIngestor:
             logger.info(f"Đã ingest xong {file_name} ({len(chunks)} chunks).")
 
 if __name__ == "__main__":
+    import pathlib
+    # Tính đường dẫn tuyệt đối từ vị trí file này
+    _data_dir = pathlib.Path(__file__).parent.parent / "data"
+
     ingestor = NHNNIngestor()
-    
+
     # 1. Ingest dữ liệu Khủng hoảng SCB (Q4/2022)
     logger.info("--- BẮT ĐẦU INGEST DỮ LIỆU SCB ---")
     ingestor.process_and_ingest(
-        directory_path=settings.NHNN_DOCS_PATH,
+        directory_path=str(_data_dir / "nhnn_docs_SCB"),
         ticker_context="SCB",
-        default_date="2022-10-15T00:00:00Z" # Chuẩn ISO 8601
+        default_date="2022-10-15T00:00:00Z"
     )
-    
+
     # 2. Ingest dữ liệu Baseline SHB (2025-2026)
     logger.info("--- BẮT ĐẦU INGEST DỮ LIỆU SHB ---")
     ingestor.process_and_ingest(
-        directory_path=settings.SHB_DOCS_PATH,
+        directory_path=str(_data_dir / "shb"),
         ticker_context="SHB",
         default_date="2026-01-15T00:00:00Z"
     )

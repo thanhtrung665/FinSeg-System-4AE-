@@ -1,3 +1,4 @@
+import os
 import csv
 import json
 import time
@@ -23,7 +24,7 @@ class DataReplayService:
 
     def stream_csv_to_kafka(self, file_path: str):
         """Đọc file CSV và đẩy từng dòng vào Kafka"""
-        dataset_name = file_path.split('/')[-1]
+        dataset_name = os.path.basename(file_path)
         logger.info(f"Bắt đầu stream dữ liệu từ: {dataset_name}")
         
         try:
@@ -62,11 +63,13 @@ class DataReplayService:
             logger.error(f"Lỗi không xác định khi stream dữ liệu: {e}")
 
 if __name__ == "__main__":
+    import pathlib
+    _data_dir = pathlib.Path(__file__).parent.parent / "data"
+
     service = DataReplayService()
-    
-    # Bạn có thể chọn file cần test chạy giả lập ở đây
+
     # Chạy thử dataset của SCB
-    service.stream_csv_to_kafka(settings.SCB_DATASET_PATH)
-    
+    service.stream_csv_to_kafka(str(_data_dir / "facebook_mock_SCB (1).csv"))
+
     # Chạy thử dataset của SHB (bỏ comment dòng dưới để test)
-    # service.stream_csv_to_kafka(settings.SHB_DATASET_PATH)
+    # service.stream_csv_to_kafka(str(_data_dir / "facebook_mock_shb.csv"))
