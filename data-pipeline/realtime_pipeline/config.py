@@ -38,8 +38,8 @@ CRAWL_INTERVAL_SECONDS    = int(os.getenv("CRAWL_INTERVAL_SECONDS", "1800"))  # 
 VMSI_CYCLE_SECONDS        = int(os.getenv("VMSI_CYCLE_SECONDS", "1800"))      # 30 phut
 
 # Date range lay du lieu lich su: Thang 4 → Thang 6 hien tai
-HISTORY_START_DATE        = os.getenv("HISTORY_START_DATE", "2025-04-01")
-HISTORY_END_DATE          = os.getenv("HISTORY_END_DATE", "2026-06-30")
+HISTORY_START_DATE        = os.getenv("HISTORY_START_DATE", "2025-03-01")
+HISTORY_END_DATE          = os.getenv("HISTORY_END_DATE", "2026-06-01")
 
 # Nguon tin tuc
 NEWS_SOURCES = {
@@ -115,7 +115,7 @@ TICKER_MAP = {
     "BID":     "BID",
     "CTG":     "CTG",
     "HDB":     "HDB",
-    "LPB":     "LPB",
+    "LPB":     "LPB"
     "VNINDEX": "VNINDEX",
 }
 

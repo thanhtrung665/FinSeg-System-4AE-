@@ -201,6 +201,27 @@ section[data-testid="stMain"] > div{padding-top:0!important;}
 ::-webkit-scrollbar-thumb{background:#1e2d3d;border-radius:2px;}
 ::-webkit-scrollbar-thumb:hover{background:#2d3f52;}
 
+
+/* Fix chatbot icon khong bi tran chu */
+[data-testid="chatAvatarIcon"] {
+    min-width: 32px !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: .85rem !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
+}
+[data-testid="stChatMessage"] {
+    align-items: flex-start !important;
+}
+[data-testid="stChatMessage"] > div:first-child {
+    flex-shrink: 0 !important;
+}
+
 /* ── Plotly chart bg ── */
 .js-plotly-plot .plotly .bg{fill:#111827!important;}
 </style>
@@ -559,9 +580,9 @@ if st.session_state.get("active_tab","DASHBOARD") == "DASHBOARD":
         <div style="background:#111827;border:1px solid #1e2d3d;border-radius:8px;padding:14px;margin-bottom:10px;">
           <p style="color:#9ca3af;font-size:.82rem;line-height:1.7;margin:0 0 14px;">{strat_text[sk]}</p>
           <div class="strat-grid">
-            <div class="strat-btn strat-buy">MUC</div>
-            <div class="strat-btn strat-hold">NAM IM</div>
-            <div class="strat-btn strat-sell">SUT</div>
+            <div class="strat-btn strat-buy">MÚC</div>
+            <div class="strat-btn strat-hold">NẮM IM</div>
+            <div class="strat-btn strat-sell">SỤT</div>
           </div>
         </div>""")
 
@@ -647,7 +668,7 @@ if st.session_state.get("active_tab","DASHBOARD") == "DASHBOARD":
                 st.rerun()
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB: PHAN TICH — Stock Detail + Portfolio + Chatbot
+# TAB: PHÂN TÍCH — Stock Detail + Portfolio + Chatbot
 # ══════════════════════════════════════════════════════════════════════════════
 elif st.session_state.get("active_tab") == "ANALYSIS":
 
@@ -859,7 +880,7 @@ elif st.session_state.get("active_tab") == "ANALYSIS":
               </table>
             </div>""")
 
-        # ── Margin / Chien luoc tui tien bar ──────────────────────────────────
+        # ── Margin / Chiến lược túi tiền bar ──────────────────────────────────
         st.html('<div class="sec-hdr" style="margin-top:12px"><span class="ico">◉</span> CHIẾN LƯỢC TÚI TIỀN</div>')
 
         # Tinh margin ratio (dua tren VMSI — cang cao VMSI thi cang risky)
@@ -894,7 +915,7 @@ elif st.session_state.get("active_tab") == "ANALYSIS":
           </div>
         </div>""")
 
-        # ── De xuat giai phap ─────────────────────────────────────────────────
+        # ── Đề xuất giải pháp ─────────────────────────────────────────────────
         st.html('<div class="sec-hdr" style="margin-top:12px"><span class="ico">⊙</span> ĐỀ XUẤT GIẢI PHÁP</div>')
 
         alert_level = "ELEVATED VOLATILITY" if vmsi_v > 60 else ("LOW ACTIVITY" if vmsi_v < 35 else "STABLE")
@@ -928,7 +949,7 @@ elif st.session_state.get("active_tab") == "ANALYSIS":
         </div>""")
 
     with col_chat:
-        # ── Chatbot Phan tich & Giai dap ──────────────────────────────────────
+        # ── Chatbot Phân tích & Giai dap ──────────────────────────────────────
         st.html(f"""
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <span style="font-family:'Share Tech Mono',monospace;font-size:.7rem;
@@ -1003,7 +1024,7 @@ elif st.session_state.get("active_tab") == "ANALYSIS":
                 st.session_state.rt_msgs2=[{"role":"assistant","content":_init2}]; st.rerun()
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB: THI TRUONG — Social Stream + NHNN Cross-Validation + Explainable AI
+# TAB: THỊ TRƯỜNG — Social Stream + NHNN Cross-Validation + Explainable AI
 # ══════════════════════════════════════════════════════════════════════════════
 elif st.session_state.get("active_tab") == "MARKET":
 
@@ -1040,7 +1061,7 @@ elif st.session_state.get("active_tab") == "MARKET":
             from datetime import datetime as _dt
             raw_posts = [
                 {"source":"Telegram: NDT V.I.P","time":"10:14:02","text":f"Nghe don chieu nay NHNN hut tin phieu tiep, bank chuan bi an dap. Thay may room kia ho hao xa {tshown} roi, anh em can than bi up sot nhe.","sentiment":"FUD","confidence":92,"entity":tshown},
-                {"source":"F319: Co phieu vua","time":"10:12:45","text":f"STB ho room ngoai cai la tay muc nhu pha ma. Dong tien cuon cuon vao, khong muc bay gio thi doi len 40 moi muc a? All-in anh em oi!","sentiment":"FOMO","confidence":84,"entity":"STB"},
+                {"source":"F319: Cổ phiếu vua","time":"10:12:45","text":f"STB ho room ngoai cai la tay muc nhu pha ma. Dong tien cuon cuon vao, khong muc bay gio thi doi len 40 moi muc a? All-in anh em oi!","sentiment":"FOMO","confidence":84,"entity":"STB"},
                 {"source":"FB: Dau tu thong minh","time":"10:05:11","text":"Lai suat lien ngan hang qua dem dang nhich nhe len 4.2%. Thanh khoan he thong co ve bot du thua so voi tuan truoc.","sentiment":"NEUTRAL","confidence":95,"entity":"Macro"},
                 {"source":"Zalo: Doi lai Tay Bac","time":"09:58:22","text":f"{tshown} gay nen 11.5 roi, can cheo cung gay. Ve menh gia som thoi, xa nhanh con kip.","sentiment":"FUD","confidence":88,"entity":tshown},
                 {"source":"CafeF RSS","time":"09:45:00","text":f"NHNN bao cao on dinh thi truong, lai suat dieu hanh giu nguyen. Ho tro dong tien vao co phieu ngan hang.","sentiment":"POSITIVE","confidence":91,"entity":"NHNN"},
@@ -1132,7 +1153,7 @@ elif st.session_state.get("active_tab") == "MARKET":
                     st.toast(f"Cập nhật {len(posts_new)} posts thành công!", icon="✅")
                     st.rerun()
                 except Exception as e:
-                    st.error(f"Loi crawl: {e}")
+                    st.error(f"Lỗi crawl: {e}")
 
     # ── RIGHT: NHNN Cross-Validation ──────────────────────────────────────────
     with col_validation:
@@ -1352,7 +1373,7 @@ elif st.session_state.get("active_tab") == "MARKET":
             st.session_state.rt_msgs3=[{"role":"assistant","content":_init3}]; st.rerun()
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB: TIN TUC — Bao cao tong hop + Gui Telegram
+# TAB: TIN TỨC — Bao cao tong hop + Gui Telegram
 # ══════════════════════════════════════════════════════════════════════════════
 elif st.session_state.get("active_tab") == "NEWS":
 
@@ -1608,7 +1629,7 @@ elif st.session_state.get("active_tab") == "NEWS":
         send_tg = st.button("📤 GỬI QUA TELEGRAM", type="primary", use_container_width=True)
         if send_tg:
             if not tg_token or not tg_chat_id:
-                st.error("Vui long nhap Bot Token va Chat ID")
+                st.error("Vui lòng nhập Bot Token và Chat ID")
             else:
                 with st.spinner("Đang gửi..."):
                     try:
@@ -1662,7 +1683,7 @@ elif st.session_state.get("active_tab") == "NEWS":
 
         st.divider()
 
-        # ── Lich su phan tich ─────────────────────────────────────────────────
+        # ── Lịch sử phân tích ─────────────────────────────────────────────────
         st.markdown("**📊 Lịch sử phân tích**")
         log = st.session_state.get("rt_log", [])
         if log:
