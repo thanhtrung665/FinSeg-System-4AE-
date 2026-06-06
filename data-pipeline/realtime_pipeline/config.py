@@ -115,7 +115,7 @@ TICKER_MAP = {
     "BID":     "BID",
     "CTG":     "CTG",
     "HDB":     "HDB",
-    "LPB":     "LPB"
+    "LPB":     "LPB",
     "VNINDEX": "VNINDEX",
 }
 
